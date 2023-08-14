@@ -1,0 +1,251 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript experiment</title>
+
+  <link rel="stylesheet" href="style.css"></head>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,500;0,700;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<body>
+
+  <main>
+    <div class="navigation-month" id="js-nav-months">
+      <button class="button-navigate" id="js-nav-left">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <p class="navigation-title-months" id="js-nav-month">Iulie 2023</p>
+      <button class="button-navigate" id="js-nav-right"><span class="material-symbols-outlined">arrow_forward
+        </span>
+      </button>
+    </div>
+
+    <div class="all_card">
+      <div class="card_venituri">
+        <div class="statistics_card_text">
+          <p class="statistics_card_text_title">Venituri totale</p>
+          <div class="statistics_card_text_suma" id="js-arat-venituri"></div>
+        </div>
+        <div style="height: 16px;"></div>
+        <div class="statistics_graphical_percent">
+          <div class="statistics_card_text">
+            <p class="statistics_card_text_title">Venituri disponibile</p>
+            <div class="statistics_card_text_suma disponibile" id="js-available-incomes"></div>
+          </div>
+          <div class="all-procente">
+            <div class="dim-procente">
+              <div class="procente" id="js-procente-available-incomes" ></div>
+            </div>
+            <p class="procente-style" id="loading-status-available-incomes">10%</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="card_venituri">
+        <div class="statistics_graphical_percent">
+          <div class="statistics_card_text">
+            <p class="statistics_card_text_title">Cheltuieli planificate</p>
+            <div class="statistics_card_text_suma planificate" id="js-arat-cheltuieli"></div>
+          </div>
+          <div class="all-procente">
+            <div class="dim-procente">
+              <div class="procente" id="js-procente" ></div>
+            </div>
+            <p class="procente-style" id="loading-status">10%</p>
+          </div>
+        </div>
+        <div class="statistics_graphical_percent">
+          <div class="statistics_card_text">
+            <p class="statistics_card_text_title">Cheltuieli efectuate</p>
+            <div class="statistics_card_text_suma efectuate" id="js-incurred-expenses"></div>
+          </div>
+          <div class="all-procente">
+            <div class="dim-procente">
+              <div class="procente" id="js-procente-incurred-expenses" ></div>
+            </div>
+            <p class="procente-style" id="loading-status-incurred-expenses">10%</p>
+          </div>
+        </div>
+      </div>
+      <div class="card_venituri">
+
+        <div class="statistics_graphical_percent">
+          <div class="statistics_card_text">
+            <p class="statistics_card_text_title">Bani alocati</p>
+            <div class="statistics_card_text_suma alocati" id="js-allocated-money"></div>
+          </div>
+          <div class="all-procente">
+            <div class="dim-procente">
+              <div class="procente" id="js-procente-groupa"></div>
+            </div>
+            <p class="procente-style" id="loading-groupa">10%</p>
+          </div>
+        </div>
+
+        <div class="statistics_graphical_percent">
+          <div class="statistics_card_text">
+            <p class="statistics_card_text_title">Bani disponibili</p>
+            <div class="statistics_card_text_suma" id="js-money-available"></div>
+          </div>
+          <div class="all-procente">
+            <div class="dim-procente">
+              <div class="procente" id="js-procente-money-available"></div>
+            </div>
+            <p class="procente-style" id="loading-money-available">10%</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- <div style="display: flex; flex-direction: row; justify-content: center; margin-top: 2rem;">
+      <canvas id="c1" width="400px" height="400px"></canvas>
+    </div> -->
+  
+    <div class="tab">
+      <button id="tab-months-incomes" class="tablinks">Venituri</button>
+      <button id="tab-months-expenses" class="tablinks">Cheltuieli</button>
+      <button id="tab-months-group" class="tablinks">Grupe</button>
+    </div>
+    
+    <!-- Tab content -->
+    <div id="incomes" class="tabcontent"> 
+  
+      <div id="js-income-list" class="style-list"> 
+      </div>
+  
+      <div class="linie-tabel add_linie_tabel">
+        <div class="expenses_list_group">
+          <p class="num_style new">N</p>
+          <input class="add_expenses_list_title" type="text" id="js-venit-titlu" placeholder="Titlu">
+        </div>
+        <input class="add_expenses_list_suma" type="number" id="js-venit-suma" placeholder="Suma">
+        <input class="add_expenses_list_data" type="date" id="js-venit-data">
+        <select class="add_expenses_list_state" name="income-state" id="js-venit-state">
+          <option value="În așteptare">În așteptare</option>
+          <option value="Venit">Venit</option>
+        </select>
+        <select class="add_expenses_list_state" name="grupe-utilizatori" id="js-venit-user">
+          <option value="Toti">Toti</option>
+          <option value="Eugen">Eugen</option>
+          <option value="Cris">Cris</option>
+          <option value="Amelia">Amelia</option>
+          <option value="Bianca">Bianca</option>
+          <option value="Evelina">Evelina</option>
+          <option value="Simona">Simona</option>
+        </select>
+        <button class="add_button" id="add-venit">
+          <span class="material-symbols-outlined">add</span>Add
+        </button>
+      </div>
+    
+    </div>
+    
+    <div id="expenses" class="tabcontent">
+  
+      <div id="js-lista" class="style-list"> 
+      </div>
+  
+      <div class="linie-tabel add_linie_tabel">
+
+        <div class="expenses_list_group">
+          <p class="num_style new">N</p>
+          <select class="add_expenses_list_state" name="grupe-cheltuieli" id="js-grupe">
+            <option value="🚴🏻 Piață">🚴🏻 Piață</option>
+            <option value="🚪 Gazdă">🚪 Gazdă</option>
+            <option value="🍔 Market">🍔 Market</option>
+            <option value="🛀 Igienă">🛀 Igienă</option>
+            <option value="💊 Farmacie">💊 Farmacie</option>
+            <option value="🧸 Jucării">🧸 Jucării</option>
+            <option value="👚 Haine">👚 Haine</option>
+            <option value="🚸 Grădiniță">🚸 Grădiniță</option>
+            <option value="🏫 Școală">🏫 Școală</option>
+            <option value="💶 Investiți">💶 Investiți</option>
+            <option value="🏥 Spital">🏥 Spital</option>
+            <option value="📱 Telefoane">📱 Telefoane</option>
+            <option value="📆 Abonamente">📆 Abonamente</option>
+            <option value="🚌 Transport">🚌 Transport</option>
+            <option value="🎟️ Unitare">🎟️ Unitare</option>
+          </select>
+        </div>
+
+        <input class="add_expenses_list_title" type="text" id="js-titlu" placeholder="Titlu">
+        <input class="add_expenses_list_suma" type="number" id="js-suma" placeholder="Suma">
+        <input class="add_expenses_list_data" type="date" id="js-data">
+        <select class="add_expenses_list_state" name="grupe-cheltuieli" id="js-state">
+          <option value="În așteptare">În așteptare</option>
+          <option value="Cheltuit">Cheltuit</option>
+        </select>
+        <select class="add_expenses_list_state" name="grupe-level" id="js-level">
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+        <select class="add_expenses_list_state" name="grupe-utilizatori" id="js-user">
+          <option value="Toti">Toti</option>
+          <option value="Eugen">Eugen</option>
+          <option value="Cris">Cris</option>
+          <option value="Amelia">Amelia</option>
+          <option value="Bianca">Bianca</option>
+          <option value="Evelina">Evelina</option>
+          <option value="Simona">Simona</option>
+        </select>
+        <button class="add_button" id="add-cheltuieli">
+          <span class="material-symbols-outlined">add</span>Add
+        </button>
+      </div>
+    </div>
+    
+    <div id="group" class="tabcontent">  
+      
+      <div id="js-group-list" class="style-list"> 
+      </div>
+  
+      <div class="linie-tabel add_linie_tabel">
+
+        <div class="expenses_list_group">
+          <p class="num_style new">N</p>
+          <select class="add_expenses_list_state" name="grupe-cheltuieli" id="js-grupe-titlu">
+            <option value="🚴🏻 Piață">🚴🏻 Piață</option>
+            <option value="🚪 Gazdă">🚪 Gazdă</option>
+            <option value="🍔 Market">🍔 Market</option>
+            <option value="🛀 Igienă">🛀 Igienă</option>
+            <option value="💊 Farmacie">💊 Farmacie</option>
+            <option value="🧸 Jucării">🧸 Jucării</option>
+            <option value="👚 Haine">👚 Haine</option>
+            <option value="🚸 Grădiniță">🚸 Grădiniță</option>
+            <option value="🏫 Școală">🏫 Școală</option>
+            <option value="💶 Investiți">💶 Investiți</option>
+            <option value="🏥 Spital">🏥 Spital</option>
+            <option value="📱 Telefoane">📱 Telefoane</option>
+            <option value="📆 Abonamente">📆 Abonamente</option>
+            <option value="🚌 Transport">🚌 Transport</option>
+            <option value="🎟️ Unitare">🎟️ Unitare</option>
+          </select>
+        </div>
+
+        <input class="add_expenses_list_suma" type="number" id="js-suma-grupa" placeholder="Suma">
+        <input class="add_expenses_list_data" type="date" id="js-start-luna">
+        <input class="add_expenses_list_data" type="date" id="js-end-luna">
+
+        <div class="free-space"></div>
+        <button class="add_button" id="add-group">
+          <span class="material-symbols-outlined">add</span>Add
+        </button>
+      </div>
+    </div>
+  </main>
+
+
+
+  <script src="navigation-script.js" type="module"></script>
+  <script src="script.js" type="module"></script>
+  
+</body>
+</html>

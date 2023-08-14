@@ -1,0 +1,62 @@
+:root{
+    --font-default: 'Jost';
+    
+    --font-weight-default: 300;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    --h1-headline-size: 96px;
+    --h2-headline-size: 60px;
+    --h3-headline-size: 48px;
+    --h4-headline-size: 34px;
+    --h5-headline-size: 24px;
+    --h6-headline-size: 20px;
+    --s1-subtitle-size: 17px;
+    --s2-subtitle-size: 15px;
+    --s3-subtitle-size: 14px;
+    --b0-body-size: 20px;
+    --b1-body-size: 17px;
+    --b2-body-size: 14px;
+    --c1-caption-size: 12px; 
+    --c2-caption-size: 10px;
+    --bu1-button-size: 18px;
+    --bu2-button-size: 14px;
+    --bu3-button-size: 12px;
+
+    --h1-headline-height: 122px;
+    --h2-headline-height: 72px;
+    --h3-headline-height: 60px;
+    --h4-headline-height: 44px;
+    --h5-headline-height: 32px;
+    --h6-headline-height: 24px;
+    --s1-subtitle-height: 24px;
+    --s2-subtitle-height: 24px;
+    --s3-subtitle-height: 18px;
+    --b0-body-height: 40px;
+    --b1-body-height: 28px;
+    --b2-body-height: 20px;
+    --c1-caption-height: 16px; 
+    --c2-caption-height: 12px; 
+    --bu1-button-height: 24px;
+    --bu2-button-height: 20px;
+    --bu3-button-height: 16px;
+
+    --h1-headline-spacing: 0.001em;
+    --h2-headline-spacing: 0.001em;
+    --h3-headline-spacing: 0.001em;
+    --h4-headline-spacing: 0.0025em;
+    --h5-headline-spacing: 0.001em;
+    --h6-headline-spacing: 0.0015em;
+    --s1-subtitle-spacing: 0.0015em;
+    --s2-subtitle-spacing: 0.001em;
+    --s3-subtitle-spacing: 0.001em;
+    --b0-body-spacing: 0.0044em;
+    --b1-body-spacing: 0.0044em;
+    --b2-body-spacing: 0.0025em;
+    --c1-caption-spacing: 0.004em; 
+    --c2-caption-spacing: 0.004em; 
+    --bu1-button-spacing: 0.0044em;
+    --bu2-button-spacing: 0.0025em;
+    --bu3-button-spacing: 0.004em;
+
+}

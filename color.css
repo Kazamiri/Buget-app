@@ -1,0 +1,76 @@
+:root
+{
+    --color-backgrounds-primary: #131416;
+    --color-backgrounds-secondary: #1A1B1D;
+    --color-backgrounds-tertiary: #202123;
+    --color-backgrounds-quaternary: #27282A;
+
+    --color-labels-primary: #FFF;
+    --color-labels-secondary: rgba(235, 235, 245, 0.60);
+    --color-labels-tertiary: rgba(235, 235, 245, 0.30);
+    --color-labels-quarternary: rgba(235, 235, 245, 0.18);
+
+    --color-functional-green-primary: rgba(14, 173, 105, 1);
+    --color-functional-green-secondary: rgba(14, 173, 105, 0.80);
+    --color-functional-green-quarternary: rgba(14, 173, 105, 0.4);
+
+    --color-functional-neo_fuchsia-primary: rgba(250, 65, 105, 1);
+    --color-functional-neo_fuchsia-quarternary: rgba(250, 65, 105, 0.4);
+
+    --color-brand-yello-primary: rgba(255, 202, 98, 1);
+
+    --color-functional-orange-primary:rgba(254, 152, 112, 1);
+    --color-others-blue-primary: rgba(37, 116, 255, 1);
+
+
+
+
+
+    
+
+
+    --labels-dark-1-primary-label-color: rgba(255, 255, 255, 0.84);
+    --labels-dark-2-secondary-label-color: rgba(235, 235, 245, 0.6);
+    --labels-dark-3-tertiary-label-color: rgba(235, 235, 245, 0.3);
+    --labels-dark-4-quarternary-label-color: rgba(235, 235, 245, 0.18);
+
+    --labels-light-1-primary-label-color: rgba(0, 0, 0, 1);
+    --labels-light-2-secondary-label-color: rgba(60, 60, 67, 0.6);
+    --labels-light-3-tertiary-label-color: rgba(60, 60, 67, 0.3);
+    --labels-light-4-quarternary-label-color: rgba(60, 60, 67, 0.3);
+
+    --color-red-dark-default:#FF634C;
+    --color-red-dark-hover:#FF7760;
+    --color-red-dark-pressed:#FF4F38;
+
+    --system-backgrounds-dark-1-system-background-primary:#111316;
+    --system-backgrounds-dark-2-system-background-secondary:#1C1C1E;
+    
+    --backgrounds-light-1-system-background-primary:#FFFFFF;
+    --backgrounds-light-2-system-background-secondary:#F2F2F6;
+
+    --backgrounds-overlay-views-overlay-dark: rgba(17, 19, 22, 0.64);
+
+    --separators-dark-opaque: #38383A;
+    --separators-dark-transparent: rgba(84, 84, 88, 0.65);
+
+    --separators-light-opaque: #C6C6C8;
+    --separators-light-transparent: rgba(60, 60, 67, 0.36);
+
+    --fills-dark-1-primary: rgba(120, 120, 128, 0.36);
+    --fills-dark-2-secondary: rgba(120, 120, 128, 0.32);
+    --fills-dark-3-tertiary: rgba(118, 118, 128, 0.24);
+    --fills-dark-4-quaternary : rgba(116, 116, 128, 0.08);
+    --fills-dark-5-quinary : rgba(116, 116, 128, 0.08);
+
+    --shadow-dark-4px: 0px 4px 12px 4px rgba(0, 0, 0, 0.32);
+    --shadow-dark-op1-4px: 0px 4px 12px 4px rgba(0, 0, 0, 0.48);
+    --shadow-dark-invers-4px: 0px -5px 12px rgba(0, 0, 0, 0.24);
+    --shodow-screen-light: 0px 8px 24px 4px rgba(0, 0, 0, 0.16);
+
+
+    --gradient-primary-dark-default: linear-gradient(102.73deg, #3862F8 5.23%, #70C6BB 21.57%, #88EB77 30.84%, #ACED57 36.34%, #D1E435 42.94%, #EDCD32 51.54%, #ECB229 59.03%, #E06930 69.69%, #DA1482 87.93%);
+    --gradient-secondary-dark-default: linear-gradient(277.4deg, #AC00A5 0%, #FF6B00 100%);
+
+}
+
