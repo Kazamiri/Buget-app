@@ -27,6 +27,59 @@
 
     <div class="all_card">
       <div class="card_venituri">
+
+        <div class="all_statistics_card_text">
+          <div class="statistics_card_text">
+            <p class="statistics_card_text_title">Venituri totale</p>
+            <div class="statistics_card_text_suma" id="js-arat-venituri"></div>
+          </div>
+  
+          <div class="statistics_card_text">
+            <p class="statistics_card_text_title">Venituri disponibile</p>
+            <div class="statistics_card_text_suma disponibile" id="js-available-incomes"></div>
+          </div>
+        </div>
+        <canvas class="arc_statistic" id="c0" width="348px" height="348px"></canvas>
+      </div>
+
+      
+      <div class="card_venituri">
+        <div class="all_statistics_card_text">
+          <div class="statistics_card_text">
+            <p class="statistics_card_text_title">Cheltuieli planificate</p>
+            <div class="statistics_card_text_suma planificate" id="js-arat-cheltuieli"></div>
+          </div>
+  
+          <div class="statistics_card_text">
+            <p class="statistics_card_text_title">Cheltuieli efectuate</p>
+            <div class="statistics_card_text_suma efectuate" id="js-incurred-expenses"></div>
+          </div>
+        </div>
+        <canvas class="arc_statistic" id="c1" width="348px" height="348px"></canvas>
+      </div>
+
+
+      <div class="card_venituri">
+
+        <div class="all_statistics_card_text">
+          <div class="statistics_card_text">
+            <p class="statistics_card_text_title">Bani alocati</p>
+            <div class="statistics_card_text_suma alocati" id="js-allocated-money"></div>
+          </div>
+  
+          <div class="statistics_card_text">
+            <p class="statistics_card_text_title">Bani disponibili</p>
+            <div class="statistics_card_text_suma" id="js-money-available"></div>
+          </div>
+        </div>
+        <canvas class="arc_statistic" id="c2" width="348px" height="348px"></canvas>
+
+      </div>
+
+    </div>
+
+    <!--<div class="all_card">
+      <div class="card_venituri">
         <div class="statistics_card_text">
           <p class="statistics_card_text_title">Venituri totale</p>
           <div class="statistics_card_text_suma" id="js-arat-venituri"></div>
@@ -102,11 +155,9 @@
 
       </div>
 
-    </div>
-
-    <!-- <div style="display: flex; flex-direction: row; justify-content: center; margin-top: 2rem;">
-      <canvas id="c1" width="400px" height="400px"></canvas>
     </div> -->
+
+
   
     <div class="tab">
       <button id="tab-months-incomes" class="tablinks">Venituri</button>

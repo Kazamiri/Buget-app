@@ -134,7 +134,9 @@ function changeMonth (numPage, actualIncomesBD, actualExpensesBD, actualGroupBD)
   incomesHtmlDate(calculateSum(incomesMonths))
   availableIncomesHtmlDate (calculateSum(availableIncomes))
 
-  newDate (calculateSum(incomesMonths), calculateSum(availableIncomes), 'js-procente-available-incomes', 'loading-status-available-incomes', 7,'var(--color-functional-green-primary)')
+  //newDate (calculateSum(incomesMonths), calculateSum(availableIncomes), 'js-procente-available-incomes', 'loading-status-available-incomes', 7,'var(--color-functional-green-primary)')
+
+  newDateOneArc ('c0', calculateSum(incomesMonths), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)')
 
 
 
@@ -142,11 +144,11 @@ function changeMonth (numPage, actualIncomesBD, actualExpensesBD, actualGroupBD)
   expensesHtmlDate (calculateSum(expensesMonths))
   incurredExpensesHtmlDate (calculateSum(pendingExpenses))
 
-  newDate (calculateSum(incomesMonths), calculateSum(pendingExpenses), 'js-procente-incurred-expenses', 'loading-status-incurred-expenses', 7,'var(--color-functional-neo_fuchsia-primary)')
+  //newDate (calculateSum(incomesMonths), calculateSum(pendingExpenses), 'js-procente-incurred-expenses', 'loading-status-incurred-expenses', 7,'var(--color-functional-neo_fuchsia-primary)')
 
-  newDate (calculateSum(incomesMonths), calculateSum(expensesMonths), 'js-procente', 'loading-status', 7, 'var(--color-functional-orange-primary)')
+  //newDate (calculateSum(incomesMonths), calculateSum(expensesMonths), 'js-procente', 'loading-status', 7, 'var(--color-functional-orange-primary)')
 
-  //newDateArc (calculateSum(incomesMonths), calculateSum(expensesMonths) )
+  newDateArc ('c1', calculateSum(incomesMonths), calculateSum(expensesMonths), 'rgba(254, 152, 112, 1)', calculateSum(incomesMonths), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)' )
 
 
 
@@ -154,9 +156,11 @@ function changeMonth (numPage, actualIncomesBD, actualExpensesBD, actualGroupBD)
   allocatedMoneyHtmlDate (calculateSum(groupMonths))
   moneyAvailableHtmlDate (moneyAvailable)
 
-  newDate (calculateSum(incomesMonths), calculateSum(groupMonths), 'js-procente-groupa', 'loading-groupa', 7, 'var(--color-others-blue-primary)')
+  //newDate (calculateSum(incomesMonths), calculateSum(groupMonths), 'js-procente-groupa', 'loading-groupa', 7, 'var(--color-others-blue-primary)')
 
-  newDate (calculateSum(availableIncomes), moneyAvailable, 'js-procente-money-available', 'loading-money-available', 7, 'var(--color-labels-secondary)')
+  //newDate (calculateSum(availableIncomes), moneyAvailable, 'js-procente-money-available', 'loading-money-available', 7, 'var(--color-labels-secondary)')
+
+  newDateArc ('c2', calculateSum(incomesMonths), calculateSum(groupMonths), 'rgba(37, 116, 255, 1)', calculateSum(availableIncomes), moneyAvailable, 'rgba(235, 235, 245, 0.60)' )
   
 
 
@@ -283,7 +287,19 @@ function readIncomes(valueRead) {
 
   cleanLists(incomesList)
 
+  function colorState(levelItem){
+    let colorText
+    if (levelItem === "Venit") {
+      colorText = 'var(--color-functional-green-primary)'
+    } else if (levelItem === "În așteptare"){
+      colorText = 'var(--color-labels-secondary)'
+    }
+    return colorText
+  }
+
   for (let i = 0; i < valueRead.length; i++) {
+    let percentOfTotal = diference(calculateSum(valueRead), valueRead[i][1].suma).toFixed(0);
+
     incomesList.innerHTML += `
     <div class="linie-tabel">
 
@@ -293,11 +309,14 @@ function readIncomes(valueRead) {
         <input class="expenses_list_title" type="text" id="js-venit-titlu-${valueRead[i][0]}" value="${valueRead[i][1].titlu}">
       </div>
       
+      <div class="suma_percent_all_group">
       <input class="expenses_list_suma" type="number" id="js-venit-suma-${valueRead[i][0]}" value="${valueRead[i][1].suma}">
+      <p class="percent_all_group">${percentOfTotal}%</p>
+    </div>
       
       <input class="expenses_list_data" type="date" id="js-venit-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
 
-      <select class="expenses_list_state" name="income-state" id="js-venit-state-${valueRead[i][0]}">
+      <select class="expenses_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="income-state" id="js-venit-state-${valueRead[i][0]}">
         <option value="${valueRead[i][1].state}" selected disabled hidden>${valueRead[i][1].state}</option>
         <option value="În așteptare">În așteptare</option>
         <option value="Venit">Venit</option>
@@ -338,6 +357,28 @@ function readExpenses(valueRead) {
 
   cleanLists(expensesList) // Curata lista in HTML si adauga din nou noile valori
 
+  function colorState(levelItem){
+    let colorText
+    if (levelItem === "Cheltuit") {
+      colorText = 'var(--color-labels-secondary)'
+    } else if (levelItem === "În așteptare"){
+      colorText = 'var(--color-functional-orange-primary)'
+    }
+    return colorText
+  }
+  
+  function colorLevel(levelItem){
+    let colorText
+    if (levelItem === "High") {
+      colorText = 'var(--color-functional-neo_fuchsia-primary)'
+    } else if (levelItem === "Medium"){
+      colorText = 'var(--color-functional-orange-primary)'
+    } else if (levelItem === "Low") {
+      colorText = 'var(--color-functional-green-primary)'
+    }
+    return colorText
+  }
+
   for (let i = 0; i < valueRead.length; i++) {
     expensesList.innerHTML += `
     <div class="linie-tabel" >
@@ -374,13 +415,13 @@ function readExpenses(valueRead) {
 
       <input class="expenses_list_data" type="date" id="js-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
 
-      <select class="expenses_list_state" name="grupe-cheltuieli" id="js-state-${valueRead[i][0]}">
+      <select class="expenses_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="grupe-cheltuieli" id="js-state-${valueRead[i][0]}">
         <option value="${valueRead[i][1].state}" selected disabled hidden>${valueRead[i][1].state}</option>
         <option value="În așteptare">În așteptare</option>
         <option value="Cheltuit">Cheltuit</option>
       </select>
 
-      <select class="expenses_list_state" name="grupe-level" id="js-level-${valueRead[i][0]}">
+      <select class="expenses_list_state" style="color: ${colorLevel(valueRead[i][1].level)};" name="grupe-level" id="js-level-${valueRead[i][0]}">
         <option value="${valueRead[i][1].level}" selected disabled hidden>${valueRead[i][1].level}</option>
         <option value="High">High</option>
         <option value="Medium">Medium</option>
@@ -438,7 +479,7 @@ function readGroups(expensesBD, groupBD, incomesAll) {
 
 
     groupsList.innerHTML += `
-      <div class="linie-tabel" >
+      <div class="linie-tabel" id="js-item-expenses-${groupBD[i][0]}" >
 
       <div class="expenses_list_group">
         <p class="num_style">${i + 1}</p>
@@ -525,6 +566,12 @@ function upDateIncomes (idButonSelector, locationFile) {
     })
   })
 } //Functia data reinoieste un item cum ar fi un venit, o cheltuiala, o grupa
+
+function newDateRefreshIncomes () {
+
+
+
+}
 
 function upDataExpenses (idButonSelector, locationFile) {
 
@@ -675,38 +722,105 @@ function curataCimpurile() {
   inputUser.innerHTML = ''
 } // Aceasta functie este necesara pentru a curtati valorile care au fost adaugate 
 
-/*function newDateArc (minued, subtrahend ) {
 
-  const procenteCheltuie = diference(minued, subtrahend).toFixed(0);
+function newDateOneArc (canvasId, minuedFirst, subtrahendFirst, colorFirst ) {
 
-  let canvas = document.getElementById('c1')
+  const procenteItemFirst = diference(minuedFirst, subtrahendFirst).toFixed(0);
+
+
+  let canvas = document.getElementById(canvasId)
   let ctx = canvas.getContext('2d')
   let pi = Math.PI
 
-  let percent = procenteCheltuie;
-  let degree = percent * 3.6;
-  let radian = (Math.PI / 180) * degree;
 
-  ctx.clearRect(0, 0, 400, 400)
+
+  function radianCalc (percentItem) {
+    let percent = percentItem;
+    let degree = percent * 3.6;
+    let radian = (Math.PI / 180) * degree;
+    return radian
+  }
+
+
+  ctx.clearRect(0, 0, 348, 348)
 
   ctx.beginPath()
-  ctx.lineWidth = 20;
-  ctx.strokeStyle = 'rgba(254, 152, 112, 0.1)'
-  ctx.arc(200, 200, 180, 0, 2*pi, false)
+  ctx.lineWidth = 12;
+  ctx.strokeStyle = '#27282A'
+  ctx.arc(174, 174, 168, 0, 2*pi, false)
   ctx.stroke()
 
   ctx.beginPath()
-  ctx.lineWidth = 20;
-  ctx.strokeStyle = 'rgba(254, 152, 112, 1)'
-  ctx.arc(200, 200, 180, 0, radian, false)
+  ctx.lineWidth = 12;
+  ctx.strokeStyle = colorFirst
+  ctx.arc(174, 174, 168, 0, radianCalc(procenteItemFirst), false)
   ctx.lineCap = "round"
   ctx.stroke()
 
-  ctx.fillStyle = 'rgba(254, 152, 112, 1)'
-  ctx.font = "bold 60px sans-serif";
-  ctx.fillText(`${procenteCheltuie} %`, 160, 230)
+  ctx.fillStyle = colorFirst
+  ctx.font = "bold 42px 'Jost'";
+  ctx.fillText(`${procenteItemFirst}%`, 126, 190)
+
+}
+
+
+function newDateArc (canvasId, minuedFirst, subtrahendFirst, colorFirst, minuedSecond, subtrahendSecond, colorSecond ) {
+
+  const procenteItemFirst = diference(minuedFirst, subtrahendFirst).toFixed(0);
+  const procenteItemSecond = diference(minuedSecond, subtrahendSecond).toFixed(0);
+
+
+  let canvas = document.getElementById(canvasId)
+  let ctx = canvas.getContext('2d')
+  let pi = Math.PI
+
+
+
+  function radianCalc (percentItem) {
+    let percent = percentItem;
+    let degree = percent * 3.6;
+    let radian = (Math.PI / 180) * degree;
+    return radian
+  }
+
+
+  ctx.clearRect(0, 0, 348, 348)
+
+  ctx.beginPath()
+  ctx.lineWidth = 12;
+  ctx.strokeStyle = '#27282A'
+  ctx.arc(174, 174, 168, 0, 2*pi, false)
+  ctx.stroke()
+
+  ctx.beginPath()
+  ctx.lineWidth = 12;
+  ctx.strokeStyle = colorFirst
+  ctx.arc(174, 174, 168, 0, radianCalc(procenteItemFirst), false)
+  ctx.lineCap = "round"
+  ctx.stroke()
+
+  ctx.fillStyle = colorFirst
+  ctx.font = "bold 42px 'Jost'";
+  ctx.fillText(`${procenteItemFirst}%`, 126, 156)
+
+  ctx.beginPath()
+  ctx.lineWidth = 12;
+  ctx.strokeStyle = '#27282A'
+  ctx.arc(174, 174, 138, 0, 2*pi, false)
+  ctx.stroke()
+
+  ctx.beginPath()
+  ctx.lineWidth = 12;
+  ctx.strokeStyle = colorSecond
+  ctx.arc(174, 174, 138, 0, radianCalc(procenteItemSecond), false)
+  ctx.lineCap = "round"
+  ctx.stroke()
+
+  ctx.fillStyle = colorSecond
+  ctx.font = "bold 42px 'Jost'";
+  ctx.fillText(`${procenteItemSecond} %`, 126, 222)
   
-}*/
+}
 
 function diference (dividend, divisor) {
   let venProcente = dividend /100
