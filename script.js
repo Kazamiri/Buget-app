@@ -16,12 +16,19 @@ const navButtonMonthRight = document.getElementById('js-nav-right')
 const navMonthTitle = document.getElementById('js-nav-month') // Acesta este componentul de navigare printre paginii. 
 
 
-let addMonthPage = 0; // Aceasta este variabiala indica numarul dde oridne a lunii selectate
+
 
 const allDateInDB = ref(database, `allMonths`) //Reprezintă o referință la locația grupelor de venituri, cheltuieli si grupe din baza de date.
+
+const allMonthsInDB = ref(database, `allMonths/months`) //Reprezintă o referință la locația grupelor de venituri, cheltuieli si grupe din baza de date.
+
 const incomeInDB = ref(database, `allMonths/income`) //Reprezintă o referință la locația veniturilor din baza de date.
 const expensesInDB = ref(database, "allMonths/expenses") //Reprezintă o referință la locația cheltuielilor din baza de date.
 const groupsInDB = ref(database, "allMonths/groups") //Reprezintă o referință la locația grupelor din baza de date.
+
+
+const inputAddMonth = document.getElementById('js-add-month-value') // Adaug data lunii
+const addButtonMonth = document.getElementById('js-add-month-button') // Buton pentru a incarca in baza de date 
 
 
 const inputIncomeTitle = document.getElementById('js-venit-titlu')
@@ -65,44 +72,51 @@ let incurredExpensesHtmlValue = document.getElementById('js-incurred-expenses')
 
 let moneyAvailableHtmlValue = document.getElementById('js-money-available')
 
+const openModulAddMonth = document.getElementById('js-open-month-modal')
+const modulAddMonth = document.getElementById('js-month-modal')
+const closeModulAddMonth = document.getElementById('js-close-month-modul')
 
 
 
-const nameMonthsDate = [
-  { startDateMonth: '2023-08-01', endDateMonth: '2023-08-31'},
-  { startDateMonth: '2023-07-01', endDateMonth: '2023-07-31'},
-  { startDateMonth: '2023-06-01', endDateMonth: '2023-06-30'},
-  { startDateMonth: '2023-05-01', endDateMonth: '2023-05-31'},
-  { startDateMonth: '2023-04-01', endDateMonth: '2023-04-30'},
-  { startDateMonth: '2023-03-01', endDateMonth: '2023-03-31'},
-  { startDateMonth: '2023-02-01', endDateMonth: '2023-02-28'},
-  { startDateMonth: '2023-01-01', endDateMonth: '2023-01-31'},
-] // Aceasta este o matrice care este utilizata pentru testare a lunilor dupa perioada
+
+onValue(allMonthsInDB, function(snapshot) {
+
+  let addMonthPage = 0; // Aceasta este variabiala indica numarul dde oridne a lunii selectate
+  
+  let monthsDateSec = Object.values(snapshot.val()) 
+  monthsDateSec.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
+  listenAll (addMonthPage,monthsDateSec)
 
 
-navButtonMonthLeft.addEventListener("click", function () {
-  if (addMonthPage != 0) {  
-    addMonthPage --;
-    listenAll ()
-  } else {
-    addMonthPage = 0
-    listenAll ()
-  }
-}) // Aceasta functie scade cite o pagina si activeaza functia pentru redarea titlului
+  navButtonMonthLeft.addEventListener("click", function () {
+    if (addMonthPage != 0) {  
+      addMonthPage --;
+      listenAll (addMonthPage,monthsDateSec)
+    } else {
+      addMonthPage = 0
+      listenAll (addMonthPage, monthsDateSec)
+    }
+  }) // Aceasta functie scade cite o pagina si activeaza functia pentru redarea titlului
+  
+  navButtonMonthRight.addEventListener("click", function () {
+    if (addMonthPage < monthsDateSec.length - 1) {  
+      addMonthPage ++;
+      listenAll (addMonthPage,monthsDateSec)
+    } else {
+      addMonthPage = monthsDateSec.length - 1
+      listenAll (addMonthPage,monthsDateSec)
+    }
+  }) // Aceasta functie adauga cite o pagina si activeaza functia pentru redarea titlului
+  
+})
 
-navButtonMonthRight.addEventListener("click", function () {
-  if (addMonthPage < nameMonthsDate.length - 1) {  
-    addMonthPage ++;
-    listenAll ()
-  } else {
-    addMonthPage = nameMonthsDate.length - 1
-    listenAll ()
-  }
-}) // Aceasta functie adauga cite o pagina si activeaza functia pentru redarea titlului
+/*function changeSelectedMonth (luna) {
+  
+}*/
 
 
 
-function listenAll () {
+function listenAll (numMonths, monthsList) {
   onValue(allDateInDB, function(snapshot) {
 
     let itemsArray = Object.entries(snapshot.val()) 
@@ -111,20 +125,22 @@ function listenAll () {
     let monthsIncomes = Object.entries(itemsArray[2][1])
     let monthsGroups = Object.entries(itemsArray[1][1])
 
-
-    changeMonth (addMonthPage, monthsIncomes, monthsExpenses, monthsGroups)
+    changeMonth (numMonths, monthsIncomes, monthsExpenses, monthsGroups, monthsList)
+    
+    console.log(numMonths)
+    console.log(monthsList)
 
   })
 }
 
 
-function changeMonth (numPage, actualIncomesBD, actualExpensesBD, actualGroupBD) {
+function changeMonth (numPage, actualIncomesBD, actualExpensesBD, actualGroupBD, monthsList) {
 
-  changeTitleMonth (numPage)
+  changeTitleMonth (numPage, monthsList)
 
-  let incomesMonths = selectFilteredSortMonth (numPage, actualIncomesBD)
-  let expensesMonths = selectFilteredSortMonth (numPage, actualExpensesBD)
-  let groupMonths = selectFilteredSortGroupMonth (numPage, actualGroupBD)
+  let incomesMonths = selectFilteredSortMonth (numPage, actualIncomesBD, monthsList)
+  let expensesMonths = selectFilteredSortMonth (numPage, actualExpensesBD, monthsList)
+  let groupMonths = selectFilteredSortGroupMonth (numPage, actualGroupBD, monthsList)
   let availableIncomes = fiterItem (incomesMonths, "state", "Venit")
   let pendingExpenses = fiterItem (expensesMonths, "state", "Cheltuit")
   let moneyAvailable = (calculateSum(availableIncomes)) - (calculateSum(pendingExpenses))
@@ -134,19 +150,12 @@ function changeMonth (numPage, actualIncomesBD, actualExpensesBD, actualGroupBD)
   incomesHtmlDate(calculateSum(incomesMonths))
   availableIncomesHtmlDate (calculateSum(availableIncomes))
 
-  //newDate (calculateSum(incomesMonths), calculateSum(availableIncomes), 'js-procente-available-incomes', 'loading-status-available-incomes', 7,'var(--color-functional-green-primary)')
-
   newDateOneArc ('c0', calculateSum(incomesMonths), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)')
-
 
 
   readExpenses(expensesMonths) // Vizualizeaza datele pe pagina HTML
   expensesHtmlDate (calculateSum(expensesMonths))
   incurredExpensesHtmlDate (calculateSum(pendingExpenses))
-
-  //newDate (calculateSum(incomesMonths), calculateSum(pendingExpenses), 'js-procente-incurred-expenses', 'loading-status-incurred-expenses', 7,'var(--color-functional-neo_fuchsia-primary)')
-
-  //newDate (calculateSum(incomesMonths), calculateSum(expensesMonths), 'js-procente', 'loading-status', 7, 'var(--color-functional-orange-primary)')
 
   newDateArc ('c1', calculateSum(incomesMonths), calculateSum(expensesMonths), 'rgba(254, 152, 112, 1)', calculateSum(incomesMonths), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)' )
 
@@ -156,42 +165,36 @@ function changeMonth (numPage, actualIncomesBD, actualExpensesBD, actualGroupBD)
   allocatedMoneyHtmlDate (calculateSum(groupMonths))
   moneyAvailableHtmlDate (moneyAvailable)
 
-  //newDate (calculateSum(incomesMonths), calculateSum(groupMonths), 'js-procente-groupa', 'loading-groupa', 7, 'var(--color-others-blue-primary)')
-
-  //newDate (calculateSum(availableIncomes), moneyAvailable, 'js-procente-money-available', 'loading-money-available', 7, 'var(--color-labels-secondary)')
-
   newDateArc ('c2', calculateSum(incomesMonths), calculateSum(groupMonths), 'rgba(37, 116, 255, 1)', calculateSum(availableIncomes), moneyAvailable, 'rgba(235, 235, 245, 0.60)' )
   
-
-
 }
 
-function selectFilteredSortMonth (numPage, actualBD) {
+function selectFilteredSortMonth (numPage, actualBD, monthsList) {
 
-  const curentSelectMonth = new Date(nameMonthsDate[numPage].startDateMonth).getMonth() + 1; // Extrage din matrice luna din obiectul a carui indice corespunde cu pagina selectata.
-  const curentSelectYear = new Date(nameMonthsDate[numPage].startDateMonth).getFullYear(); // Extrage din matrice anul din obiectul a carui indice corespunde cu pagina selectata.
+  const curentSelectMonth = new Date(monthsList[numPage].startDateMonth).getMonth() + 1; // Extrage din matrice luna din obiectul a carui indice corespunde cu pagina selectata.
+  const curentSelectYear = new Date(monthsList[numPage].startDateMonth).getFullYear(); // Extrage din matrice anul din obiectul a carui indice corespunde cu pagina selectata.
 
   let actualMonths = fileredActualMonths (curentSelectMonth, curentSelectYear, actualBD) // Extrage din masiv veniturile care corespund lunii si anului selectat
 
   return actualMonths.sort((a, b) => a[1].data.localeCompare(b[1].data)); // Sorteaza dupa data valorile extrase
 }
 
-function selectFilteredSortGroupMonth (numPage, actualBD) {
+function selectFilteredSortGroupMonth (numPage, actualBD, monthsList) {
 
-  const curentSelectMonth = new Date(nameMonthsDate[numPage].startDateMonth).getMonth() + 1; // Extrage din matrice luna din obiectul a carui indice corespunde cu pagina selectata.
-  const curentSelectYear = new Date(nameMonthsDate[numPage].startDateMonth).getFullYear(); // Extrage din matrice anul din obiectul a carui indice corespunde cu pagina selectata.
+  const curentSelectMonth = new Date(monthsList[numPage].startDateMonth).getMonth() + 1; // Extrage din matrice luna din obiectul a carui indice corespunde cu pagina selectata.
+  const curentSelectYear = new Date(monthsList[numPage].startDateMonth).getFullYear(); // Extrage din matrice anul din obiectul a carui indice corespunde cu pagina selectata.
 
   let actualMonths = fileredActualGroupMonths (curentSelectMonth, curentSelectYear, actualBD) // Extrage din masiv veniturile care corespund lunii si anului selectat
 
   return actualMonths.sort((a, b) => a[1].dataStart.localeCompare(b[1].dataStart)); // Sorteaza dupa data valorile extrase
 }
 
-function changeTitleMonth (numPage) {
+function changeTitleMonth (numPage, monthsList) {
 
   const titleMonths = ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Noiembrie', 'Decembrie'] // Aceste valori sun utilizate pentru a arata pe pagina html care luna a fost selectata
 
-  const curentSelectMonth = new Date(nameMonthsDate[numPage].startDateMonth).getMonth() + 1; // Extrage din matrice luna din obiectul a carui indice corespunde cu pagina selectata.
-  const curentSelectYear = new Date(nameMonthsDate[numPage].startDateMonth).getFullYear(); // Extrage din matrice anul din obiectul a carui indice corespunde cu pagina selectata.
+  const curentSelectMonth = new Date(monthsList[numPage].startDateMonth).getMonth() + 1; // Extrage din matrice luna din obiectul a carui indice corespunde cu pagina selectata.
+  const curentSelectYear = new Date(monthsList[numPage].startDateMonth).getFullYear(); // Extrage din matrice anul din obiectul a carui indice corespunde cu pagina selectata.
   const curentTitleMonth = titleMonths[curentSelectMonth - 1] // I se atribuie din masiv denumirea lunii care a carui indice corespunde cu luna curenta selectata.
 
   navMonthTitle.innerHTML =`${curentTitleMonth} ${curentSelectYear}` // I se atribuie denumirea lunii si anul lunii selectate.
@@ -234,6 +237,23 @@ function fiterItem (dataMonth, titleItem, valueItem) {
 
 
 //const filteredData = data.filter(item => item[1]["state"] === "Venit");
+
+
+addButtonMonth.addEventListener("click", function () {
+  let addIncomeValue = {
+    startDateMonth: `${inputAddMonth.value}`,
+  } // Atribuim proprietatilor din obiect valorile introduse in cimpurile venituri
+  
+  push(allMonthsInDB, addIncomeValue) // Adaugam obiectul cu valorile adugate de user in masivul firebase, venituri
+
+  /*function refreshPage() {
+    // Reload the current page
+    location.reload();
+  }
+
+  refreshPage()*/
+  
+})
 
 addButtonIncome.addEventListener("click", function () {
   let addIncomeValue = {
@@ -279,7 +299,7 @@ addButtonGroup.addEventListener("click", function () {
 
 
 
-listenAll ()
+//listenAll ()
 
 
 
@@ -381,53 +401,42 @@ function readExpenses(valueRead) {
 
   for (let i = 0; i < valueRead.length; i++) {
     expensesList.innerHTML += `
-    <div class="linie-tabel" >
-
-    <div class="expenses_list_group">
-
-    <p class="num_style">${i + 1}</p>
-
-    <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-${valueRead[i][0]}">
-      <option value="${valueRead[i][1].grupa}" selected disabled hidden>${valueRead[i][1].grupa}</option>
-      <option value="🚴🏻 Piață">🚴🏻 Piață</option>
-      <option value="🚪 Gazdă">🚪 Gazdă</option>
-      <option value="🍔 Market">🍔 Market</option>
-      <option value="🛀 Igienă">🛀 Igienă</option>
-      <option value="💊 Farmacie">💊 Farmacie</option>
-      <option value="🧸 Jucării">🧸 Jucării</option>
-      <option value="👚 Haine">👚 Haine</option>
-      <option value="🚸 Grădiniță">🚸 Grădiniță</option>
-      <option value="🏫 Școală">🏫 Școală</option>
-      <option value="💶 Investiți">💶 Investiți</option>
-      <option value="🏥 Spital">🏥 Spital</option>
-      <option value="📱 Telefoane">📱 Telefoane</option>
-      <option value="📆 Abonamente">📆 Abonamente</option>
-      <option value="🚌 Transport">🚌 Transport</option>
-      <option value="🎟️ Unitare">🎟️ Unitare</option>
-    </select>
-
-    </div>
-
+    <div class="linie-tabel" id="js-item-line-one" data-id="${valueRead[i][0]}">
+      <div class="expenses_list_group">
+        <p class="num_style">${i + 1}</p>
+        <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-${valueRead[i][0]}">
+          <option value="${valueRead[i][1].grupa}" selected disabled hidden>${valueRead[i][1].grupa}</option>
+          <option value="🚴🏻 Piață">🚴🏻 Piață</option>
+          <option value="🚪 Gazdă">🚪 Gazdă</option>
+          <option value="🍔 Market">🍔 Market</option>
+          <option value="🛀 Igienă">🛀 Igienă</option>
+          <option value="💊 Farmacie">💊 Farmacie</option>
+          <option value="🧸 Jucării">🧸 Jucării</option>
+          <option value="👚 Haine">👚 Haine</option>
+          <option value="🚸 Grădiniță">🚸 Grădiniță</option>
+          <option value="🏫 Școală">🏫 Școală</option>
+          <option value="💶 Investiți">💶 Investiți</option>
+          <option value="🏥 Spital">🏥 Spital</option>
+          <option value="📱 Telefoane">📱 Telefoane</option>
+          <option value="📆 Abonamente">📆 Abonamente</option>
+          <option value="🚌 Transport">🚌 Transport</option>
+          <option value="🎟️ Unitare">🎟️ Unitare</option>
+        </select>
+      </div>
       <input class="expenses_list_title" type="text" id="js-titlu-${valueRead[i][0]}" value="${valueRead[i][1].titlu}">
-
-      
       <input class="expenses_list_suma" type="number" id="js-suma-${valueRead[i][0]}" value="${valueRead[i][1].suma}">
-
       <input class="expenses_list_data" type="date" id="js-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
-
       <select class="expenses_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="grupe-cheltuieli" id="js-state-${valueRead[i][0]}">
         <option value="${valueRead[i][1].state}" selected disabled hidden>${valueRead[i][1].state}</option>
         <option value="În așteptare">În așteptare</option>
         <option value="Cheltuit">Cheltuit</option>
       </select>
-
       <select class="expenses_list_state" style="color: ${colorLevel(valueRead[i][1].level)};" name="grupe-level" id="js-level-${valueRead[i][0]}">
         <option value="${valueRead[i][1].level}" selected disabled hidden>${valueRead[i][1].level}</option>
         <option value="High">High</option>
         <option value="Medium">Medium</option>
         <option value="Low">Low</option>
       </select>
-
       <select class="expenses_list_state" name="grupe-utilizatori" id="js-user-${valueRead[i][0]}">
         <option value="${valueRead[i][1].user}" selected disabled hidden>${valueRead[i][1].user}</option>
         <option value="Toti">Toti</option>
@@ -438,17 +447,18 @@ function readExpenses(valueRead) {
         <option value="Evelina">Evelina</option>
         <option value="Simona">Simona</option>
       </select>
-
       <div class="expenses_list_both-buttons" >
         <button class="expenses_list_button expenses_list_button_refresh" id="js-button-updata-expenses" data-id="${valueRead[i][0]}">
-        <span class="material-symbols-outlined">autorenew</span></button>
-      <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-expenses" data-id="${valueRead[i][0]}">
-        <span class="material-symbols-outlined">delete_forever</span>
-      </button>
+          <span class="material-symbols-outlined">autorenew</span>
+        </button>
+        <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-expenses" data-id="${valueRead[i][0]}">
+          <span class="material-symbols-outlined">delete_forever</span>
+        </button>
       </div>
-
     </div>`
   }
+
+  newDateRefreshExpenses ()
 
   upDataExpenses ('js-button-updata-expenses', 'allMonths/expenses')
 
@@ -479,7 +489,7 @@ function readGroups(expensesBD, groupBD, incomesAll) {
 
 
     groupsList.innerHTML += `
-      <div class="linie-tabel" id="js-item-expenses-${groupBD[i][0]}" >
+      <div class="linie-tabel" >
 
       <div class="expenses_list_group">
         <p class="num_style">${i + 1}</p>
@@ -567,11 +577,19 @@ function upDateIncomes (idButonSelector, locationFile) {
   })
 } //Functia data reinoieste un item cum ar fi un venit, o cheltuiala, o grupa
 
-function newDateRefreshIncomes () {
+function newDateRefreshExpenses () {
 
+  const allItemLine = document.querySelectorAll(`#js-item-line-one`)
 
-
+  allItemLine.forEach((line) => {
+    line.addEventListener('click', () => {
+      let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${line.dataset.id}"]`)
+      itemOneLineSelect.style.color = 'var(--color-functional-green-secondary)'
+    })
+  })
 }
+
+
 
 function upDataExpenses (idButonSelector, locationFile) {
 
@@ -587,6 +605,11 @@ function upDataExpenses (idButonSelector, locationFile) {
       const inputStateItems = document.querySelector(`#js-state-${button.dataset.id}`)
       const inputLevelItems = document.querySelector(`#js-level-${button.dataset.id}`)
       const inputUserItems = document.querySelector(`#js-user-${button.dataset.id}`)
+
+      /*let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${button.dataset.id}"]`)
+      itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+      console.log(itemOneLineSelect)
+      console.log("Al doilea")*/
 
       let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
 
@@ -711,6 +734,14 @@ function newDate (minued, subtrahend, elementID, valueID, paddingRight, colorLoa
   statusElement.style.color = colorLoad
 
 }
+
+openModulAddMonth.addEventListener("click", function () {
+  modulAddMonth.show()
+})
+
+closeModulAddMonth.addEventListener("click", function () {
+  modulAddMonth.close()
+})
 
 function curataCimpurile() {
   inputGrupa.innerHTML = ''

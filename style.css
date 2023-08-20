@@ -319,6 +319,109 @@ main {
   width: 5vw;
 }
 
+.add_month_open_modal{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+  .add_month{
+    margin-top: 1rem;
+    border: 1px solid var(--color-backgrounds-tertiary);
+    background: var(--color-backgrounds-secondary);
+    border-radius: var(--corner-radius-m, 12px);
+    box-shadow: 0px 8px 24px 0px var(--color-backgrounds-primary);  
+  }
+
+  .add_month_inside{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .add_month_inside_buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+
+  .add__data_modal{
+    border: 1px solid var(--color-backgrounds-tertiary);
+    border-radius: var(--corner-radius-s, 8px);
+
+    padding-top: 4px;
+    padding-left: 8px;
+    padding-bottom: 4px;
+    padding-right: 8px;
+
+    background-color: var(--color-backgrounds-secondary);
+    color: var(--color-labels-primary);
+
+    cursor: pointer;
+
+    font-family: var(--font-default);
+    font-weight: var(--font-weight-default);
+    line-height: var(--s1-subtitle-height);
+    font-size: var(--s1-subtitle-size);
+
+
+  }
+
+    .add__data_modal::-webkit-calendar-picker-indicator {
+      filter: invert(1); /* Inverts the icon color */
+    }
+
+  .add_button_modal{
+    border: none;
+    padding: 0px;
+    border-radius: var(--corner-radius-m, 12px);
+    background: var(--color-functional-green-secondary);
+
+    color: var(--color-backgrounds-primary, #131416);
+
+    font-family: var(--font-default);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--bu2-button-height);
+    font-size: var(--bu2-button-size);
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .add_button_modal:hover{
+    background: var(--color-functional-green-primary);
+  }
+
+  .add_button_modal_secondary{
+    border: none;
+    display: inline-flex;
+    padding: 4px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+
+    border-radius: var(--corner-radius-s, 8px);
+    background: var(--color-backgrounds-quaternary);
+
+    color: var(--color-labels-tertiary);
+
+    font-family: var(--font-default);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--bu2-button-height);
+    font-size: var(--bu2-button-size);
+    cursor: pointer;
+
+    transition: 0.3s;
+  }
+    .add_button_modal_secondary:hover{
+      color: var(--color-functional-neo_fuchsia-primary);
+      background: var(--color-backgrounds-quaternary);
+    }
+
+
+
+
 .addCheltuil{
   margin: auto;
   margin-top: 2rem;
@@ -346,6 +449,7 @@ main {
     line-height: var(--bu2-button-height);
     font-size: var(--bu2-button-size);
     cursor: pointer;
+    transition: 0.3s;
   }
     .add_button:hover{
       background: var(--color-functional-green-primary);
@@ -698,6 +802,3 @@ main {
   font-size: var(--s1-subtitle-size);
   width: 8rem;
 }
-
-
-

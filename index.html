@@ -25,6 +25,27 @@
       </button>
     </div>
 
+    <div class="add_month_open_modal">
+      <button class="add_button_modal" id="js-open-month-modal">
+        <span class="material-symbols-outlined">add</span>
+      </button>
+    </div>
+
+    <dialog class="add_month" id="js-month-modal">
+      <div class="add_month_inside">
+        <p class="statistics_card_text_title">Selectează prima zi din lună</p>
+        <input class="add__data_modal" type="date" id="js-add-month-value">
+        <div class="add_month_inside_buttons">
+          <button class="add_button_modal_secondary" id="js-close-month-modul">
+            <span class="material-symbols-outlined">close</span>Cancel
+          </button>
+          <button class="add_button" id="js-add-month-button">
+            <span class="material-symbols-outlined">add</span>Add
+          </button>
+        </div>
+      </div>
+    </dialog>
+
     <div class="all_card">
       <div class="card_venituri">
 
@@ -292,6 +313,8 @@
       </div>
     </div>
   </main>
+
+  
 
 
 
