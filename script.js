@@ -25,6 +25,7 @@ const allMonthsInDB = ref(database, `allMonths/months`) //Reprezintă o referin�
 const incomeInDB = ref(database, `allMonths/income`) //Reprezintă o referință la locația veniturilor din baza de date.
 const expensesInDB = ref(database, "allMonths/expenses") //Reprezintă o referință la locația cheltuielilor din baza de date.
 const groupsInDB = ref(database, "allMonths/groups") //Reprezintă o referință la locația grupelor din baza de date.
+const typesOfGroupsInDB = ref(database, "allMonths/types_groups") //Reprezintă o referință la locația grupelor din baza de date.
 
 
 const inputAddMonth = document.getElementById('js-add-month-value') // Adaug data lunii
@@ -56,7 +57,6 @@ const expensesList = document.getElementById('js-lista') // Adaugarea listei de 
 const inputGrupaTitlu = document.getElementById('js-grupe-titlu')
 const inputSumaGrupa = document.getElementById('js-suma-grupa')
 const inputDateStartGroup = document.getElementById('js-start-luna')
-const inputDateEndGroup = document.getElementById('js-end-luna')
 const addButtonGroup = document.getElementById("add-group") // Sunt cimpurile dim forma destinate pentru adaugarea cheltuielilor
 
 const groupsList = document.getElementById('js-group-list') // Adaugarea listei de grupe pe pagina HTML
@@ -76,6 +76,8 @@ const openModulAddMonth = document.getElementById('js-open-month-modal')
 const modulAddMonth = document.getElementById('js-month-modal')
 const closeModulAddMonth = document.getElementById('js-close-month-modul')
 
+const inputTitleTypesGroup = document.getElementById('js-new-title-types-group')
+const addButtonTitleTypesGroup = document.getElementById('js-add-new-title-types-group')
 
 
 
@@ -239,12 +241,31 @@ function fiterItem (dataMonth, titleItem, valueItem) {
 //const filteredData = data.filter(item => item[1]["state"] === "Venit");
 
 
+
 addButtonMonth.addEventListener("click", function () {
   let addIncomeValue = {
     startDateMonth: `${inputAddMonth.value}`,
-  } // Atribuim proprietatilor din obiect valorile introduse in cimpurile venituri
+  } 
+
+  onValue(typesOfGroupsInDB, function(snapshot) {
+
+    let monthsDateSec = Object.values(snapshot.val())
+    const listGroup = monthsDateSec.map(item => item.titlu);
+
+    for (let i = 0; i < listGroup.length; i++) {
+      let addGroupValue = {
+        titlu: `${listGroup[i]}`,
+        suma: 100,
+        dataStart: `${inputAddMonth.value}`,
+      } 
+      push(groupsInDB, addGroupValue) 
+    }
   
-  push(allMonthsInDB, addIncomeValue) // Adaugam obiectul cu valorile adugate de user in masivul firebase, venituri
+  })
+
+  push(allMonthsInDB, addIncomeValue) 
+
+  modulAddMonth.close()
 
   /*function refreshPage() {
     // Reload the current page
@@ -252,6 +273,15 @@ addButtonMonth.addEventListener("click", function () {
   }
 
   refreshPage()*/
+  
+})
+
+addButtonTitleTypesGroup.addEventListener("click", function () {
+  let addTypesOfGroups = {
+    titlu: `${inputTitleTypesGroup.value}`,
+  } // Atribuim proprietatilor din obiect valorile introduse in cimpurile venituri
+  
+  push(typesOfGroupsInDB, addTypesOfGroups) // Adaugam obiectul cu valorile adugate de user in masivul firebase, venituri
   
 })
 
@@ -289,8 +319,6 @@ addButtonGroup.addEventListener("click", function () {
     titlu: `${inputGrupaTitlu.value}`,
     suma: `${inputSumaGrupa.value}`,
     dataStart: `${inputDateStartGroup.value}`,
-    dataEnd: `${inputDateEndGroup.value}`,
-
   } // Atribuim proprietatilor din obiect valorile introduse in cimpurile venituri
   
   push(groupsInDB, addGroupValue) // Adaugam obiectul cu valorile adugate de user in masivul firebase, venituri
@@ -399,64 +427,64 @@ function readExpenses(valueRead) {
     return colorText
   }
 
-  for (let i = 0; i < valueRead.length; i++) {
-    expensesList.innerHTML += `
-    <div class="linie-tabel" id="js-item-line-one" data-id="${valueRead[i][0]}">
-      <div class="expenses_list_group">
-        <p class="num_style">${i + 1}</p>
-        <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-${valueRead[i][0]}">
-          <option value="${valueRead[i][1].grupa}" selected disabled hidden>${valueRead[i][1].grupa}</option>
-          <option value="🚴🏻 Piață">🚴🏻 Piață</option>
-          <option value="🚪 Gazdă">🚪 Gazdă</option>
-          <option value="🍔 Market">🍔 Market</option>
-          <option value="🛀 Igienă">🛀 Igienă</option>
-          <option value="💊 Farmacie">💊 Farmacie</option>
-          <option value="🧸 Jucării">🧸 Jucării</option>
-          <option value="👚 Haine">👚 Haine</option>
-          <option value="🚸 Grădiniță">🚸 Grădiniță</option>
-          <option value="🏫 Școală">🏫 Școală</option>
-          <option value="💶 Investiți">💶 Investiți</option>
-          <option value="🏥 Spital">🏥 Spital</option>
-          <option value="📱 Telefoane">📱 Telefoane</option>
-          <option value="📆 Abonamente">📆 Abonamente</option>
-          <option value="🚌 Transport">🚌 Transport</option>
-          <option value="🎟️ Unitare">🎟️ Unitare</option>
+  onValue(typesOfGroupsInDB, function(snapshot) {
+
+    let monthsDateSec = Object.values(snapshot.val())
+    const listGroup = monthsDateSec.map(item => item.titlu);
+    let optionsHTML = "";
+
+    for (let i = 0; i < listGroup.length; i++) {
+
+      let optionHTML = `<option value="${listGroup[i]}">${listGroup[i]}</option>`
+      optionsHTML += optionHTML
+    }
+
+    for (let i = 0; i < valueRead.length; i++) {
+      expensesList.innerHTML += `
+      <div class="linie-tabel" id="js-item-line-one" data-id="${valueRead[i][0]}">
+        <div class="expenses_list_group">
+          <p class="num_style">${i + 1}</p>
+          <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-${valueRead[i][0]}">
+            <option value="${valueRead[i][1].grupa}" selected disabled hidden>${valueRead[i][1].grupa}</option>
+            ${optionsHTML}
+          </select>
+        </div>
+        <input class="expenses_list_title" type="text" id="js-titlu-${valueRead[i][0]}" value="${valueRead[i][1].titlu}">
+        <input class="expenses_list_suma" type="number" id="js-suma-${valueRead[i][0]}" value="${valueRead[i][1].suma}">
+        <input class="expenses_list_data" type="date" id="js-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
+        <select class="expenses_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="grupe-cheltuieli" id="js-state-${valueRead[i][0]}">
+          <option value="${valueRead[i][1].state}" selected disabled hidden>${valueRead[i][1].state}</option>
+          <option value="În așteptare">În așteptare</option>
+          <option value="Cheltuit">Cheltuit</option>
         </select>
-      </div>
-      <input class="expenses_list_title" type="text" id="js-titlu-${valueRead[i][0]}" value="${valueRead[i][1].titlu}">
-      <input class="expenses_list_suma" type="number" id="js-suma-${valueRead[i][0]}" value="${valueRead[i][1].suma}">
-      <input class="expenses_list_data" type="date" id="js-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
-      <select class="expenses_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="grupe-cheltuieli" id="js-state-${valueRead[i][0]}">
-        <option value="${valueRead[i][1].state}" selected disabled hidden>${valueRead[i][1].state}</option>
-        <option value="În așteptare">În așteptare</option>
-        <option value="Cheltuit">Cheltuit</option>
-      </select>
-      <select class="expenses_list_state" style="color: ${colorLevel(valueRead[i][1].level)};" name="grupe-level" id="js-level-${valueRead[i][0]}">
-        <option value="${valueRead[i][1].level}" selected disabled hidden>${valueRead[i][1].level}</option>
-        <option value="High">High</option>
-        <option value="Medium">Medium</option>
-        <option value="Low">Low</option>
-      </select>
-      <select class="expenses_list_state" name="grupe-utilizatori" id="js-user-${valueRead[i][0]}">
-        <option value="${valueRead[i][1].user}" selected disabled hidden>${valueRead[i][1].user}</option>
-        <option value="Toti">Toti</option>
-        <option value="Eugen">Eugen</option>
-        <option value="Cris">Cris</option>
-        <option value="Amelia">Amelia</option>
-        <option value="Bianca">Bianca</option>
-        <option value="Evelina">Evelina</option>
-        <option value="Simona">Simona</option>
-      </select>
-      <div class="expenses_list_both-buttons" >
-        <button class="expenses_list_button expenses_list_button_refresh" id="js-button-updata-expenses" data-id="${valueRead[i][0]}">
-          <span class="material-symbols-outlined">autorenew</span>
-        </button>
-        <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-expenses" data-id="${valueRead[i][0]}">
-          <span class="material-symbols-outlined">delete_forever</span>
-        </button>
-      </div>
-    </div>`
-  }
+        <select class="expenses_list_state" style="color: ${colorLevel(valueRead[i][1].level)};" name="grupe-level" id="js-level-${valueRead[i][0]}">
+          <option value="${valueRead[i][1].level}" selected disabled hidden>${valueRead[i][1].level}</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+        <select class="expenses_list_state" name="grupe-utilizatori" id="js-user-${valueRead[i][0]}">
+          <option value="${valueRead[i][1].user}" selected disabled hidden>${valueRead[i][1].user}</option>
+          <option value="Toti">Toti</option>
+          <option value="Eugen">Eugen</option>
+          <option value="Cris">Cris</option>
+          <option value="Amelia">Amelia</option>
+          <option value="Bianca">Bianca</option>
+          <option value="Evelina">Evelina</option>
+          <option value="Simona">Simona</option>
+        </select>
+        <div class="expenses_list_both-buttons" >
+          <button class="expenses_list_button expenses_list_button_refresh" id="js-button-updata-expenses" data-id="${valueRead[i][0]}">
+            <span class="material-symbols-outlined">autorenew</span>
+          </button>
+          <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-expenses" data-id="${valueRead[i][0]}">
+            <span class="material-symbols-outlined">delete_forever</span>
+          </button>
+        </div>
+      </div>`
+    }
+
+  })
 
   newDateRefreshExpenses ()
 
@@ -476,73 +504,72 @@ function readGroups(expensesBD, groupBD, incomesAll) {
 
   cleanLists(groupsList) // Curata lista in HTML si adauga din nou noile valori
 
-  for (let i = 0; i < groupBD.length; i++) {
-    let areLeft  = groupBD[i][1].suma - calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu))
+  onValue(typesOfGroupsInDB, function(snapshot) {
 
-    let percentOfTotal = diference(incomesAll, groupBD[i][1].suma).toFixed(0);
+    let monthsDateSec = Object.values(snapshot.val())
+    const listGroup = monthsDateSec.map(item => item.titlu);
+    let optionsHTML = "";
 
-    let diferenceLow = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesLow, groupBD[i][1].titlu))).toFixed(0);
+    for (let i = 0; i < listGroup.length; i++) {
 
-    let diferenceMedium = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesMedium, groupBD[i][1].titlu))).toFixed(0);
+      let optionHTML = `<option value="${listGroup[i]}">${listGroup[i]}</option>`
+      optionsHTML += optionHTML
+    }
 
-    let diferenceHigh = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesHigh, groupBD[i][1].titlu))).toFixed(0);
-
-
-    groupsList.innerHTML += `
-      <div class="linie-tabel" >
-
-      <div class="expenses_list_group">
-        <p class="num_style">${i + 1}</p>
-
-        <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-titlu-${groupBD[i][0]}">
-          <option value="${groupBD[i][1].titlu}" selected disabled hidden>${groupBD[i][1].titlu}</option>
-            <option value="🚴🏻 Piață">🚴🏻 Piață</option>
-            <option value="🚪 Gazdă">🚪 Gazdă</option>
-            <option value="🍔 Market">🍔 Market</option>
-            <option value="🛀 Igienă">🛀 Igienă</option>
-            <option value="💊 Farmacie">💊 Farmacie</option>
-            <option value="🧸 Jucării">🧸 Jucării</option>
-            <option value="👚 Haine">👚 Haine</option>
-            <option value="🚸 Grădiniță">🚸 Grădiniță</option>
-            <option value="🏫 Școală">🏫 Școală</option>
-            <option value="💶 Investiți">💶 Investiți</option>
-            <option value="🏥 Spital">🏥 Spital</option>
-            <option value="📱 Telefoane">📱 Telefoane</option>
-            <option value="📆 Abonamente">📆 Abonamente</option>
-            <option value="🚌 Transport">🚌 Transport</option>
-            <option value="🎟️ Unitare">🎟️ Unitare</option>
-        </select>
-
-      </div>
-
-        <div class="suma_percent_all_group">
-          <input class="expenses_list_suma" type="number" id="js-grupe-suma-${groupBD[i][0]}" value="${groupBD[i][1].suma}">
-          <p class="percent_all_group">${percentOfTotal}%</p>
+    for (let i = 0; i < groupBD.length; i++) {
+      let areLeft  = groupBD[i][1].suma - calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu))
+  
+      let percentOfTotal = diference(incomesAll, groupBD[i][1].suma).toFixed(0);
+  
+      let diferenceLow = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesLow, groupBD[i][1].titlu))).toFixed(0);
+  
+      let diferenceMedium = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesMedium, groupBD[i][1].titlu))).toFixed(0);
+  
+      let diferenceHigh = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesHigh, groupBD[i][1].titlu))).toFixed(0);
+  
+      groupsList.innerHTML += `
+        <div class="linie-tabel" >
+  
+        <div class="expenses_list_group">
+          <p class="num_style">${i + 1}</p>
+  
+          <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-titlu-${groupBD[i][0]}">
+            <option value="${groupBD[i][1].titlu}" selected disabled hidden>${groupBD[i][1].titlu}</option>
+              ${optionsHTML}
+          </select>
+  
         </div>
-
-        <p class="rest_all_group">Ramași ${areLeft} lei</p>
-
-        <div class="dim-procente-second">
-          <div id="js-${groupBD[i][1].titlu}" class="procente-second"> 
-          <div class="low" style="width:${diferenceLow}%;"></div>
-          <div class="medium" style="width:${diferenceMedium}%;"></div>
-          <div class="high" style="width:${diferenceHigh}%;"></div>
+  
+          <div class="suma_percent_all_group">
+            <input class="expenses_list_suma" type="number" id="js-grupe-suma-${groupBD[i][0]}" value="${groupBD[i][1].suma}">
+            <p class="percent_all_group">${percentOfTotal}%</p>
           </div>
-          <p id="loading-${groupBD[i][1].titlu}" class="procente-style-second">10%</p>
-        </div>
+  
+          <p class="rest_all_group">Ramași ${areLeft} lei</p>
+  
+          <div class="dim-procente-second">
+            <div id="js-${groupBD[i][1].titlu}" class="procente-second"> 
+            <div class="low" style="width:${diferenceLow}%;"></div>
+            <div class="medium" style="width:${diferenceMedium}%;"></div>
+            <div class="high" style="width:${diferenceHigh}%;"></div>
+            </div>
+            <p id="loading-${groupBD[i][1].titlu}" class="procente-style-second">10%</p>
+          </div>
+  
+          <div class="expenses_list_both-buttons" >
+            <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-group" data-id="${groupBD[i][0]}">
+            <span class="material-symbols-outlined">autorenew</span></button>
+            <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-group" data-id="${groupBD[i][0]}">
+            <span class="material-symbols-outlined">delete_forever</span>
+            </button>
+          </div>
+        </div>`
+  
+        newDate (groupBD[i][1].suma, calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), `js-${groupBD[i][1].titlu}`, `loading-${groupBD[i][1].titlu}`,10)
+  
+    }  
 
-        <div class="expenses_list_both-buttons" >
-          <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-group" data-id="${groupBD[i][0]}">
-          <span class="material-symbols-outlined">autorenew</span></button>
-          <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-group" data-id="${groupBD[i][0]}">
-          <span class="material-symbols-outlined">delete_forever</span>
-          </button>
-        </div>
-      </div>`
-
-      newDate (groupBD[i][1].suma, calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), `js-${groupBD[i][1].titlu}`, `loading-${groupBD[i][1].titlu}`,10)
-
-  }  
+  })
 
   upDateGroups ('js-button-update-group', 'allMonths/groups')
 
