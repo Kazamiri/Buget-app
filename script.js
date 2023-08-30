@@ -15,21 +15,18 @@ const navButtonMonthLeft = document.getElementById('js-nav-left')
 const navButtonMonthRight = document.getElementById('js-nav-right')
 const navMonthTitle = document.getElementById('js-nav-month') // Acesta este componentul de navigare printre paginii. 
 
+const allDateInDB = ref(database, `allMonths`) 
+const allMonthsInDB = ref(database, `allMonths/months`) 
 
 
-
-const allDateInDB = ref(database, `allMonths`) //Reprezintă o referință la locația grupelor de venituri, cheltuieli si grupe din baza de date.
-
-const allMonthsInDB = ref(database, `allMonths/months`) //Reprezintă o referință la locația grupelor de venituri, cheltuieli si grupe din baza de date.
-
-const incomeInDB = ref(database, `allMonths/income`) //Reprezintă o referință la locația veniturilor din baza de date.
-const expensesInDB = ref(database, "allMonths/expenses") //Reprezintă o referință la locația cheltuielilor din baza de date.
-const groupsInDB = ref(database, "allMonths/groups") //Reprezintă o referință la locația grupelor din baza de date.
-const typesOfGroupsInDB = ref(database, "allMonths/types_groups") //Reprezintă o referință la locația grupelor din baza de date.
+const incomeInDB = ref(database, `allMonths/income`) 
+const expensesInDB = ref(database, "allMonths/expenses") 
+const groupsInDB = ref(database, "allMonths/groups") 
+const typesOfGroupsInDB = ref(database, "allMonths/types_groups") 
 
 
-const inputAddMonth = document.getElementById('js-add-month-value') // Adaug data lunii
-const addButtonMonth = document.getElementById('js-add-month-button') // Buton pentru a incarca in baza de date 
+const inputAddMonth = document.getElementById('js-add-month-value') 
+const addButtonMonth = document.getElementById('js-add-month-button') 
 
 
 const inputIncomeTitle = document.getElementById('js-venit-titlu')
@@ -112,10 +109,6 @@ onValue(allMonthsInDB, function(snapshot) {
   
 })
 
-/*function changeSelectedMonth (luna) {
-  
-}*/
-
 
 
 function listenAll (numMonths, monthsList) {
@@ -126,13 +119,27 @@ function listenAll (numMonths, monthsList) {
     let monthsExpenses = Object.entries(itemsArray[0][1])
     let monthsIncomes = Object.entries(itemsArray[2][1])
     let monthsGroups = Object.entries(itemsArray[1][1])
+  
 
     changeMonth (numMonths, monthsIncomes, monthsExpenses, monthsGroups, monthsList)
-    
-    console.log(numMonths)
-    console.log(monthsList)
 
   })
+}
+
+function extractByPeriod (groupBD, typeGroup) {
+
+  const currentDate = new Date(); // Current date
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
+
+
+
+  const filteredObjects = groupBD.filter(item => {
+      const dataStart = new Date(item[1].dataStart);
+      return dataStart >= threeMonthsAgo && dataStart <= currentDate && item[1].titlu === typeGroup;
+  });
+
+  return calculateSum(filteredObjects)
 }
 
 
@@ -243,25 +250,61 @@ function fiterItem (dataMonth, titleItem, valueItem) {
 
 
 addButtonMonth.addEventListener("click", function () {
+
+ /* import { getDatabase, ref, onValue } from "firebase/database";
+import { getAuth } from "firebase/auth";
+
+const db = getDatabase();
+const auth = getAuth();
+
+const userId = auth.currentUser.uid;
+return onValue(ref(db, '/users/' + userId), (snapshot) => {
+  const username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+  // ...
+}, {
+  onlyOnce: true
+});*/
+
+  onValue(allDateInDB, function(snapshot) {
+
+    let itemsArray = Object.entries(snapshot.val())
+
+    let monthsGroups = Object.entries(itemsArray[1][1])
+    let monthsDateSec = Object.values(itemsArray[4][1])
+
+    console.log(monthsGroups)
+    console.log(monthsDateSec)
+
+    const listGroup = monthsDateSec.map(item => item.titlu);
+
+    console.log(listGroup)
+
+  
+    for (let i = 0; i < listGroup.length; i++) {
+      let typeGroup = (extractByPeriod (monthsGroups, `${listGroup[i]}`) / 3).toFixed(0);
+
+      console.log(typeGroup)
+      
+      
+      let addGroupValue = {
+        titlu: `${listGroup[i]}`,
+        suma: typeGroup,
+        dataStart: `${inputAddMonth.value}`,
+      } 
+      
+      push(groupsInDB, addGroupValue) 
+
+      console.log(addGroupValue)
+
+    }
+  
+  }, {
+    onlyOnce: true
+  })
+
   let addIncomeValue = {
     startDateMonth: `${inputAddMonth.value}`,
   } 
-
-  onValue(typesOfGroupsInDB, function(snapshot) {
-
-    let monthsDateSec = Object.values(snapshot.val())
-    const listGroup = monthsDateSec.map(item => item.titlu);
-
-    for (let i = 0; i < listGroup.length; i++) {
-      let addGroupValue = {
-        titlu: `${listGroup[i]}`,
-        suma: 100,
-        dataStart: `${inputAddMonth.value}`,
-      } 
-      push(groupsInDB, addGroupValue) 
-    }
-  
-  })
 
   push(allMonthsInDB, addIncomeValue) 
 
@@ -484,9 +527,11 @@ function readExpenses(valueRead) {
       </div>`
     }
 
+    inputGrupa.innerHTML = `${optionsHTML}`
+
   })
 
-  newDateRefreshExpenses ()
+  newDateRefreshExpenses (`js-item-line-one`, 'js-button-updata-expenses' )
 
   upDataExpenses ('js-button-updata-expenses', 'allMonths/expenses')
 
@@ -528,18 +573,18 @@ function readGroups(expensesBD, groupBD, incomesAll) {
       let diferenceHigh = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesHigh, groupBD[i][1].titlu))).toFixed(0);
   
       groupsList.innerHTML += `
-        <div class="linie-tabel" >
-  
-        <div class="expenses_list_group">
-          <p class="num_style">${i + 1}</p>
-  
-          <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-titlu-${groupBD[i][0]}">
-            <option value="${groupBD[i][1].titlu}" selected disabled hidden>${groupBD[i][1].titlu}</option>
-              ${optionsHTML}
-          </select>
-  
-        </div>
-  
+        <div class="linie-tabel" id="js-item-line-one-group" data-id="${groupBD[i][0]}">
+    
+          <div class="expenses_list_group">
+            <p class="num_style">${i + 1}</p>
+    
+            <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-titlu-${groupBD[i][0]}">
+              <option value="${groupBD[i][1].titlu}" selected disabled hidden>${groupBD[i][1].titlu}</option>
+                ${optionsHTML}
+            </select>
+    
+          </div>
+    
           <div class="suma_percent_all_group">
             <input class="expenses_list_suma" type="number" id="js-grupe-suma-${groupBD[i][0]}" value="${groupBD[i][1].suma}">
             <p class="percent_all_group">${percentOfTotal}%</p>
@@ -569,7 +614,11 @@ function readGroups(expensesBD, groupBD, incomesAll) {
   
     }  
 
+    inputGrupaTitlu.innerHTML = `${optionsHTML}`
+
   })
+
+  newDateRefreshExpenses (`js-item-line-one-group`, 'js-button-update-group' )
 
   upDateGroups ('js-button-update-group', 'allMonths/groups')
 
@@ -604,13 +653,17 @@ function upDateIncomes (idButonSelector, locationFile) {
   })
 } //Functia data reinoieste un item cum ar fi un venit, o cheltuiala, o grupa
 
-function newDateRefreshExpenses () {
 
-  const allItemLine = document.querySelectorAll(`#js-item-line-one`)
+function newDateRefreshExpenses (lineItem, buttonItem) {
+
+  const allItemLine = document.querySelectorAll(`#${lineItem}`)
 
   allItemLine.forEach((line) => {
     line.addEventListener('click', () => {
-      let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${line.dataset.id}"]`)
+      let itemOneLineSelect = document.querySelector(`#${buttonItem}[data-id="${line.dataset.id}"]`)
+      console.log(buttonItem)
+      console.log(line.dataset.id)
+      console.log(itemOneLineSelect)
       itemOneLineSelect.style.color = 'var(--color-functional-green-secondary)'
     })
   })
@@ -624,7 +677,7 @@ function upDataExpenses (idButonSelector, locationFile) {
 
   allButtonUpdateItems.forEach((button) => {
 
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (event) => {
       const inputGroupsItems = document.querySelector(`#js-grupe-${button.dataset.id}`)
       const inputTitleItems = document.querySelector(`#js-titlu-${button.dataset.id}`)
       const inputSumaItems = document.querySelector(`#js-suma-${button.dataset.id}`)
@@ -633,10 +686,11 @@ function upDataExpenses (idButonSelector, locationFile) {
       const inputLevelItems = document.querySelector(`#js-level-${button.dataset.id}`)
       const inputUserItems = document.querySelector(`#js-user-${button.dataset.id}`)
 
-      /*let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${button.dataset.id}"]`)
+      let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${button.dataset.id}"]`)
       itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
-      console.log(itemOneLineSelect)
-      console.log("Al doilea")*/
+
+      event.stopPropagation()
+  
 
       let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
 
@@ -658,15 +712,24 @@ function upDateGroups (idButonSelector, locationFile) {
 
   allButtonUpdateItems.forEach((button) => {
 
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (event) => {
+
       const inputTitleItems = document.querySelector(`#js-grupe-titlu-${button.dataset.id}`)
 
       const inputSumaItems = document.querySelector(`#js-grupe-suma-${button.dataset.id}`)
+
+      let itemOneLineSelect = document.querySelector(`#js-button-update-group[data-id="${button.dataset.id}"]`)
+      itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+
+      event.stopPropagation()
+
+      console.log("button update")
 
       let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
 
       update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
       update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
+
 
     })
   })
