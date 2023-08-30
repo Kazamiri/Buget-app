@@ -392,7 +392,7 @@ function readIncomes(valueRead) {
     let percentOfTotal = diference(calculateSum(valueRead), valueRead[i][1].suma).toFixed(0);
 
     incomesList.innerHTML += `
-    <div class="linie-tabel">
+    <div class="linie-tabel" id="js-item-line-one-income" data-id="${valueRead[i][0]}">
 
       <div class="expenses_list_group">
         <p class="num_style">${i + 1}</p>
@@ -435,6 +435,8 @@ function readIncomes(valueRead) {
 
     </div>`
   }
+
+  newDateRefreshExpenses (`js-item-line-one-income`, 'js-button-update-income' )
 
   upDateIncomes ('js-button-update-income', 'allMonths/income')
 
@@ -640,6 +642,11 @@ function upDateIncomes (idButonSelector, locationFile) {
       const inputDataItems = document.querySelector(`#js-venit-data-${button.dataset.id}`)
       const inputStateItems = document.querySelector(`#js-venit-state-${button.dataset.id}`)
       const inputUserItems = document.querySelector(`#js-venit-user-${button.dataset.id}`)
+
+      let itemOneLineSelect = document.querySelector(`#js-button-update-income[data-id="${button.dataset.id}"]`)
+      itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+
+      event.stopPropagation()
 
       let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
 
