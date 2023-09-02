@@ -131,6 +131,8 @@ function extractByPeriod (groupBD, typeGroup) {
   const currentDate = new Date(); // Current date
   const threeMonthsAgo = new Date();
   threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
+  console.log(currentDate)
+  console.log(threeMonthsAgo)
 
 
 
@@ -138,6 +140,8 @@ function extractByPeriod (groupBD, typeGroup) {
       const dataStart = new Date(item[1].dataStart);
       return dataStart >= threeMonthsAgo && dataStart <= currentDate && item[1].titlu === typeGroup;
   });
+
+  console.log(filteredObjects)
 
   return calculateSum(filteredObjects)
 }
@@ -292,7 +296,7 @@ return onValue(ref(db, '/users/' + userId), (snapshot) => {
         dataStart: `${inputAddMonth.value}`,
       } 
       
-      push(groupsInDB, addGroupValue) 
+      //push(groupsInDB, addGroupValue) 
 
       console.log(addGroupValue)
 
@@ -306,7 +310,7 @@ return onValue(ref(db, '/users/' + userId), (snapshot) => {
     startDateMonth: `${inputAddMonth.value}`,
   } 
 
-  push(allMonthsInDB, addIncomeValue) 
+  //push(allMonthsInDB, addIncomeValue) 
 
   modulAddMonth.close()
 
