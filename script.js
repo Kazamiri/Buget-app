@@ -296,7 +296,7 @@ return onValue(ref(db, '/users/' + userId), (snapshot) => {
         dataStart: `${inputAddMonth.value}`,
       } 
       
-      //push(groupsInDB, addGroupValue) 
+      push(groupsInDB, addGroupValue) 
 
       console.log(addGroupValue)
 
@@ -310,7 +310,7 @@ return onValue(ref(db, '/users/' + userId), (snapshot) => {
     startDateMonth: `${inputAddMonth.value}`,
   } 
 
-  //push(allMonthsInDB, addIncomeValue) 
+  push(allMonthsInDB, addIncomeValue) 
 
   modulAddMonth.close()
 
