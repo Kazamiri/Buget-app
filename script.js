@@ -126,22 +126,20 @@ function listenAll (numMonths, monthsList) {
   })
 }
 
-function extractByPeriod (groupBD, typeGroup) {
+function extractByPeriod (startMonth, groupBD, typeGroup) {
 
-  const currentDate = new Date(); // Current date
-  const threeMonthsAgo = new Date();
-  threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
-  console.log(currentDate)
-  console.log(threeMonthsAgo)
+  let userDateValue = new Date(startMonth);
 
+  const currentDate = new Date(startMonth);
+  currentDate.setMonth(userDateValue.getMonth() - 1);
 
+  const threeMonthsAgo = new Date(startMonth);
+  threeMonthsAgo.setMonth(userDateValue.getMonth() - 3);
 
   const filteredObjects = groupBD.filter(item => {
       const dataStart = new Date(item[1].dataStart);
       return dataStart >= threeMonthsAgo && dataStart <= currentDate && item[1].titlu === typeGroup;
   });
-
-  console.log(filteredObjects)
 
   return calculateSum(filteredObjects)
 }
@@ -255,19 +253,19 @@ function fiterItem (dataMonth, titleItem, valueItem) {
 
 addButtonMonth.addEventListener("click", function () {
 
- /* import { getDatabase, ref, onValue } from "firebase/database";
-import { getAuth } from "firebase/auth";
+      /* import { getDatabase, ref, onValue } from "firebase/database";
+      import { getAuth } from "firebase/auth";
 
-const db = getDatabase();
-const auth = getAuth();
+      const db = getDatabase();
+      const auth = getAuth();
 
-const userId = auth.currentUser.uid;
-return onValue(ref(db, '/users/' + userId), (snapshot) => {
-  const username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-  // ...
-}, {
-  onlyOnce: true
-});*/
+      const userId = auth.currentUser.uid;
+      return onValue(ref(db, '/users/' + userId), (snapshot) => {
+        const username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+        // ...
+      }, {
+        onlyOnce: true
+      });*/
 
   onValue(allDateInDB, function(snapshot) {
 
@@ -276,18 +274,13 @@ return onValue(ref(db, '/users/' + userId), (snapshot) => {
     let monthsGroups = Object.entries(itemsArray[1][1])
     let monthsDateSec = Object.values(itemsArray[4][1])
 
-    console.log(monthsGroups)
-    console.log(monthsDateSec)
 
     const listGroup = monthsDateSec.map(item => item.titlu);
 
-    console.log(listGroup)
 
   
     for (let i = 0; i < listGroup.length; i++) {
-      let typeGroup = (extractByPeriod (monthsGroups, `${listGroup[i]}`) / 3).toFixed(0);
-
-      console.log(typeGroup)
+      let typeGroup = (extractByPeriod (inputAddMonth.value, monthsGroups, `${listGroup[i]}`) / 3).toFixed(0);
       
       
       let addGroupValue = {
@@ -298,7 +291,6 @@ return onValue(ref(db, '/users/' + userId), (snapshot) => {
       
       push(groupsInDB, addGroupValue) 
 
-      console.log(addGroupValue)
 
     }
   
