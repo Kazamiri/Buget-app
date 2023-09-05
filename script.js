@@ -414,6 +414,7 @@ function readIncomes(valueRead) {
         <option value="Toti">Toti</option>
         <option value="Eugen">Eugen</option>
         <option value="Cris">Cris</option>
+        <option value="Fetele">Fetele</option>
         <option value="Amelia">Amelia</option>
         <option value="Bianca">Bianca</option>
         <option value="Evelina">Evelina</option>
@@ -509,6 +510,7 @@ function readExpenses(valueRead) {
           <option value="Toti">Toti</option>
           <option value="Eugen">Eugen</option>
           <option value="Cris">Cris</option>
+          <option value="Fetele">Fetele</option>
           <option value="Amelia">Amelia</option>
           <option value="Bianca">Bianca</option>
           <option value="Evelina">Evelina</option>
