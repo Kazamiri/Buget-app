@@ -593,42 +593,47 @@ function readGroups(expensesBD, groupBD, incomesAll) {
       groupsList.innerHTML += `
         <div class="linie-tabel" id="js-item-line-one-group" data-id="${groupBD[i][0]}">
     
-          <div class="expenses_list_group">
-            <p class="num_style">${i + 1}</p>
-    
-            <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-titlu-${groupBD[i][0]}">
-              <option value="${groupBD[i][1].titlu}" selected disabled hidden>${groupBD[i][1].titlu}</option>
-                ${optionsHTML}
-            </select>
-    
-          </div>
-    
-          <div class="suma_percent_all_group">
-            <div class="linie-tabel-lei-add">
-              <input class="expenses_list_suma" type="number" id="js-grupe-suma-${groupBD[i][0]}" value="${groupBD[i][1].suma}">
-              <p class="lei_style">lei</p>
+          <div class="linie-tabel-chield-group-0">
+            <div class="expenses_list_group">
+              <p class="num_style">${i + 1}</p>
+              <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-titlu-${groupBD[i][0]}">
+                <option value="${groupBD[i][1].titlu}" selected disabled hidden>${groupBD[i][1].titlu}</option>
+                  ${optionsHTML}
+              </select>
             </div>
+
+            <div class="suma_percent_all_group">
+              <div class="linie-tabel-lei-add">
+                <input class="expenses_list_suma" type="number" id="js-grupe-suma-${groupBD[i][0]}" value="${groupBD[i][1].suma}">
+                <p class="lei_style">lei</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="linie-tabel-chield-group-1">
             <p class="percent_all_group">${percentOfTotal}%</p>
+            <p class="rest_all_group">Ramași ${areLeft} lei</p>
           </div>
-  
-          <p class="rest_all_group">Ramași ${areLeft} lei</p>
-  
-          <div class="dim-procente-second">
-            <div id="js-${groupBD[i][1].titlu}" class="procente-second"> 
-            <div class="low" style="width:${diferenceLow}%;"></div>
-            <div class="medium" style="width:${diferenceMedium}%;"></div>
-            <div class="high" style="width:${diferenceHigh}%;"></div>
+
+          <div class="linie-tabel-chield-group-2">
+            <div class="dim-procente-second">
+              <div id="js-${groupBD[i][1].titlu}" class="procente-second"> 
+              <div class="low" style="width:${diferenceLow}%;"></div>
+              <div class="medium" style="width:${diferenceMedium}%;"></div>
+              <div class="high" style="width:${diferenceHigh}%;"></div>
+              </div>
+              <p id="loading-${groupBD[i][1].titlu}" class="procente-style-second">10%</p>
             </div>
-            <p id="loading-${groupBD[i][1].titlu}" class="procente-style-second">10%</p>
-          </div>
-  
-          <div class="expenses_list_both-buttons" >
-            <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-group" data-id="${groupBD[i][0]}">
-            <span class="material-symbols-outlined">autorenew</span></button>
-            <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-group" data-id="${groupBD[i][0]}">
-            <span class="material-symbols-outlined">delete_forever</span>
-            </button>
-          </div>
+            <div class="expenses_list_both-buttons" >
+              <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-group" data-id="${groupBD[i][0]}">
+              <span class="material-symbols-outlined">autorenew</span></button>
+              <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-group" data-id="${groupBD[i][0]}">
+              <span class="material-symbols-outlined">delete_forever</span>
+              </button>
+            </div>
+        </div>
+
         </div>`
   
         newDate (groupBD[i][1].suma, calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), `js-${groupBD[i][1].titlu}`, `loading-${groupBD[i][1].titlu}`,10)

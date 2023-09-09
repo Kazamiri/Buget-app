@@ -375,6 +375,28 @@ main {
         justify-content: space-between;
         align-items: center;
       }
+      .linie-tabel-chield-group-0{
+        flex: 3;
+        min-width: 280px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .linie-tabel-chield-group-1{
+        flex: 2;
+        min-width: 160px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .linie-tabel-chield-group-2{
+        flex: 4;
+        min-width: 300px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
         .linie-tabel-lei-add{
           display: flex;
           flex-direction: row;
@@ -629,21 +651,17 @@ main {
         
         .rest_all_group{
           color: var(--color-labels-tertiary);
-        
           font-family: var(--font-default);
           font-weight: var(--font-weight-default);
           line-height: var(--s1-subtitle-height);
           font-size: var(--s1-subtitle-size);
-          width: 8rem;
         }
 
       .dim-procente-second {
         height: 8px;
-        width: 25%;
+        width: 64%;
         background-color: var(--color-backgrounds-tertiary);
         border-radius: 24px;
-        margin-left: 1rem;
-        margin-right: 1rem;
       }
       
         .procente-second {
@@ -829,6 +847,33 @@ main {
       padding-top: 8px; 
       padding-bottom: 8px;   
     }
+    .linie-tabel-chield-group-0{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--color-backgrounds-tertiary);
+      padding-top: 8px; 
+      padding-bottom: 8px;   
+    }
+    .linie-tabel-chield-group-1{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--color-backgrounds-tertiary);
+      padding-top: 8px; 
+      padding-bottom: 8px;   
+    }
+    .linie-tabel-chield-group-2{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      justify-content: space-between;
+      padding-top: 8px; 
+      padding-bottom: 12px;   
+    }
+
     .lei_style {
       color: var(--color-labels-primary);
     }
