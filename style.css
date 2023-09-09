@@ -106,6 +106,7 @@ main {
       line-height: var(--h6-headline-height);
       font-size: var(--h6-headline-size);
       letter-spacing: 0.05rem;
+      text-align: center;
     }
 
 .add_month_open_modal{
@@ -337,12 +338,59 @@ main {
   }
     .linie-tabel{
       display: flex;
+      flex-wrap: wrap;
       padding: 16px;
       justify-content: space-between;
       align-items: center;
       align-self: stretch;
       border-bottom: 1px solid var(--color-backgrounds-tertiary);
+      gap: 4rem;
     }
+
+      .linie-tabel-chield-0{
+        flex: 1;
+        min-width: 172px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .linie-tabel-chield-1{
+        flex: 2;
+        min-width: 280px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .linie-tabel-chield-2{
+        flex: 2;
+        min-width: 280px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .linie-tabel-chield-3{
+        flex: 3;
+        min-width: 280px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+        .linie-tabel-lei-add{
+          display: flex;
+          flex-direction: row;
+          align-items: baseline;
+        }
+        .lei_style {
+          color: var(--color-labels-secondary);
+          width: 1rem;
+          text-align: center;
+          font-family: Jost;
+          font-family: var(--font-default);
+          font-weight: var(--font-weight-default);
+          line-height: var(--s1-subtitle-height);
+          font-size: var(--s1-subtitle-size);
+          letter-spacing: 0.05rem;
+        }
       .expenses_list_group{
         display: inline-flex;
         align-items: center;
@@ -418,6 +466,8 @@ main {
           line-height: var(--h6-headline-height);
           font-size: var(--h6-headline-size);
           letter-spacing: 0.05rem;
+
+          text-align: right;
         
           width: 5.6rem;
         }
@@ -566,7 +616,7 @@ main {
           display: flex;
           flex-direction: row;
           gap: 1.5vw;
-        
+          align-items: center;
         }
           .percent_all_group{
             color: var(--color-functional-orange-primary);
@@ -696,15 +746,120 @@ main {
       background: var(--color-functional-green-primary);
     }
 
+@media all and (min-width: 320px) and (max-width: 575px){
+  main {
+    margin: 16px;
+  }
+
+  .add_button_modal{
+    margin-top: 8px;
+  }
+  .all_card{
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+    margin-top: 1.5rem;
+  }
+
+  .card_venituri{
+    flex: 1;
+    display: flex;
+    padding: 16px 16px 16px 16px;
+    flex-direction: row;
+
+    justify-content: space-between;
+
+    border-radius: var(--corner-radius-xxl, 16px);
+    border: 1px solid var(--color-backgrounds-tertiary);
+    background: var(--color-backgrounds-secondary);
+  } 
+  .tab button {
+    line-height: var(--h6-headline-height);
+    font-size: var(--h6-headline-size);
+    padding: 14px 3.8vw;
+  }
+
+  .style-list {
+    gap: 16px;
+  }
+
+    .linie-tabel{
+      gap: 0px;
+      padding-right: 12px;
+      padding-left: 12px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      flex-direction: column;
+      align-items: flex-start;
+      border: 1px solid var(--color-backgrounds-quaternary);
+      border-radius: var(--corner-radius-xxl, 16px);
+    }
+    .linie-tabel-chield-0{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--color-backgrounds-tertiary);
+      padding-top: 8px; 
+      padding-bottom: 8px;   
+    }
+    .linie-tabel-chield-1{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--color-backgrounds-tertiary);
+      padding-top: 8px; 
+      padding-bottom: 8px;   
+    }
+    .linie-tabel-chield-2{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--color-backgrounds-tertiary);
+      padding-top: 8px; 
+      padding-bottom: 8px;   
+    }
+    .linie-tabel-chield-3{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      justify-content: space-between;
+      padding-top: 8px; 
+      padding-bottom: 8px;   
+    }
+    .lei_style {
+      color: var(--color-labels-primary);
+    }
+
+    .num_style{
+      color: var(--color-brand-yello-secondary);
+    }
+
+}
 
 
 
+/* 
+@media all and (min-width: 1200px) and (max-width: 1400px){
+    
+}
 
+@media all and (min-width: 992px) and (max-width: 1199px){
+    
+}
 
+@media all and (min-width: 768px) and (max-width: 991px){
 
+}
 
+@media all and (min-width: 576px) and (max-width: 767px){
 
+}
 
+@media all and (min-width: 320px) and (max-width: 575px){
 
-
+}
+*/
 

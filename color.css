@@ -18,6 +18,9 @@
     --color-functional-neo_fuchsia-quarternary: rgba(250, 65, 105, 0.4);
 
     --color-brand-yello-primary: rgba(255, 202, 98, 1);
+    --color-brand-yello-secondary: rgba(255, 202, 98, 0.80);
+    --color-brand-yello-tertiary: rgba(255, 202, 98, 0.40);
+    --color-brand-yello-quaternary: rgba(255, 202, 98, 0.20);
 
     --color-functional-orange-primary:rgba(254, 152, 112, 1);
     --color-others-blue-primary: rgba(37, 116, 255, 1);
