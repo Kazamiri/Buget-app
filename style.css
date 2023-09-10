@@ -59,6 +59,37 @@ main {
   max-width: 1296px;
 }
 
+.navigation-page{
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 10;
+  bottom: 4%;
+  right: 4%;
+}
+  .button-navigate-page{
+    padding: 4px;
+    color: var(--color-labels-secondary);
+
+    border-radius: var(--corner-radius-m, 12px);
+    border: 1px solid var(--color-backgrounds-tertiary);
+    background: var(--color-backgrounds-secondary);
+    transition: 0.3s;
+
+  }
+
+    .button-navigate-page:hover{
+      color: var(--color-labels-primary);
+      background: var(--color-backgrounds-tertiary);
+    }
+
+    .button-navigate-page:active{
+      color: var(--color-labels-secondary);
+      border: 1px solid var(--color-backgrounds-primary);
+      background: var(--color-backgrounds-quaternary);
+    }
+
 .navigation-month{
   margin-top: 3rem;
   display: flex;
@@ -990,7 +1021,6 @@ main {
       background-color: var(--color-backgrounds-primary);
       color: var(--color-labels-primary);
       opacity: 100;
-      width: 100%;
     }
 
     .expenses_list_title {

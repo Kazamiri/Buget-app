@@ -13,7 +13,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 <body>
-
+  <header id="header">
+  </header>
+  
   <main>
     <div class="navigation-month" id="js-nav-months">
       <button class="button-navigate" id="js-nav-left">
@@ -23,6 +25,19 @@
       <button class="button-navigate" id="js-nav-right"><span class="material-symbols-outlined">arrow_forward
         </span>
       </button>
+    </div>
+
+    <div class="navigation-page" id="nav-page">
+      <a href="#header">
+        <button class="button-navigate-page" id="nav-up">
+          <span class="material-symbols-outlined">expand_less</span>
+        </button>
+      </a>
+      <a href="#footer">
+        <button class="button-navigate-page" id="nav-down">
+          <span class="material-symbols-outlined">expand_more</span>
+        </button>
+      </a>
     </div>
 
     <div class="add_month_open_modal">
@@ -153,7 +168,7 @@
 
         <div class="linie-tabel-chield-add-1">
           <input class="add_expenses_list_suma" type="number" id="js-suma" placeholder="Suma">
-          <input class="add_expenses_list_data" type="date" id="js-data" placeholder="Data">
+          <input class="add_expenses_list_data" type="date" id="js-data">
         </div>
 
         <div class="linie-tabel-chield-add-2">
@@ -219,6 +234,7 @@
       </div>
     </div>
   </main>
+  <footer id="footer"></footer>
 
   
 
