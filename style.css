@@ -961,15 +961,12 @@ main {
       padding-bottom: 12px;   
     }
 
-    .add_expenses_list_suma{
-      width: 100%;
-    }
-
-    .add_expenses_list_suma{
+    .add_expenses_list_title{
       background-color: var(--color-backgrounds-primary);
     }
 
-    .add_expenses_list_title{
+    .add_expenses_list_suma{
+      width: 100%;
       background-color: var(--color-backgrounds-primary);
     }
 
@@ -993,6 +990,7 @@ main {
       background-color: var(--color-backgrounds-primary);
       color: var(--color-labels-primary);
       opacity: 100;
+      width: 100%;
     }
 
     .expenses_list_title {
