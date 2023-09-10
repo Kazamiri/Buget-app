@@ -487,39 +487,41 @@ function readExpenses(valueRead) {
     for (let i = 0; i < valueRead.length; i++) {
       expensesList.innerHTML += `
       <div class="linie-tabel" id="js-item-line-one" data-id="${valueRead[i][0]}">
-          <div class="linie-tabel-chield-0">
-            <div class="expenses_list_group">
-              <p class="num_style">${i + 1}</p>
-              <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-${valueRead[i][0]}">
-                <option value="${valueRead[i][1].grupa}" selected disabled hidden>${valueRead[i][1].grupa}</option>
-                ${optionsHTML}
-              </select>
+
+        <div class="linie-tabel-chield-0">
+          <div class="expenses_list_group">
+            <p class="num_style">${i + 1}</p>
+            <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-${valueRead[i][0]}">
+              <option value="${valueRead[i][1].grupa}" selected disabled hidden>${valueRead[i][1].grupa}</option>
+              ${optionsHTML}
+            </select>
           </div>
-        </div>
-        <div class="linie-tabel-chield-1">
           <input class="expenses_list_title" type="text" id="js-titlu-${valueRead[i][0]}" value="${valueRead[i][1].titlu}">
+        </div>
+
+        <div class="linie-tabel-chield-1">
             <div class="linie-tabel-lei-add">
               <input class="expenses_list_suma" type="number" id="js-suma-${valueRead[i][0]}" value="${valueRead[i][1].suma}">
               <p class="lei_style">lei</p>
             </div>
+            <input class="expenses_list_data" type="date" id="js-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
         </div>
 
         <div class="linie-tabel-chield-2">
-          <input class="expenses_list_data" type="date" id="js-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
           <select class="expenses_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="grupe-cheltuieli" id="js-state-${valueRead[i][0]}">
             <option value="${valueRead[i][1].state}" selected disabled hidden>${valueRead[i][1].state}</option>
             <option value="În așteptare">În așteptare</option>
             <option value="Cheltuit">Cheltuit</option>
           </select>
-        </div>
-
-        <div class="linie-tabel-chield-3">
-          <select class="expenses_list_state" style="color: ${colorLevel(valueRead[i][1].level)};" name="grupe-level" id="js-level-${valueRead[i][0]}">
+          <select class="expenses_list_level" style="color: ${colorLevel(valueRead[i][1].level)};" name="grupe-level" id="js-level-${valueRead[i][0]}">
             <option value="${valueRead[i][1].level}" selected disabled hidden>${valueRead[i][1].level}</option>
             <option value="High">High</option>
             <option value="Medium">Medium</option>
             <option value="Low">Low</option>
           </select>
+        </div>
+
+        <div class="linie-tabel-chield-3">
           <select class="expenses_list_state" name="grupe-utilizatori" id="js-user-${valueRead[i][0]}">
             <option value="${valueRead[i][1].user}" selected disabled hidden>${valueRead[i][1].user}</option>
             <option value="Toti">Toti</option>

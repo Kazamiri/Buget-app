@@ -348,29 +348,29 @@ main {
     }
 
       .linie-tabel-chield-0{
-        flex: 1;
-        min-width: 172px;
+        flex: 5;
+        min-width: 340px;
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
       .linie-tabel-chield-1{
-        flex: 2;
-        min-width: 280px;
+        flex: 4;
+        min-width: 242px;
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
       .linie-tabel-chield-2{
-        flex: 2;
-        min-width: 280px;
+        flex: 3;
+        min-width: 194px;
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
       .linie-tabel-chield-3{
-        flex: 3;
-        min-width: 280px;
+        flex: 2;
+        min-width: 194px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -524,6 +524,25 @@ main {
           }
 
         .expenses_list_state{
+          border: none;
+        
+          padding-top: 4px;
+          padding-left: 0px;
+          padding-bottom: 4px;
+          padding-right: 8px;
+        
+          background-color: var(--color-backgrounds-primary);
+          color: var(--color-labels-secondary);
+        
+          cursor: pointer;
+        
+          font-family: var(--font-default);
+          font-weight: var(--font-weight-default);
+          line-height: var(--s1-subtitle-height);
+          font-size: var(--s1-subtitle-size);
+        
+        }
+        .expenses_list_level{
           border: none;
         
           padding-top: 4px;
@@ -874,9 +893,41 @@ main {
       padding-bottom: 12px;   
     }
 
+    .expenses_list_title {
+      width:40%;
+      text-align: right;
+    }
+
+    .expenses_list_group_icon{
+      width:80%;
+    }
+
+    .expenses_list_state{
+      width:48%;
+    }
+
+    .expenses_list_data{
+      width:49%;
+    }
+
+    .expenses_list_group{
+      width:48%;
+      gap: 13%;
+    }
+
+
     .lei_style {
       color: var(--color-labels-primary);
     }
+
+    .linie-tabel-lei-add{
+      order: 2;
+    }
+
+
+    .percent_all_group {
+      order: 2;
+  }
 
     .num_style{
       color: var(--color-brand-yello-secondary);
