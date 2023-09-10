@@ -1021,6 +1021,7 @@ main {
       background-color: var(--color-backgrounds-primary);
       color: var(--color-labels-primary);
       opacity: 100;
+      width: 100%;
     }
 
     .expenses_list_title {
