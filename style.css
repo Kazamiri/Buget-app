@@ -375,6 +375,34 @@ main {
         justify-content: space-between;
         align-items: center;
       }
+      .linie-tabel-chield-add-0{
+        flex: 5;
+        min-width: 340px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .linie-tabel-chield-add-1{
+        flex: 4;
+        min-width: 242px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .linie-tabel-chield-add-2{
+        flex: 3;
+        min-width: 194px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .linie-tabel-chield-add-3{
+        flex: 2;
+        min-width: 194px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
       .linie-tabel-chield-group-0{
         flex: 3;
         min-width: 280px;
@@ -866,12 +894,52 @@ main {
       padding-top: 8px; 
       padding-bottom: 8px;   
     }
+    .linie-tabel-chield-add-0{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      padding-top: 8px; 
+      padding-bottom: 8px; 
+      align-items: stretch;
+      flex-direction: column;  
+      gap: 12px;
+    }
+    .linie-tabel-chield-add-1{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      padding-top: 8px; 
+      padding-bottom: 8px;   
+      align-items: stretch;
+      flex-direction: column;  
+      gap: 12px;
+    }
+    .linie-tabel-chield-add-2{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      padding-top: 8px; 
+      padding-bottom: 8px;  
+      align-items: stretch;
+      flex-direction: column;   
+      gap: 12px;
+    }
+    .linie-tabel-chield-add-3{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      padding-top: 8px; 
+      padding-bottom: 8px;   
+      align-items: stretch;
+      flex-direction: column;  
+      gap: 12px;
+    }
     .linie-tabel-chield-group-0{
       flex: 1;
       display: flex;
       min-width: 100%;
       justify-content: space-between;
-      border-bottom: 1px dashed var(--color-backgrounds-tertiary);
+      border-bottom: 1px dashed var(--color-backgrounds-quaternary);
       padding-top: 8px; 
       padding-bottom: 8px;   
     }
@@ -880,7 +948,7 @@ main {
       display: flex;
       min-width: 100%;
       justify-content: space-between;
-      border-bottom: 1px dashed var(--color-backgrounds-tertiary);
+      border-bottom: 1px dashed var(--color-backgrounds-quaternary);
       padding-top: 8px; 
       padding-bottom: 8px;   
     }
@@ -891,6 +959,32 @@ main {
       justify-content: space-between;
       padding-top: 8px; 
       padding-bottom: 12px;   
+    }
+
+    .add_expenses_list_suma{
+      width: 100%;
+    }
+
+    .add_expenses_list_state{
+      border: 1px solid var(--color-backgrounds-quaternary);
+      padding-top: 4px;
+      padding-left: 8px;
+      padding-bottom: 4px;
+      padding-right: 8px;
+      border-radius: var(--corner-radius-s, 8px);
+      background-color: var(--color-backgrounds-secondary);
+      color: var(--color-labels-primary);
+    }
+    .add_expenses_list_data{
+      border: 1px solid var(--color-backgrounds-quaternary);
+      padding-top: 4px;
+      padding-left: 8px;
+      padding-bottom: 4px;
+      padding-right: 8px;
+      border-radius: var(--corner-radius-s, 8px);
+      background-color: var(--color-backgrounds-secondary);
+      color: var(--color-labels-primary);
+      opacity: 100;
     }
 
     .expenses_list_title {
@@ -907,7 +1001,7 @@ main {
     }
 
     .expenses_list_data{
-      width:49%;
+      width:48%;
     }
 
     .expenses_list_group{
