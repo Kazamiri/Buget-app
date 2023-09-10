@@ -898,41 +898,41 @@ main {
       flex: 1;
       display: flex;
       min-width: 100%;
-      padding-top: 8px; 
-      padding-bottom: 8px; 
+      padding-top: 12px; 
+      padding-bottom: 12px; 
       align-items: stretch;
       flex-direction: column;  
-      gap: 12px;
+      gap: 24px;
     }
     .linie-tabel-chield-add-1{
       flex: 1;
       display: flex;
       min-width: 100%;
-      padding-top: 8px; 
-      padding-bottom: 8px;   
+      padding-top: 12px; 
+      padding-bottom: 12px;   
       align-items: stretch;
       flex-direction: column;  
-      gap: 12px;
+      gap: 24px;
     }
     .linie-tabel-chield-add-2{
       flex: 1;
       display: flex;
       min-width: 100%;
-      padding-top: 8px; 
-      padding-bottom: 8px;  
+      padding-top: 12px; 
+      padding-bottom: 12px;  
       align-items: stretch;
       flex-direction: column;   
-      gap: 12px;
+      gap: 24px;
     }
     .linie-tabel-chield-add-3{
       flex: 1;
       display: flex;
       min-width: 100%;
-      padding-top: 8px; 
-      padding-bottom: 8px;   
+      padding-top: 12px; 
+      padding-bottom: 12px;   
       align-items: stretch;
       flex-direction: column;  
-      gap: 12px;
+      gap: 24px;
     }
     .linie-tabel-chield-group-0{
       flex: 1;
@@ -965,6 +965,14 @@ main {
       width: 100%;
     }
 
+    .add_expenses_list_suma{
+      background-color: var(--color-backgrounds-primary);
+    }
+
+    .add_expenses_list_title{
+      background-color: var(--color-backgrounds-primary);
+    }
+
     .add_expenses_list_state{
       border: 1px solid var(--color-backgrounds-quaternary);
       padding-top: 4px;
@@ -972,7 +980,7 @@ main {
       padding-bottom: 4px;
       padding-right: 8px;
       border-radius: var(--corner-radius-s, 8px);
-      background-color: var(--color-backgrounds-secondary);
+      background-color: var(--color-backgrounds-primary);
       color: var(--color-labels-primary);
     }
     .add_expenses_list_data{
@@ -982,7 +990,7 @@ main {
       padding-bottom: 4px;
       padding-right: 8px;
       border-radius: var(--corner-radius-s, 8px);
-      background-color: var(--color-backgrounds-secondary);
+      background-color: var(--color-backgrounds-primary);
       color: var(--color-labels-primary);
       opacity: 100;
     }
