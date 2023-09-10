@@ -982,6 +982,9 @@ function diference (dividend, divisor) {
   return chelProcente
 }
 
+let currentDate = new Date().toISOString().slice(0, 10);
+
+inputDate.value = currentDate;
 
 
 
