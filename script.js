@@ -582,6 +582,9 @@ function readGroups(expensesBD, groupBD, incomesAll) {
     }
 
     for (let i = 0; i < groupBD.length; i++) {
+
+      //console.log(groupBD[i][1].suma)
+
       let areLeft  = groupBD[i][1].suma - calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu))
   
       let percentOfTotal = diference(incomesAll, groupBD[i][1].suma).toFixed(0);
@@ -591,7 +594,9 @@ function readGroups(expensesBD, groupBD, incomesAll) {
       let diferenceMedium = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesMedium, groupBD[i][1].titlu))).toFixed(0);
   
       let diferenceHigh = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesHigh, groupBD[i][1].titlu))).toFixed(0);
-  
+
+      let diferencePointHtml = pointPositionCorrection (diference(groupBD[i][1].suma, calculateSum(fiterItem (fiterGroup (expensesBD, groupBD[i][1].titlu), "state", "Cheltuit"))).toFixed(0))
+      
       groupsList.innerHTML += `
         <div class="linie-tabel" id="js-item-line-one-group" data-id="${groupBD[i][0]}">
     
@@ -620,10 +625,13 @@ function readGroups(expensesBD, groupBD, incomesAll) {
 
           <div class="linie-tabel-chield-group-2">
             <div class="dim-procente-second">
+              <div class="point_procente" style="left:${diferencePointHtml}%;" >
+                <div class="point_procente_inside"></div>
+              </div>
               <div id="js-${groupBD[i][1].titlu}" class="procente-second"> 
-              <div class="low" style="width:${diferenceLow}%;"></div>
-              <div class="medium" style="width:${diferenceMedium}%;"></div>
-              <div class="high" style="width:${diferenceHigh}%;"></div>
+                <div class="low" style="width:${diferenceLow}%;"></div>
+                <div class="medium" style="width:${diferenceMedium}%;"></div>
+                <div class="high" style="width:${diferenceHigh}%;"></div>
               </div>
               <p id="loading-${groupBD[i][1].titlu}" class="procente-style-second">10%</p>
             </div>
@@ -654,7 +662,13 @@ function readGroups(expensesBD, groupBD, incomesAll) {
 
 } // Functia data citeste masivul si il vizualizeaza lista de cheltuieli pe pagina de baza
 
-
+function pointPositionCorrection (itemValue){
+  let diference = itemValue
+  if (diference > 0) {
+    diference = diference - 2
+  }
+  return diference
+}
 
 function upDateIncomes (idButonSelector, locationFile) {
 
