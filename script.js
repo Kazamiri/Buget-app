@@ -184,6 +184,8 @@ function changeMonth (numPage, actualIncomesBD, actualExpensesBD, actualGroupBD,
 
   levelExpensese(incomesMonths, expensesMonths)
 
+  levelExpenseseValue (calculateSum(fiterItem (expensesMonths, "level", "High")), calculateSum(fiterItem (expensesMonths, "level", "Medium")), calculateSum(fiterItem (expensesMonths, "level", "Low")),)
+
 
 }
 
@@ -1030,36 +1032,36 @@ function levelExpenseseStatistics (valueLow, valueMedium, valueHigh) {
     let medium = radianCalc (valueLow) + radianCalc (valueMedium);
     let high = radianCalc (valueLow) + radianCalc (valueMedium) + radianCalc (valueHigh);
 
-  ctx.clearRect(0, 0, 114, 114)
+  ctx.clearRect(0, 0, 112, 112)
 
 
   ctx.beginPath()
-  ctx.lineWidth = 50;
+  ctx.lineWidth = 56;
   ctx.strokeStyle = '#27282A'
-  ctx.arc(57, 57, 32, 0, 2*pi, false)
+  ctx.arc(56, 56, 28, 0, 2*pi, false)
   ctx.stroke()
 
  ctx.beginPath()
-  ctx.lineWidth = 50;
+  ctx.lineWidth = 56;
   ctx.strokeStyle = '#0EAD69'
-  ctx.arc(57, 57, 32, 0, low, false)
+  ctx.arc(56, 56, 28, 0, low, false)
   ctx.stroke()
 
   ctx.beginPath()
-  ctx.lineWidth = 50;
+  ctx.lineWidth = 56;
   ctx.strokeStyle = '#FE9870'
-  ctx.arc(57, 57, 32, low, medium, false)
+  ctx.arc(56, 56, 28, low, medium, false)
   ctx.stroke()
 
   ctx.beginPath()
-  ctx.lineWidth = 50;
+  ctx.lineWidth = 56;
   ctx.strokeStyle = '#FA4169'
-  ctx.arc(57, 57, 32, medium, high, false)
+  ctx.arc(56, 56, 28, medium, high, false)
   ctx.stroke()
 }
 
 function levelExpensese (incomes, expenses) {
-  
+
   let canvas = document.getElementById('c7')
   let ctx = canvas.getContext('2d')
   
@@ -1114,6 +1116,21 @@ function levelExpensese (incomes, expenses) {
     ctx.stroke()
   }
   
+}
+
+function levelExpenseseValue (valueHigh, valueMedium, valueLow) {
+  const levelTitleHigh = document.getElementById('js-title-high')
+  const levelTitleMedium = document.getElementById('js-title-medium')
+  const levelTitleLow = document.getElementById('js-title-low')
+
+  let valueStringHigh = valueHigh.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  let valueStringMedium = valueMedium.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  let valueStringLow = valueLow.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+  levelTitleHigh.innerHTML = `<p>High: <span class="level_text_title_bold">${valueStringHigh}</span> lei</p>`
+  levelTitleMedium.innerHTML = `<p>Medium: <span class="level_text_title_bold">${valueStringMedium}</span> lei</p>`
+  levelTitleLow.innerHTML = `<p>Low: <span class="level_text_title_bold">${valueStringLow}</span> lei</p>`
+
 }
 
 function filterPeriod (data, startDate, endDate) {

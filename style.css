@@ -335,8 +335,35 @@ main {
     border: 1px solid var(--color-backgrounds-tertiary, #202123);
     background: var(--color-backgrounds-secondary);
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
+
   }
+  .level_cluster_title{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+    .level_text_title {
+      font-family: var(--font-default);
+      font-weight: var(--font-weight-default);
+      line-height: var(--s1-subtitle-height);
+      font-size: var(--s1-subtitle-size);
+    }
+      .level_text_title_high {
+        color: var(--color-functional-neo_fuchsia-primary);
+      }
+      .level_text_title_medium {
+        color: var(--color-functional-orange-primary);
+      }
+      .level_text_title_low {
+        color: var(--color-functional-green-primary);
+      }
+      .level_text_title_bold {
+        font-family: var(--font-default);
+        font-weight: var(--font-weight-bold);
+        line-height: var(--s1-subtitle-height);
+        font-size: var(--s1-subtitle-size);
+      }
 
 /* Style the tab */
 
@@ -1126,7 +1153,7 @@ main {
         border-radius: var(--corner-radius-xxl, 16px);
       }
       .level{
-        padding: 0px var(--space-distance-l, 16px);
+        padding: var(--space-distance-l, 16px);
         border-radius: var(--corner-radius-xxl, 16px);
       }
 
