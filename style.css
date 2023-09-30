@@ -1144,8 +1144,8 @@ main {
     .dynamics_level {
       display: flex;
       flex-direction: column;
-      gap: 24px;
-      margin-top: 24px;
+      gap: 16px;
+      margin-top: 16px;
     }
       .dynamic{
         flex: 1;
