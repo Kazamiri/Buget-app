@@ -177,7 +177,14 @@ function changeMonth (numPage, actualIncomesBD, actualExpensesBD, actualGroupBD,
   moneyAvailableHtmlDate (moneyAvailable)
 
   newDateArc ('c2', calculateSum(incomesMonths), calculateSum(groupMonths), 'rgba(37, 116, 255, 1)', calculateSum(availableIncomes), moneyAvailable, 'rgba(235, 235, 245, 0.60)' )
-  
+
+
+
+  levelExpenseseStatistics (diference (calculateSum(expensesMonths), calculateSum(fiterItem (expensesMonths, "level", "Low"))),diference (calculateSum(expensesMonths), calculateSum(fiterItem (expensesMonths, "level", "Medium"))),diference (calculateSum(expensesMonths), calculateSum(fiterItem (expensesMonths, "level", "High"))))
+
+  levelExpensese(incomesMonths, expensesMonths)
+
+
 }
 
 function selectFilteredSortMonth (numPage, actualBD, monthsList) {
@@ -996,9 +1003,140 @@ function diference (dividend, divisor) {
   return chelProcente
 }
 
+function levelExpenseseStatistics (valueLow, valueMedium, valueHigh) {
+  
+  let canvas = document.getElementById('c6')
+  let ctx = canvas.getContext('2d')
+  let pi = Math.PI
+
+  let rect = canvas.getBoundingClientRect()
+  canvas.width = rect.width * devicePixelRatio;
+  canvas.height = rect.height * devicePixelRatio; 
+
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+
+  canvas.style.width = rect.width + "px"
+  canvas.style.height = rect.height + "px"
+
+
+  function radianCalc (percentItem) {
+    let percent = percentItem;
+    let degree = percent * 3.6;
+    let radian = (Math.PI / 180) * degree;
+    return radian
+  }
+
+    let low = radianCalc (valueLow)
+    let medium = radianCalc (valueLow) + radianCalc (valueMedium);
+    let high = radianCalc (valueLow) + radianCalc (valueMedium) + radianCalc (valueHigh);
+
+  ctx.clearRect(0, 0, 114, 114)
+
+
+  ctx.beginPath()
+  ctx.lineWidth = 50;
+  ctx.strokeStyle = '#27282A'
+  ctx.arc(57, 57, 32, 0, 2*pi, false)
+  ctx.stroke()
+
+ ctx.beginPath()
+  ctx.lineWidth = 50;
+  ctx.strokeStyle = '#0EAD69'
+  ctx.arc(57, 57, 32, 0, low, false)
+  ctx.stroke()
+
+  ctx.beginPath()
+  ctx.lineWidth = 50;
+  ctx.strokeStyle = '#FE9870'
+  ctx.arc(57, 57, 32, low, medium, false)
+  ctx.stroke()
+
+  ctx.beginPath()
+  ctx.lineWidth = 50;
+  ctx.strokeStyle = '#FA4169'
+  ctx.arc(57, 57, 32, medium, high, false)
+  ctx.stroke()
+}
+
+function levelExpensese (incomes, expenses) {
+  
+  let canvas = document.getElementById('c7')
+  let ctx = canvas.getContext('2d')
+  
+  
+  ctx.clearRect(0, 0, 1560, 520)
+
+  ctx.beginPath()
+  ctx.strokeStyle = '#FE9870'
+  ctx.lineWidth = 2;
+  ctx.moveTo(0, 520)
+  ctx.lineTo(1560, 0)
+  ctx.stroke()
+
+ 
+  // Initialize variables to store the smallest and largest dates
+  let smallestDate = new Date(expenses[0][1].data);
+  let largestDate = new Date(expenses[0][1].data);
+
+  // Iterate through the data and update the smallest and largest dates
+  for (const item of expenses) {
+      const currentDate = new Date(item[1].data);
+      if (currentDate < smallestDate) {
+          smallestDate = currentDate;
+      }
+      if (currentDate > largestDate) {
+          largestDate = currentDate;
+      }
+  }
+
+  // Convert the smallest and largest dates back to string format
+  const smallestDateString = smallestDate.toISOString().split('T')[0];
+  const largestDateString = largestDate.toISOString().split('T')[0];
+
+  const [, , , , , , , , one, two ] = largestDateString;
+  const todayDateStr = one + two
+  var todayDateNum = parseInt(todayDateStr, 10);
+
+
+  for (let i = 0; i < todayDateNum; i++) {
+
+    let resultDate = smallestDate.toISOString().split('T')[0];
+  
+    let procent = diference (calculateSum(incomes), calculateSum(filterPeriod(expenses, smallestDateString, resultDate)))
+
+    smallestDate.setDate(smallestDate.getDate() + 1);
+
+    ctx.beginPath()
+    ctx.strokeStyle = '#0EAD69'
+    ctx.lineWidth = 4;
+    ctx.moveTo(0 + (i * 52), 520 - (procent*5.2))
+    ctx.lineTo(52 + (i * 52), 520 - (procent*5.2))
+    ctx.stroke()
+  }
+  
+}
+
+function filterPeriod (data, startDate, endDate) {
+
+  //const startDate = '2023-09-01';
+  //const endDate = '2023-09-02';
+  
+  const filteredData = data.filter(([_, item]) => {
+    const itemDate = item.data;
+    return itemDate >= startDate && itemDate <= endDate;
+  });
+  
+  return filteredData
+}
+
+
 let currentDate = new Date().toISOString().slice(0, 10);
 
 inputDate.value = currentDate;
+
+inputIncomeDate.value = currentDate;
+
+
 
 
 
