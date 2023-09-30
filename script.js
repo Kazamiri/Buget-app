@@ -1108,7 +1108,7 @@ function levelExpensese (incomes, expenses) {
 
     ctx.beginPath()
     ctx.strokeStyle = '#0EAD69'
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 5;
     ctx.moveTo(0 + (i * 52), 520 - (procent*5.2))
     ctx.lineTo(52 + (i * 52), 520 - (procent*5.2))
     ctx.stroke()

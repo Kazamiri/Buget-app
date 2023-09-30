@@ -1130,6 +1130,13 @@ main {
         border-radius: var(--corner-radius-xxl, 16px);
       }
 
+      #c7{
+        width: 100%;
+        aspect-ratio: 3/2;
+        background-image: url(graphic_mob.svg);
+        background-size: 100% 100%;
+      }
+
 }
 
 
