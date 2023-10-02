@@ -1193,8 +1193,8 @@ main {
       min-width: 100%;
       justify-content: space-between;
       border-bottom: 1px dashed var(--color-backgrounds-quaternary);
-      padding-top: 8px; 
-      padding-bottom: 8px;   
+      padding-top: 12px; 
+      padding-bottom: 12px;   
     }
     .linie-tabel-chield-incomes-2{
       flex: 1;
@@ -1202,7 +1202,9 @@ main {
       min-width: 100%;
       justify-content: space-between;
       padding-top: 8px; 
-      padding-bottom: 12px;   
+      padding-bottom: 8px;   
+      border-bottom: 1px dashed var(--color-backgrounds-quaternary);
+
     }
 
     .add_expenses_list_title{
