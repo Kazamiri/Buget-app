@@ -399,45 +399,47 @@ function readIncomes(valueRead) {
     incomesList.innerHTML += `
     <div class="linie-tabel" id="js-item-line-one-income" data-id="${valueRead[i][0]}">
 
-      <div class="expenses_list_group">
-        <p class="num_style">${i + 1}</p>
-
-        <input class="expenses_list_title" type="text" id="js-venit-titlu-${valueRead[i][0]}" value="${valueRead[i][1].titlu}">
-      </div>
-      
-      <div class="suma_percent_all_group">
+      <div class="linie-tabel-chield-incomes-0">
+        <div class="expenses_list_group">
+          <p class="num_style">${i + 1}</p>
+          <input class="expenses_list_title" type="text" id="js-venit-titlu-${valueRead[i][0]}" value="${valueRead[i][1].titlu}">
+        </div>
         <div class="linie-tabel-lei-add">
           <input class="expenses_list_suma" type="number" id="js-venit-suma-${valueRead[i][0]}" value="${valueRead[i][1].suma}">
           <p class="lei_style">lei</p>
         </div>
-        <p class="percent_all_group">${percentOfTotal}%</p>
       </div>
-      
-      <input class="expenses_list_data" type="date" id="js-venit-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
 
-      <select class="expenses_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="income-state" id="js-venit-state-${valueRead[i][0]}">
-        <option value="${valueRead[i][1].state}" selected disabled hidden>${valueRead[i][1].state}</option>
-        <option value="În așteptare">În așteptare</option>
-        <option value="Venit">Venit</option>
-      </select>
+      <div class="linie-tabel-chield-incomes-1">
+        <p class="percent_all_group">${percentOfTotal}%</p>
+        <input class="expenses_list_data" type="date" id="js-venit-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
+      </div>
 
-      <select class="expenses_list_state" name="grupe-utilizatori" id="js-venit-user-${valueRead[i][0]}">
-        <option value="${valueRead[i][1].user}" selected disabled hidden>${valueRead[i][1].user}</option>
-        <option value="Toti">Toti</option>
-        <option value="Eugen">Eugen</option>
-        <option value="Cris">Cris</option>
-        <option value="Fetele">Fetele</option>
-        <option value="Amelia">Amelia</option>
-        <option value="Bianca">Bianca</option>
-        <option value="Evelina">Evelina</option>
-        <option value="Simona">Simona</option>
-      </select>
+      <div class="linie-tabel-chield-incomes-2">
+        <select class="expenses_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="income-state" id="js-venit-state-${valueRead[i][0]}">
+          <option value="${valueRead[i][1].state}" selected disabled hidden>${valueRead[i][1].state}</option>
+          <option value="În așteptare">În așteptare</option>
+          <option value="Venit">Venit</option>
+        </select>
 
+        <select class="expenses_list_state" name="grupe-utilizatori" id="js-venit-user-${valueRead[i][0]}">
+          <option value="${valueRead[i][1].user}" selected disabled hidden>${valueRead[i][1].user}</option>
+          <option value="Toti">Toti</option>
+          <option value="Eugen">Eugen</option>
+          <option value="Cris">Cris</option>
+          <option value="Fetele">Fetele</option>
+          <option value="Amelia">Amelia</option>
+          <option value="Bianca">Bianca</option>
+          <option value="Evelina">Evelina</option>
+          <option value="Simona">Simona</option>
+        </select>
 
+      </div>
+  
       <div class="expenses_list_both-buttons" >
         <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-income" data-id="${valueRead[i][0]}">
         <span class="material-symbols-outlined">autorenew</span></button>
-      <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-income" data-id="${valueRead[i][0]}">
+        <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-income" data-id="${valueRead[i][0]}">
         <span class="material-symbols-outlined">delete_forever</span>
         </button>
       </div>
@@ -1115,7 +1117,20 @@ function levelExpensese (incomes, expenses) {
     ctx.lineTo(52 + (i * 52), 520 - (procent*5.2))
     ctx.stroke()
   }
-  
+
+  let currentDateStat = new Date().toISOString().slice(0, 10);
+  const [, , , , , , , , oneS, twoS ] = currentDateStat;
+  const todayDateStat = oneS + twoS
+  var todayDateNumStat = parseInt(todayDateStat, 10);
+  let dataStat = todayDateNumStat-1;
+
+  ctx.beginPath()
+  ctx.strokeStyle = 'rgba(235, 235, 245, 0.30)'
+  ctx.lineWidth = 8;
+  ctx.moveTo(26 + (52 * dataStat), 512)
+  ctx.lineTo(26 + (52 * dataStat), 512)
+  ctx.lineCap = "round"
+  ctx.stroke()
 }
 
 function levelExpenseseValue (valueHigh, valueMedium, valueLow) {

@@ -511,6 +511,27 @@ main {
         justify-content: space-between;
         align-items: center;
       }
+      .linie-tabel-chield-incomes-0{
+        flex: 3;
+        min-width: 280px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .linie-tabel-chield-incomes-1{
+        flex: 2;
+        min-width: 160px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .linie-tabel-chield-incomes-2{
+        flex: 2;
+        min-width: 188px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
         .linie-tabel-lei-add{
           display: flex;
@@ -1065,6 +1086,32 @@ main {
       padding-bottom: 8px;   
     }
     .linie-tabel-chield-group-2{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      justify-content: space-between;
+      padding-top: 8px; 
+      padding-bottom: 12px;   
+    }
+    .linie-tabel-chield-incomes-0{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--color-backgrounds-quaternary);
+      padding-top: 8px; 
+      padding-bottom: 8px;   
+    }
+    .linie-tabel-chield-incomes-1{
+      flex: 1;
+      display: flex;
+      min-width: 100%;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--color-backgrounds-quaternary);
+      padding-top: 8px; 
+      padding-bottom: 8px;   
+    }
+    .linie-tabel-chield-incomes-2{
       flex: 1;
       display: flex;
       min-width: 100%;
