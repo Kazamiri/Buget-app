@@ -554,6 +554,12 @@ main {
         align-items: center;
         gap: 1rem;
       } 
+
+      .incomes_list_group{
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+      } 
         .num_style{
           color: var(--color-labels-tertiary, rgba(235, 235, 245, 0.30));
           width: 1rem;
@@ -659,7 +665,68 @@ main {
             filter: invert(1); /* Inverts the icon color */
           }
 
+          .incomes_list_data{
+            border: none;
+          
+            background-color: var(--color-backgrounds-primary);
+            color: var(--color-labels-primary);
+          
+            cursor: pointer;
+          
+            font-family: var(--font-default);
+            font-weight: var(--font-weight-default);
+            line-height: var(--s1-subtitle-height);
+            font-size: var(--s1-subtitle-size);
+          
+            height: 1.5rem;
+          
+            width: 8 rem;
+            opacity: 0.3;
+          }
+          
+            .incomes_list_data::-webkit-calendar-picker-indicator {
+              filter: invert(1); /* Inverts the icon color */
+            }
+
         .expenses_list_state{
+          border: none;
+        
+          padding-top: 4px;
+          padding-left: 0px;
+          padding-bottom: 4px;
+          padding-right: 8px;
+        
+          background-color: var(--color-backgrounds-primary);
+          color: var(--color-labels-secondary);
+        
+          cursor: pointer;
+        
+          font-family: var(--font-default);
+          font-weight: var(--font-weight-default);
+          line-height: var(--s1-subtitle-height);
+          font-size: var(--s1-subtitle-size);
+        
+        }
+        .incomes_list_state{
+          border: none;
+        
+          padding-top: 4px;
+          padding-left: 0px;
+          padding-bottom: 4px;
+          padding-right: 8px;
+        
+          background-color: var(--color-backgrounds-primary);
+          color: var(--color-labels-secondary);
+        
+          cursor: pointer;
+        
+          font-family: var(--font-default);
+          font-weight: var(--font-weight-default);
+          line-height: var(--s1-subtitle-height);
+          font-size: var(--s1-subtitle-size);
+        
+        }
+        .incomes_list_user{
           border: none;
         
           padding-top: 4px;
@@ -782,14 +849,32 @@ main {
           font-weight: var(--font-weight-default);
           line-height: var(--s1-subtitle-height);
           font-size: var(--s1-subtitle-size);
-
-          
         
           /*appearance: none;
           background-image: url(icon/arrow-down.svg);
           background-repeat: no-repeat;
           background-position: right 10% center;
           background-size: 10px;*/
+        }
+
+        .incomes_list_title {
+          cursor: pointer;
+          border: none;
+        
+          padding-top: 4px;
+          padding-left: 8px;
+          padding-bottom: 4px;
+          padding-right: 8px;
+        
+          border-radius: var(--corner-radius-s);
+        
+          background-color: var(--color-backgrounds-primary);
+          color: var(--color-labels-primary);
+        
+          font-family: var(--font-default);
+          font-weight: var(--font-weight-default);
+          line-height: var(--s1-subtitle-height);
+          font-size: var(--s1-subtitle-size);
         }
         .suma_percent_all_group{
           display: flex;
@@ -1157,6 +1242,10 @@ main {
       width:40%;
       text-align: right;
     }
+    .incomes_list_title {
+      width: 88%;
+      text-align: left;
+    }
 
     .expenses_list_group_icon{
       width:80%;
@@ -1166,14 +1255,32 @@ main {
       width:48%;
     }
 
+    .incomes_list_state{
+      width:55%;
+    }
+
+    .incomes_list_user{
+      width: 28%;
+    }
+
     .expenses_list_data{
       width:48%;
     }
 
     .expenses_list_group{
       width:48%;
-      gap: 13%;
+      gap: 1%;
+      justify-content: space-between;
     }
+    .incomes_list_group{
+      width:55%;
+      gap: 1%;
+    }
+
+    .incomes_list_data {
+      width: 55%;
+  }
+
 
 
     .lei_style {

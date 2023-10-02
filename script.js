@@ -400,9 +400,9 @@ function readIncomes(valueRead) {
     <div class="linie-tabel" id="js-item-line-one-income" data-id="${valueRead[i][0]}">
 
       <div class="linie-tabel-chield-incomes-0">
-        <div class="expenses_list_group">
+        <div class="incomes_list_group">
           <p class="num_style">${i + 1}</p>
-          <input class="expenses_list_title" type="text" id="js-venit-titlu-${valueRead[i][0]}" value="${valueRead[i][1].titlu}">
+          <input class="incomes_list_title" type="text" id="js-venit-titlu-${valueRead[i][0]}" value="${valueRead[i][1].titlu}">
         </div>
         <div class="linie-tabel-lei-add">
           <input class="expenses_list_suma" type="number" id="js-venit-suma-${valueRead[i][0]}" value="${valueRead[i][1].suma}">
@@ -412,17 +412,17 @@ function readIncomes(valueRead) {
 
       <div class="linie-tabel-chield-incomes-1">
         <p class="percent_all_group">${percentOfTotal}%</p>
-        <input class="expenses_list_data" type="date" id="js-venit-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
+        <input class="incomes_list_data" type="date" id="js-venit-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
       </div>
 
       <div class="linie-tabel-chield-incomes-2">
-        <select class="expenses_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="income-state" id="js-venit-state-${valueRead[i][0]}">
+        <select class="incomes_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="income-state" id="js-venit-state-${valueRead[i][0]}">
           <option value="${valueRead[i][1].state}" selected disabled hidden>${valueRead[i][1].state}</option>
           <option value="În așteptare">În așteptare</option>
           <option value="Venit">Venit</option>
         </select>
 
-        <select class="expenses_list_state" name="grupe-utilizatori" id="js-venit-user-${valueRead[i][0]}">
+        <select class="incomes_list_user" name="grupe-utilizatori" id="js-venit-user-${valueRead[i][0]}">
           <option value="${valueRead[i][1].user}" selected disabled hidden>${valueRead[i][1].user}</option>
           <option value="Toti">Toti</option>
           <option value="Eugen">Eugen</option>
