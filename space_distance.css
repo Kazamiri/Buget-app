@@ -1,0 +1,10 @@
+:root
+{
+  --space-distance-xs: 4px;
+  --space-distance-s: 8px;
+  --space-distance-m: 12px;
+  --space-distance-l: 16px;
+  --space-distance-xl: 24px;
+  --space-distance-xxl: 32px;
+  --space-distance-xxxl: 40px;
+}

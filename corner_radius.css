@@ -1,0 +1,10 @@
+:root
+{
+  --corner-radius-xs: 4p;
+  --corner-radius-s: 8px;
+  --corner-radius-m: 12px;
+  --corner-radius-l: 16px;
+  --corner-radius-xl: 24px;
+  --corner-radius-xxl: 32px;
+  --corner-radius-xxxl: 40px;
+}
