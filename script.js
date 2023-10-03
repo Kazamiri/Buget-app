@@ -435,15 +435,17 @@ function readIncomes(valueRead) {
         </select>
 
       </div>
-  
-      <div class="expenses_list_both-buttons" >
-        <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-income" data-id="${valueRead[i][0]}">
-        <span class="material-symbols-outlined">autorenew</span></button>
-        <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-income" data-id="${valueRead[i][0]}">
-        <span class="material-symbols-outlined">delete_forever</span>
-        </button>
-      </div>
 
+      <div class="linie-tabel-chield-incomes-3">
+        <div class="expenses_list_both-buttons" >
+          <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-income" data-id="${valueRead[i][0]}">
+          <span class="material-symbols-outlined">autorenew</span></button>
+          <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-income" data-id="${valueRead[i][0]}">
+          <span class="material-symbols-outlined">delete_forever</span>
+          </button>
+        </div>
+      </div>
+  
     </div>`
   }
 
@@ -594,8 +596,6 @@ function readGroups(expensesBD, groupBD, incomesAll) {
 
     for (let i = 0; i < groupBD.length; i++) {
 
-      //console.log(groupBD[i][1].suma)
-
       let areLeft  = groupBD[i][1].suma - calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu))
   
       let percentOfTotal = diference(incomesAll, groupBD[i][1].suma).toFixed(0);
@@ -719,9 +719,6 @@ function newDateRefreshExpenses (lineItem, buttonItem) {
   allItemLine.forEach((line) => {
     line.addEventListener('click', () => {
       let itemOneLineSelect = document.querySelector(`#${buttonItem}[data-id="${line.dataset.id}"]`)
-      console.log(buttonItem)
-      console.log(line.dataset.id)
-      console.log(itemOneLineSelect)
       itemOneLineSelect.style.color = 'var(--color-functional-green-secondary)'
     })
   })
@@ -780,8 +777,6 @@ function upDateGroups (idButonSelector, locationFile) {
       itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
 
       event.stopPropagation()
-
-      console.log("button update")
 
       let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
 
