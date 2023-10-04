@@ -1163,6 +1163,8 @@ inputDate.value = currentDate;
 
 inputIncomeDate.value = currentDate;
 
+inputDateStartGroup.value = currentDate;
+
 
 
 
