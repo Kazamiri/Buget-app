@@ -1119,13 +1119,24 @@ function levelExpensese (incomes, expenses) {
   var todayDateNumStat = parseInt(todayDateStat, 10);
   let dataStat = todayDateNumStat-1;
 
-  ctx.beginPath()
-  ctx.strokeStyle = 'rgba(235, 235, 245, 0.30)'
-  ctx.lineWidth = 8;
-  ctx.moveTo(26 + (52 * dataStat), 512)
-  ctx.lineTo(26 + (52 * dataStat), 512)
-  ctx.lineCap = "round"
-  ctx.stroke()
+
+  if(window.innerWidth <= 575) {
+    ctx.beginPath()
+    ctx.strokeStyle = 'rgba(235, 235, 245, 0.30)'
+    ctx.lineWidth = 6;
+    ctx.moveTo(22 + (52 * dataStat), 512)
+    ctx.lineTo(30 + (52 * dataStat), 512)
+    ctx.lineCap = "round"
+    ctx.stroke()
+  } else{
+    ctx.beginPath()
+    ctx.strokeStyle = 'rgba(235, 235, 245, 0.30)'
+    ctx.lineWidth = 8;
+    ctx.moveTo(26 + (52 * dataStat), 512)
+    ctx.lineTo(26 + (52 * dataStat), 512)
+    ctx.lineCap = "round"
+    ctx.stroke()
+  }
 }
 
 function levelExpenseseValue (valueHigh, valueMedium, valueLow) {
