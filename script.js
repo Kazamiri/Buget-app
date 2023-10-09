@@ -1175,20 +1175,6 @@ inputDateStartGroup.value = currentDate;
 
 
 
-let currentDateSS = new Date();
-currentDateSS.setDate(1);
-console.log(currentDateSS)
-
-/*let currentDateDD = new Date().toUTCString();
-
-console.log(currentDateDD)
-
-let month = currentDateSS.getMonth(); 
-console.log(month)
-
-let day = currentDateSS.getDate();
-console.log(day) */
-
 let clicks = 0;
 clicks --;
 clicks --;
@@ -1222,8 +1208,11 @@ console.log(navigateByMonth (clicks))
 
 const testDataHtml = navigateByMonth (clicks)
 
+let currentDateSS = new Date();
+const isoString = currentDateSS.toISOString();
+
 const testHtmlData = document.getElementById('test_data')
-testHtmlData.innerHTML +=`<p>${testDataHtml}</p>`
+testHtmlData.innerHTML +=`<p>${currentDateSS}</p><p>${isoString}</p>`
 
 
 
