@@ -78,9 +78,9 @@ const addButtonTitleTypesGroup = document.getElementById('js-add-new-title-types
 
 
 
-onValue(allMonthsInDB, function(snapshot) {
+/*onValue(allMonthsInDB, function(snapshot) {
 
-  let addMonthPage = 0; // Aceasta este variabiala indica numarul dde oridne a lunii selectate
+  let addMonthPage = 0; // Aceasta este variabiala indica numarul de oridne a lunii selectate
   
   let monthsDateSec = Object.values(snapshot.val()) 
   monthsDateSec.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
@@ -109,9 +109,40 @@ onValue(allMonthsInDB, function(snapshot) {
   
 })
 
+/*onValue(allMonthsInDB, function(snapshot) {
+
+  let addMonthPage = 0; // Aceasta este variabiala indica numarul de oridne a lunii selectate
+  
+  let monthsDateSec = Object.values(snapshot.val()) 
+  monthsDateSec.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
+  listenAll (addMonthPage,monthsDateSec)
 
 
-function listenAll (numMonths, monthsList) {
+  navButtonMonthLeft.addEventListener("click", function () {
+    if (addMonthPage != 0) {  
+      addMonthPage --;
+      listenAll (addMonthPage,monthsDateSec)
+    } else {
+      addMonthPage = 0
+      listenAll (addMonthPage, monthsDateSec)
+    }
+  }) // Aceasta functie scade cite o pagina si activeaza functia pentru redarea titlului
+  
+  navButtonMonthRight.addEventListener("click", function () {
+    if (addMonthPage < monthsDateSec.length - 1) {  
+      addMonthPage ++;
+      listenAll (addMonthPage,monthsDateSec)
+    } else {
+      addMonthPage = monthsDateSec.length - 1
+      listenAll (addMonthPage,monthsDateSec)
+    }
+  }) // Aceasta functie adauga cite o pagina si activeaza functia pentru redarea titlului
+  
+})*/
+
+
+
+/*function listenAll (numMonths, monthsList) {
   onValue(allDateInDB, function(snapshot) {
 
     let itemsArray = Object.entries(snapshot.val()) 
@@ -121,10 +152,10 @@ function listenAll (numMonths, monthsList) {
     let monthsGroups = Object.entries(itemsArray[1][1])
   
 
-    changeMonth (numMonths, monthsIncomes, monthsExpenses, monthsGroups, monthsList)
+    //changeMonth (numMonths, monthsIncomes, monthsExpenses, monthsGroups, monthsList)
 
   })
-}
+}*/
 
 function extractByPeriod (startMonth, groupBD, typeGroup) {
 
@@ -145,51 +176,45 @@ function extractByPeriod (startMonth, groupBD, typeGroup) {
 }
 
 
-function changeMonth (numPage, actualIncomesBD, actualExpensesBD, actualGroupBD, monthsList) {
+function changeMonth (monthsIncomes, monthsExpenses, monthsGroups) {
 
-  changeTitleMonth (numPage, monthsList)
-
-  let incomesMonths = selectFilteredSortMonth (numPage, actualIncomesBD, monthsList)
-  let expensesMonths = selectFilteredSortMonth (numPage, actualExpensesBD, monthsList)
-  let groupMonths = selectFilteredSortGroupMonth (numPage, actualGroupBD, monthsList)
-  let availableIncomes = fiterItem (incomesMonths, "state", "Venit")
-  let pendingExpenses = fiterItem (expensesMonths, "state", "Cheltuit")
+  let availableIncomes = fiterItem (monthsIncomes, "state", "Venit")
+  let pendingExpenses = fiterItem (monthsExpenses, "state", "Cheltuit")
   let moneyAvailable = (calculateSum(availableIncomes)) - (calculateSum(pendingExpenses))
 
-
-  readIncomes(incomesMonths) // Vizualizeaza datele pe pagina HTML
-  incomesHtmlDate(calculateSum(incomesMonths))
+  readIncomes(monthsIncomes) // Vizualizeaza datele pe pagina HTML
+  incomesHtmlDate(calculateSum(monthsIncomes))
   availableIncomesHtmlDate (calculateSum(availableIncomes))
 
-  newDateOneArc ('c0', calculateSum(incomesMonths), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)')
+  newDateOneArc ('c0', calculateSum(monthsIncomes), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)')
 
 
-  readExpenses(expensesMonths) // Vizualizeaza datele pe pagina HTML
-  expensesHtmlDate (calculateSum(expensesMonths))
+  readExpenses(monthsExpenses) // Vizualizeaza datele pe pagina HTML
+  expensesHtmlDate (calculateSum(monthsExpenses))
   incurredExpensesHtmlDate (calculateSum(pendingExpenses))
 
-  newDateArc ('c1', calculateSum(incomesMonths), calculateSum(expensesMonths), 'rgba(254, 152, 112, 1)', calculateSum(incomesMonths), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)' )
+  newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), 'rgba(254, 152, 112, 1)', calculateSum(monthsIncomes), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)' )
 
 
 
-  readGroups(expensesMonths, groupMonths, calculateSum(incomesMonths))
-  allocatedMoneyHtmlDate (calculateSum(groupMonths))
+  readGroups(monthsExpenses, monthsGroups, calculateSum(monthsIncomes))
+  allocatedMoneyHtmlDate (calculateSum(monthsGroups))
   moneyAvailableHtmlDate (moneyAvailable)
 
-  newDateArc ('c2', calculateSum(incomesMonths), calculateSum(groupMonths), 'rgba(37, 116, 255, 1)', calculateSum(availableIncomes), moneyAvailable, 'rgba(235, 235, 245, 0.60)' )
+  newDateArc ('c2', calculateSum(monthsIncomes), calculateSum(monthsGroups), 'rgba(37, 116, 255, 1)', calculateSum(availableIncomes), moneyAvailable, 'rgba(235, 235, 245, 0.60)' )
 
 
 
-  levelExpenseseStatistics (diference (calculateSum(expensesMonths), calculateSum(fiterItem (expensesMonths, "level", "Low"))),diference (calculateSum(expensesMonths), calculateSum(fiterItem (expensesMonths, "level", "Medium"))),diference (calculateSum(expensesMonths), calculateSum(fiterItem (expensesMonths, "level", "High"))))
+  levelExpenseseStatistics (diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "Low"))),diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "Medium"))),diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "High"))))
 
-  levelExpensese(incomesMonths, expensesMonths)
+  levelExpensese(monthsIncomes, monthsExpenses)
 
-  levelExpenseseValue (calculateSum(fiterItem (expensesMonths, "level", "High")), calculateSum(fiterItem (expensesMonths, "level", "Medium")), calculateSum(fiterItem (expensesMonths, "level", "Low")),)
+  levelExpenseseValue (calculateSum(fiterItem (monthsExpenses, "level", "High")), calculateSum(fiterItem (monthsExpenses, "level", "Medium")), calculateSum(fiterItem (monthsExpenses, "level", "Low")),)
 
 
 }
 
-function selectFilteredSortMonth (numPage, actualBD, monthsList) {
+/*function selectFilteredSortMonth (numPage, actualBD, monthsList) {
 
   const curentSelectMonth = new Date(monthsList[numPage].startDateMonth).getMonth() + 1; // Extrage din matrice luna din obiectul a carui indice corespunde cu pagina selectata.
   const curentSelectYear = new Date(monthsList[numPage].startDateMonth).getFullYear(); // Extrage din matrice anul din obiectul a carui indice corespunde cu pagina selectata.
@@ -207,9 +232,9 @@ function selectFilteredSortGroupMonth (numPage, actualBD, monthsList) {
   let actualMonths = fileredActualGroupMonths (curentSelectMonth, curentSelectYear, actualBD) // Extrage din masiv veniturile care corespund lunii si anului selectat
 
   return actualMonths.sort((a, b) => a[1].dataStart.localeCompare(b[1].dataStart)); // Sorteaza dupa data valorile extrase
-}
+}*/
 
-function changeTitleMonth (numPage, monthsList) {
+/*function changeTitleMonth (numPage, monthsList) {
 
   const titleMonths = ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie'] // Aceste valori sun utilizate pentru a arata pe pagina html care luna a fost selectata
 
@@ -219,10 +244,10 @@ function changeTitleMonth (numPage, monthsList) {
 
   navMonthTitle.innerHTML =`${curentTitleMonth} ${curentSelectYear}` // I se atribuie denumirea lunii si anul lunii selectate.
 
-}
+}*/
 
 
-function fileredActualMonths (month, year, bazaDate) {
+/*function fileredActualMonths (month, year, bazaDate) {
   const filteredLuna = bazaDate.filter((luna) => {
     const entryDate = new Date(luna[1].data);
     const entryYear = entryDate.getFullYear();
@@ -230,10 +255,10 @@ function fileredActualMonths (month, year, bazaDate) {
     return entryYear === year && entryMonth === month;
   });
   return filteredLuna;
-} // Selecteaz din baza cheltuielile care corespund cu anul si luna
+} // Selecteaz din baza cheltuielile care corespund cu anul si luna*/
 
 
-function fileredActualGroupMonths (month, year, bazaDate) {
+/*function fileredActualGroupMonths (month, year, bazaDate) {
   const filteredLuna = bazaDate.filter((luna) => {
     const entryDate = new Date(luna[1].dataStart);
     const entryYear = entryDate.getFullYear();
@@ -241,7 +266,7 @@ function fileredActualGroupMonths (month, year, bazaDate) {
     return entryYear === year && entryMonth === month;
   });
   return filteredLuna;
-} // Selecteaz din baza cheltuielile care corespund cu anul si luna
+} // Selecteaz din baza cheltuielile care corespund cu anul si luna */
 
 //fiterGroup (groupTitle)
 
@@ -333,7 +358,7 @@ addButtonTitleTypesGroup.addEventListener("click", function () {
   
 })
 
-addButtonIncome.addEventListener("click", function () {
+/*addButtonIncome.addEventListener("click", function () {
   let addIncomeValue = {
     titlu: `${inputIncomeTitle.value}`,
     suma: `${inputIncomeSuma.value}`,
@@ -344,10 +369,10 @@ addButtonIncome.addEventListener("click", function () {
   
   push(incomeInDB, addIncomeValue) // Adaugam obiectul cu valorile adugate de user in masivul firebase, venituri
   
-})
+})*/
 
 
-addButtonExpenses.addEventListener("click", function () {
+/*addButtonExpenses.addEventListener("click", function () {
   let addExpensesValue = {
     grupa: `${inputGrupa.value}`,
     titlu: `${inputTitlu.value}`,
@@ -371,7 +396,7 @@ addButtonGroup.addEventListener("click", function () {
   
   push(groupsInDB, addGroupValue) // Adaugam obiectul cu valorile adugate de user in masivul firebase, venituri
   
-})
+})*/
 
 
 
@@ -379,7 +404,9 @@ addButtonGroup.addEventListener("click", function () {
 
 
 
-function readIncomes(valueRead) {
+function readIncomes(monthsIncomes) {
+
+  //addingNewMonths (`2023-05-01`,monthsIncomes)
 
   cleanLists(incomesList)
 
@@ -393,37 +420,37 @@ function readIncomes(valueRead) {
     return colorText
   }
 
-  for (let i = 0; i < valueRead.length; i++) {
-    let percentOfTotal = diference(calculateSum(valueRead), valueRead[i][1].suma).toFixed(0);
+  for (let i = 0; i < monthsIncomes.length; i++) {
+    let percentOfTotal = diference(calculateSum(monthsIncomes), monthsIncomes[i][1].suma).toFixed(0);
 
     incomesList.innerHTML += `
-    <div class="linie-tabel" id="js-item-line-one-income" data-id="${valueRead[i][0]}">
+    <div class="linie-tabel" id="js-item-line-one-income" data-id="${monthsIncomes[i][0]}">
 
       <div class="linie-tabel-chield-incomes-0">
         <div class="incomes_list_group">
           <p class="num_style">${i + 1}</p>
-          <input class="incomes_list_title" type="text" id="js-venit-titlu-${valueRead[i][0]}" value="${valueRead[i][1].titlu}">
+          <input class="incomes_list_title" type="text" id="js-venit-titlu-${monthsIncomes[i][0]}" value="${monthsIncomes[i][1].titlu}">
         </div>
         <div class="linie-tabel-lei-add">
-          <input class="expenses_list_suma" type="number" id="js-venit-suma-${valueRead[i][0]}" value="${valueRead[i][1].suma}">
+          <input class="expenses_list_suma" type="number" id="js-venit-suma-${monthsIncomes[i][0]}" value="${monthsIncomes[i][1].suma}">
           <p class="lei_style">lei</p>
         </div>
       </div>
 
       <div class="linie-tabel-chield-incomes-1">
         <p class="percent_all_group">${percentOfTotal}%</p>
-        <input class="incomes_list_data" type="date" id="js-venit-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
+        <input class="incomes_list_data" type="date" id="js-venit-data-${monthsIncomes[i][0]}" value="${monthsIncomes[i][1].data}">
       </div>
 
       <div class="linie-tabel-chield-incomes-2">
-        <select class="incomes_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="income-state" id="js-venit-state-${valueRead[i][0]}">
-          <option value="${valueRead[i][1].state}" selected disabled hidden>${valueRead[i][1].state}</option>
+        <select class="incomes_list_state" style="color: ${colorState(monthsIncomes[i][1].state)};" name="income-state" id="js-venit-state-${monthsIncomes[i][0]}">
+          <option value="${monthsIncomes[i][1].state}" selected disabled hidden>${monthsIncomes[i][1].state}</option>
           <option value="În așteptare">În așteptare</option>
           <option value="Venit">Venit</option>
         </select>
 
-        <select class="incomes_list_user" name="grupe-utilizatori" id="js-venit-user-${valueRead[i][0]}">
-          <option value="${valueRead[i][1].user}" selected disabled hidden>${valueRead[i][1].user}</option>
+        <select class="incomes_list_user" name="grupe-utilizatori" id="js-venit-user-${monthsIncomes[i][0]}">
+          <option value="${monthsIncomes[i][1].user}" selected disabled hidden>${monthsIncomes[i][1].user}</option>
           <option value="Toti">Toti</option>
           <option value="Eugen">Eugen</option>
           <option value="Cris">Cris</option>
@@ -438,9 +465,9 @@ function readIncomes(valueRead) {
 
       <div class="linie-tabel-chield-incomes-3">
         <div class="expenses_list_both-buttons" >
-          <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-income" data-id="${valueRead[i][0]}">
+          <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-income" data-id="${monthsIncomes[i][0]}">
           <span class="material-symbols-outlined">autorenew</span></button>
-          <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-income" data-id="${valueRead[i][0]}">
+          <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-income" data-id="${monthsIncomes[i][0]}">
           <span class="material-symbols-outlined">delete_forever</span>
           </button>
         </div>
@@ -459,7 +486,9 @@ function readIncomes(valueRead) {
 
 
 
-function readExpenses(valueRead) {
+function readExpenses(monthsExpenses) {
+
+  //addingNewMonths (`2023-05-01`,monthsExpenses)
 
   cleanLists(expensesList) // Curata lista in HTML si adauga din nou noile valori
 
@@ -497,37 +526,37 @@ function readExpenses(valueRead) {
       optionsHTML += optionHTML
     }
 
-    for (let i = 0; i < valueRead.length; i++) {
+    for (let i = 0; i < monthsExpenses.length; i++) {
       expensesList.innerHTML += `
-      <div class="linie-tabel" id="js-item-line-one" data-id="${valueRead[i][0]}">
+      <div class="linie-tabel" id="js-item-line-one" data-id="${monthsExpenses[i][0]}">
 
         <div class="linie-tabel-chield-0">
           <div class="expenses_list_group">
             <p class="num_style">${i + 1}</p>
-            <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-${valueRead[i][0]}">
-              <option value="${valueRead[i][1].grupa}" selected disabled hidden>${valueRead[i][1].grupa}</option>
+            <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-${monthsExpenses[i][0]}">
+              <option value="${monthsExpenses[i][1].grupa}" selected disabled hidden>${monthsExpenses[i][1].grupa}</option>
               ${optionsHTML}
             </select>
           </div>
-          <input class="expenses_list_title" type="text" id="js-titlu-${valueRead[i][0]}" value="${valueRead[i][1].titlu}">
+          <input class="expenses_list_title" type="text" id="js-titlu-${monthsExpenses[i][0]}" value="${monthsExpenses[i][1].titlu}">
         </div>
 
         <div class="linie-tabel-chield-1">
             <div class="linie-tabel-lei-add">
-              <input class="expenses_list_suma" type="number" id="js-suma-${valueRead[i][0]}" value="${valueRead[i][1].suma}">
+              <input class="expenses_list_suma" type="number" id="js-suma-${monthsExpenses[i][0]}" value="${monthsExpenses[i][1].suma}">
               <p class="lei_style">lei</p>
             </div>
-            <input class="expenses_list_data" type="date" id="js-data-${valueRead[i][0]}" value="${valueRead[i][1].data}">
+            <input class="expenses_list_data" type="date" id="js-data-${monthsExpenses[i][0]}" value="${monthsExpenses[i][1].data}">
         </div>
 
         <div class="linie-tabel-chield-2">
-          <select class="expenses_list_state" style="color: ${colorState(valueRead[i][1].state)};" name="grupe-cheltuieli" id="js-state-${valueRead[i][0]}">
-            <option value="${valueRead[i][1].state}" selected disabled hidden>${valueRead[i][1].state}</option>
+          <select class="expenses_list_state" style="color: ${colorState(monthsExpenses[i][1].state)};" name="grupe-cheltuieli" id="js-state-${monthsExpenses[i][0]}">
+            <option value="${monthsExpenses[i][1].state}" selected disabled hidden>${monthsExpenses[i][1].state}</option>
             <option value="În așteptare">În așteptare</option>
             <option value="Cheltuit">Cheltuit</option>
           </select>
-          <select class="expenses_list_level" style="color: ${colorLevel(valueRead[i][1].level)};" name="grupe-level" id="js-level-${valueRead[i][0]}">
-            <option value="${valueRead[i][1].level}" selected disabled hidden>${valueRead[i][1].level}</option>
+          <select class="expenses_list_level" style="color: ${colorLevel(monthsExpenses[i][1].level)};" name="grupe-level" id="js-level-${monthsExpenses[i][0]}">
+            <option value="${monthsExpenses[i][1].level}" selected disabled hidden>${monthsExpenses[i][1].level}</option>
             <option value="High">High</option>
             <option value="Medium">Medium</option>
             <option value="Low">Low</option>
@@ -535,8 +564,8 @@ function readExpenses(valueRead) {
         </div>
 
         <div class="linie-tabel-chield-3">
-          <select class="expenses_list_state" name="grupe-utilizatori" id="js-user-${valueRead[i][0]}">
-            <option value="${valueRead[i][1].user}" selected disabled hidden>${valueRead[i][1].user}</option>
+          <select class="expenses_list_state" name="grupe-utilizatori" id="js-user-${monthsExpenses[i][0]}">
+            <option value="${monthsExpenses[i][1].user}" selected disabled hidden>${monthsExpenses[i][1].user}</option>
             <option value="Toti">Toti</option>
             <option value="Eugen">Eugen</option>
             <option value="Cris">Cris</option>
@@ -547,10 +576,10 @@ function readExpenses(valueRead) {
             <option value="Simona">Simona</option>
           </select>
           <div class="expenses_list_both-buttons" >
-            <button class="expenses_list_button expenses_list_button_refresh" id="js-button-updata-expenses" data-id="${valueRead[i][0]}">
+            <button class="expenses_list_button expenses_list_button_refresh" id="js-button-updata-expenses" data-id="${monthsExpenses[i][0]}">
               <span class="material-symbols-outlined">autorenew</span>
             </button>
-            <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-expenses" data-id="${valueRead[i][0]}">
+            <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-expenses" data-id="${monthsExpenses[i][0]}">
               <span class="material-symbols-outlined">delete_forever</span>
             </button>
           </div>
@@ -574,11 +603,13 @@ function readExpenses(valueRead) {
 
 
 
-function readGroups(expensesBD, groupBD, incomesAll) {
+function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes) {
 
-  let expensesLow = fiterItem (expensesBD, "level", "Low")
-  let expensesMedium = fiterItem (expensesBD, "level", "Medium")
-  let expensesHigh = fiterItem (expensesBD, "level", "High")
+  //addingNewMonths (`2023-05-01`,monthsGroups)
+
+  let expensesLow = fiterItem (monthsExpenses, "level", "Low")
+  let expensesMedium = fiterItem (monthsExpenses, "level", "Medium")
+  let expensesHigh = fiterItem (monthsExpenses, "level", "High")
 
   cleanLists(groupsList) // Curata lista in HTML si adauga din nou noile valori
 
@@ -594,35 +625,35 @@ function readGroups(expensesBD, groupBD, incomesAll) {
       optionsHTML += optionHTML
     }
 
-    for (let i = 0; i < groupBD.length; i++) {
+    for (let i = 0; i < monthsGroups.length; i++) {
 
-      let areLeft  = groupBD[i][1].suma - calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu))
+      let areLeft  = monthsGroups[i][1].suma - calculateSum(fiterGroup (monthsExpenses, monthsGroups[i][1].titlu))
   
-      let percentOfTotal = diference(incomesAll, groupBD[i][1].suma).toFixed(0);
+      let percentOfTotal = diference(sumMonthsIncomes, monthsGroups[i][1].suma).toFixed(0);
   
-      let diferenceLow = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesLow, groupBD[i][1].titlu))).toFixed(0);
+      let diferenceLow = diference(calculateSum(fiterGroup (monthsExpenses, monthsGroups[i][1].titlu)), calculateSum(fiterGroup (expensesLow, monthsGroups[i][1].titlu))).toFixed(0);
   
-      let diferenceMedium = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesMedium, groupBD[i][1].titlu))).toFixed(0);
+      let diferenceMedium = diference(calculateSum(fiterGroup (monthsExpenses, monthsGroups[i][1].titlu)), calculateSum(fiterGroup (expensesMedium, monthsGroups[i][1].titlu))).toFixed(0);
   
-      let diferenceHigh = diference(calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), calculateSum(fiterGroup (expensesHigh, groupBD[i][1].titlu))).toFixed(0);
+      let diferenceHigh = diference(calculateSum(fiterGroup (monthsExpenses, monthsGroups[i][1].titlu)), calculateSum(fiterGroup (expensesHigh, monthsGroups[i][1].titlu))).toFixed(0);
 
-      let diferencePointHtml = pointPositionCorrection (diference(groupBD[i][1].suma, calculateSum(fiterItem (fiterGroup (expensesBD, groupBD[i][1].titlu), "state", "Cheltuit"))).toFixed(0))
+      let diferencePointHtml = pointPositionCorrection (diference(monthsGroups[i][1].suma, calculateSum(fiterItem (fiterGroup (monthsExpenses, monthsGroups[i][1].titlu), "state", "Cheltuit"))).toFixed(0))
       
       groupsList.innerHTML += `
-        <div class="linie-tabel" id="js-item-line-one-group" data-id="${groupBD[i][0]}">
+        <div class="linie-tabel" id="js-item-line-one-group" data-id="${monthsGroups[i][0]}">
     
           <div class="linie-tabel-chield-group-0">
             <div class="expenses_list_group">
               <p class="num_style">${i + 1}</p>
-              <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-titlu-${groupBD[i][0]}">
-                <option value="${groupBD[i][1].titlu}" selected disabled hidden>${groupBD[i][1].titlu}</option>
+              <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-titlu-${monthsGroups[i][0]}">
+                <option value="${monthsGroups[i][1].titlu}" selected disabled hidden>${monthsGroups[i][1].titlu}</option>
                   ${optionsHTML}
               </select>
             </div>
 
             <div class="suma_percent_all_group">
               <div class="linie-tabel-lei-add">
-                <input class="expenses_list_suma" type="number" id="js-grupe-suma-${groupBD[i][0]}" value="${groupBD[i][1].suma}">
+                <input class="expenses_list_suma" type="number" id="js-grupe-suma-${monthsGroups[i][0]}" value="${monthsGroups[i][1].suma}">
                 <p class="lei_style">lei</p>
               </div>
             </div>
@@ -639,17 +670,17 @@ function readGroups(expensesBD, groupBD, incomesAll) {
               <div class="point_procente" style="left:${diferencePointHtml}%;" >
                 <div class="point_procente_inside"></div>
               </div>
-              <div id="js-${groupBD[i][1].titlu}" class="procente-second"> 
+              <div id="js-${monthsGroups[i][1].titlu}" class="procente-second"> 
                 <div class="low" style="width:${diferenceLow}%;"></div>
                 <div class="medium" style="width:${diferenceMedium}%;"></div>
                 <div class="high" style="width:${diferenceHigh}%;"></div>
               </div>
-              <p id="loading-${groupBD[i][1].titlu}" class="procente-style-second">10%</p>
+              <p id="loading-${monthsGroups[i][1].titlu}" class="procente-style-second">10%</p>
             </div>
             <div class="expenses_list_both-buttons" >
-              <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-group" data-id="${groupBD[i][0]}">
+              <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-group" data-id="${monthsGroups[i][0]}">
               <span class="material-symbols-outlined">autorenew</span></button>
-              <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-group" data-id="${groupBD[i][0]}">
+              <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-group" data-id="${monthsGroups[i][0]}">
               <span class="material-symbols-outlined">delete_forever</span>
               </button>
             </div>
@@ -657,7 +688,7 @@ function readGroups(expensesBD, groupBD, incomesAll) {
 
         </div>`
   
-        newDate (groupBD[i][1].suma, calculateSum(fiterGroup (expensesBD, groupBD[i][1].titlu)), `js-${groupBD[i][1].titlu}`, `loading-${groupBD[i][1].titlu}`,10)
+        newDate (monthsGroups[i][1].suma, calculateSum(fiterGroup (monthsExpenses, monthsGroups[i][1].titlu)), `js-${monthsGroups[i][1].titlu}`, `loading-${monthsGroups[i][1].titlu}`,10)
   
     }  
 
@@ -1167,33 +1198,75 @@ function filterPeriod (data, startDate, endDate) {
   return filteredData
 }
 
+let currentDate = new Date().toISOString().slice(0, 10);
+inputDate.value = currentDate;
+inputIncomeDate.value = currentDate;
+inputDateStartGroup.value = currentDate;
+
+
+// Elaborarea logici pentru modelul in care lunile sunt separeate
+
+
+/*onValue(allMonthsInDB, function(snapshot) {
+
+  let clicks = 0;
+  
+  let monthsDateSec = Object.values(snapshot.val()) 
+  monthsDateSec.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
+  listenAll (addMonthPage,monthsDateSec)
+
+
+  navButtonMonthLeft.addEventListener("click", function () {
+    if (clicks != 0) {  
+      clicks --;
+      listenAll (clicks,monthsDateSec)
+    } else {
+      clicks = 0
+      listenAll (clicks, monthsDateSec)
+    }
+  }) // Aceasta functie scade cite o pagina si activeaza functia pentru redarea titlului
+  
+  navButtonMonthRight.addEventListener("click", function () {
+    if (clicks < monthsDateSec.length - 1) {  
+      clicks ++;
+      listenAll (clicks,monthsDateSec)
+    } else {
+      clicks = monthsDateSec.length - 1
+      listenAll (clicks,monthsDateSec)
+    }
+  }) // Aceasta functie adauga cite o pagina si activeaza functia pentru redarea titlului
+  
+})*/
+
+function navigationButtons () {
+  let clicks = 0;
+  addingNewMonths (navigateByMonth (clicks))
+  changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+  readingNewMonths (navigateByMonth (clicks))
+
+  navButtonMonthLeft.addEventListener("click", function () {
+    clicks ++;
+    addingNewMonths (navigateByMonth (clicks))
+    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+    readingNewMonths (navigateByMonth (clicks))
+  })
+
+  navButtonMonthRight.addEventListener("click", function () {
+    clicks --;
+    addingNewMonths (navigateByMonth (clicks))
+    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+    readingNewMonths (navigateByMonth (clicks))
+  })
+}
+
+navigationButtons ()
 
 
 
-
-let clicks = 0;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-
-console.log(clicks)
-
-function navigateByMonth (clicksBack) {
+function navigateByMonth (clicks) {
   const date = new Date();
   date.setDate(1);
-  date.setMonth(date.getMonth() + clicksBack)
+  date.setMonth(date.getMonth() + clicks)
   const isoString = date.toISOString();
   const formattedDate = isoString.split('T')[0]; // Extracts YYYY-MM-DD
   return formattedDate
@@ -1212,13 +1285,164 @@ function drawYear (curentSelectMonth) {
   return year
 }
 
+function changeTitleMonth (curentTitleMonth, curentSelectYear) {
+  navMonthTitle.innerHTML =`${curentTitleMonth} ${curentSelectYear}` // I se atribuie denumirea lunii si anul lunii selectate.
+}
 
-const lunaHtml = convertMonthsString (navigateByMonth (clicks))
-const anulHtml = drawYear (navigateByMonth (clicks))
+function readingNewMonths(curentSelectMonth) {
+
+  const currentMonthsInDB = ref(database, `allMonthsSecond/${curentSelectMonth}`);
+
+  onValue(currentMonthsInDB, function (snapshot) {
+    
+    const data = snapshot.val();
+    
+    if (data !== null && typeof data === 'object') {
+      
+      let itemsArray = Object.entries(data);
+
+      if (itemsArray.length >= 3) {
+        let monthsIncomes = Object.entries(itemsArray[2][1]);
+        let monthsExpenses = Object.entries(itemsArray[0][1]);
+        let monthsGroups = Object.entries(itemsArray[1][1]);
+
+        monthsIncomes.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
+        monthsExpenses.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
+        monthsGroups.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
+
+        changeMonth (monthsIncomes, monthsExpenses, monthsGroups)
+
+      } else {
+        console.error("Not enough items in 'itemsArray'");
+      }
+    } else {
+      console.error("Invalid data received from the database");
+      alert(`Luna ${curentSelectMonth} lipsește, adăugați-o!`);
+    }
+  });
+}
+
+function addingNewMonths (curentSelectMonth,valueRead) {
+
+  console.log(curentSelectMonth)
+
+  const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${curentSelectMonth}/incomes`)
+  const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${curentSelectMonth}/expenses`)
+  const allMonthsInDBGroups = ref(database, `allMonthsSecond/${curentSelectMonth}/groups`)
+
+  addButtonIncome.addEventListener("click", function () {
+    let addIncomeValue = {
+      titlu: `${inputIncomeTitle.value}`,
+      suma: `${inputIncomeSuma.value}`,
+      data: `${inputIncomeDate.value}`,
+      state: `${inputIncomeState.value}`,
+      user: `${inputIncomeUser.value}`
+    } 
+    
+    push(allMonthsInDBIncomes, addIncomeValue)
+    
+  })
+
+  addButtonExpenses.addEventListener("click", function () {
+    let addExpensesValue = {
+      grupa: `${inputGrupa.value}`,
+      titlu: `${inputTitlu.value}`,
+      suma: `${inputSuma.value}`,
+      data: `${inputDate.value}`,
+      state: `${inputState.value}`,
+      level: `${inputLevel.value}`,
+      user: `${inputUser.value}`
+    } 
+    
+    push(allMonthsInDBExpenses, addExpensesValue) 
+    
+  })
+  
+  addButtonGroup.addEventListener("click", function () {
+    let addGroupsValue = {
+      titlu: `${inputGrupaTitlu.value}`,
+      suma: `${inputSumaGrupa.value}`,
+      dataStart: `${inputDateStartGroup.value}`,
+    } 
+    
+    push(allMonthsInDBGroups, addGroupsValue)
+    
+  })
 
 
-const testHtmlData = document.getElementById('test_data')
-testHtmlData.innerHTML +=`<p>${lunaHtml} ${anulHtml}</p>`
+
+  /*for (let i = 0; i < valueRead.length; i++) {
+
+    let addIncomeValue = {
+      data : `${valueRead[i][1].data}`,
+      state : `${valueRead[i][1].state}`,
+      suma : `${valueRead[i][1].suma}`, 
+      titlu : `${valueRead[i][1].titlu}`,
+      user : `${valueRead[i][1].user}`,
+    }  
+    
+    push(allMonthsInDBIncomes, addIncomeValue) 
+
+  }*/
+
+  /*for (let i = 0; i < valueRead.length; i++) {
+
+    let addExpensesValue = {
+      data : `${valueRead[i][1].data}`,
+      grupa : `${valueRead[i][1].grupa}`,
+      level : `${valueRead[i][1].level}`,
+      state : `${valueRead[i][1].state}`,
+      suma : `${valueRead[i][1].suma}`,
+      titlu : `${valueRead[i][1].titlu}`,
+      user : `${valueRead[i][1].user}`,
+    } 
+    
+    push(allMonthsInDBExpenses, addExpensesValue) 
+
+  }*/
+
+  /*for (let i = 0; i < valueRead.length; i++) {
+
+    let addGroupsValue = {
+      suma : `${valueRead[i][1].suma}`,
+      titlu : `${valueRead[i][1].titlu}`,
+    } 
+    
+    push(allMonthsInDBGroups, addGroupsValue)
+
+  }*/
+  /*let addIncomeValue = {
+    data : "2023-06-01",
+    state : "Venit",
+    suma : "9664", 
+    titlu : "Transfer din luna trecuta",
+    user : "Toti",
+  }  
+
+  let addExpensesValue = {
+    data : "2023-06-20",
+    grupa : "🚪 Gazdă",
+    level : "High",
+    state : "Cheltuit",
+    suma : "2952",
+    titlu : "Gazda",
+    user : "Toti",
+  } 
+
+  let addGroupsValue = {
+    dataStart : "2023-06-01",
+    suma : "351",
+    titlu : "🚴🏻 Piață",
+  } 
+
+  push(allMonthsInDBIncomes, addIncomeValue) 
+  push(allMonthsInDBExpenses, addExpensesValue) 
+  push(allMonthsInDBGroups, addGroupsValue)*/
+
+
+}
+
+//addingNewMonths (`2023-05-01`)
 
 
 
