@@ -1171,6 +1171,57 @@ function filterPeriod (data, startDate, endDate) {
 
 
 
+let clicks = 0;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+clicks --;
+
+console.log(clicks)
+
+function navigateByMonth (clicksBack) {
+  const date = new Date();
+  date.setDate(1);
+  date.setMonth(date.getMonth() + clicksBack)
+  const isoString = date.toISOString();
+  const formattedDate = isoString.split('T')[0]; // Extracts YYYY-MM-DD
+  return formattedDate
+}
+
+function convertMonthsString (curentSelectMonth) {
+  let months = parseInt(curentSelectMonth.slice(5, 7))
+  let year = parseInt(curentSelectMonth.slice(0, 4))
+  const titleMonths = ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie']
+  const curentTitleMonth = titleMonths[months - 1]
+  return curentTitleMonth
+}
+
+function drawYear (curentSelectMonth) {
+  let year = parseInt(curentSelectMonth.slice(0, 4))
+  return year
+}
+
+
+const lunaHtml = convertMonthsString (navigateByMonth (clicks))
+const anulHtml = drawYear (navigateByMonth (clicks))
+
+
+const testHtmlData = document.getElementById('test_data')
+testHtmlData.innerHTML +=`<p>${lunaHtml} ${anulHtml}</p>`
+
+
+
 
 
 
