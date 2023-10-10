@@ -1168,51 +1168,6 @@ function filterPeriod (data, startDate, endDate) {
 }
 
 
-let currentDate = new Date().toISOString().slice(0, 10);
-inputDate.value = currentDate;
-inputIncomeDate.value = currentDate;
-inputDateStartGroup.value = currentDate;
-
-
-
-let clicks = 0;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-clicks --;
-
-console.log(clicks)
-
-function navigateByMonth (clicksBack) {
-  const date = new Date();
-  date.setDate(1);
-  date.setMonth(date.getMonth() + clicksBack)
-  const isoString = date.toISOString();
-  const formattedDate = isoString.split('T')[0]; // Extracts YYYY-MM-DD
-  return formattedDate
-}
-
-console.log(navigateByMonth (clicks))
-
-const testDataHtml = navigateByMonth (clicks)
-
-let currentDateSS = new Date();
-const isoString = currentDateSS.toISOString();
-
-const testHtmlData = document.getElementById('test_data')
-testHtmlData.innerHTML +=`<p>${currentDateSS}</p><p>${isoString}</p>`
 
 
 
