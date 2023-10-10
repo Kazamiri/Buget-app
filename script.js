@@ -1168,7 +1168,10 @@ function filterPeriod (data, startDate, endDate) {
 }
 
 
-
+let currentDate = new Date().toISOString().slice(0, 10);
+inputDate.value = currentDate;
+inputIncomeDate.value = currentDate;
+inputDateStartGroup.value = currentDate;
 
 
 
