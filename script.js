@@ -792,8 +792,6 @@ function deletItem (idButonSelector, locationFile) {
 
   const allButtonDeleteExpenses = document.querySelectorAll(`#${idButonSelector}`)
   
-  console.log(allButtonDeleteExpenses)
-
   allButtonDeleteExpenses.forEach((button) => {
     button.addEventListener('click', () => {
       let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
