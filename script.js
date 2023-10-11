@@ -80,7 +80,7 @@ const addButtonTitleTypesGroup = document.getElementById('js-add-new-title-types
 
 // De aici se incepe 
 
-onValue(allMonthsSecond, function (snapshot) {
+/*onValue(allMonthsSecond, function (snapshot) {
 
   const data = snapshot.val();
     
@@ -103,7 +103,31 @@ onValue(allMonthsSecond, function (snapshot) {
     readingNewMonths (navigateByMonth (clicks))
   })
 
-});
+});*/
+
+function navigationButtons () {
+  let clicks = 0;
+  readingNewMonths (navigateByMonth (clicks))
+  addingNewMonths (navigateByMonth (clicks))
+  changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+  
+
+  navButtonMonthLeft.addEventListener("click", function () {
+    clicks ++;
+    readingNewMonths (navigateByMonth (clicks))
+    addingNewMonths (navigateByMonth (clicks))
+    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+  })
+
+  navButtonMonthRight.addEventListener("click", function () {
+    clicks --;
+    readingNewMonths (navigateByMonth (clicks))
+    addingNewMonths (navigateByMonth (clicks))
+    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+  })
+}
+
+navigationButtons ()
 
 
 
@@ -168,7 +192,7 @@ function readingNewMonths(curentSelectMonth) {
   });
 }
 
-function addingNewMonths (curentSelectMonth,valueRead) {
+function addingNewMonths (curentSelectMonth) {
 
   const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${curentSelectMonth}/incomes`)
   const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${curentSelectMonth}/expenses`)
@@ -240,14 +264,14 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
   let availableIncomes = fiterItem (monthsIncomes, "state", "Venit")
   let pendingExpenses = fiterItem (monthsExpenses, "state", "Cheltuit")
   let moneyAvailable = (calculateSum(availableIncomes)) - (calculateSum(pendingExpenses))
-
+  
   readIncomes(monthsIncomes, curentSelectMonth) // Vizualizeaza datele pe pagina HTML
   incomesHtmlDate(calculateSum(monthsIncomes))
   availableIncomesHtmlDate (calculateSum(availableIncomes))
 
   newDateOneArc ('c0', calculateSum(monthsIncomes), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)')
 
-
+  
   readExpenses(monthsExpenses, curentSelectMonth) // Vizualizeaza datele pe pagina HTML
   expensesHtmlDate (calculateSum(monthsExpenses))
   incurredExpensesHtmlDate (calculateSum(pendingExpenses))
@@ -652,11 +676,12 @@ function pointPositionCorrection (itemValue){
 
 function upDateIncomes (idButonSelector, locationFile) {
 
+
   const allButtonUpdateItems = document.querySelectorAll(`#${idButonSelector}`)
 
   allButtonUpdateItems.forEach((button) => {
 
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (event) => {
       const inputTitleItems = document.querySelector(`#js-venit-titlu-${button.dataset.id}`)
       const inputSumaItems = document.querySelector(`#js-venit-suma-${button.dataset.id}`)
       const inputDataItems = document.querySelector(`#js-venit-data-${button.dataset.id}`)
@@ -697,8 +722,6 @@ function newDateRefreshExpenses (lineItem, buttonItem) {
 
 function upDataExpenses (idButonSelector, locationFile) {
 
-  console.log(idButonSelector)
-  console.log(locationFile)
 
   const allButtonUpdateItems = document.querySelectorAll(`#${idButonSelector}`)
 
@@ -720,8 +743,6 @@ function upDataExpenses (idButonSelector, locationFile) {
   
 
       let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
-
-      console.log(`${locationFile}/${button.dataset.id}`)
 
       update(exactLocationOfItemInDB, {grupa:`${inputGroupsItems.value}`})
       update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
@@ -768,16 +789,24 @@ function upDateGroups (idButonSelector, locationFile) {
 
 function deletItem (idButonSelector, locationFile) {
 
+  console.log(idButonSelector)
+  console.log(locationFile)
+
+
   const allButtonDeleteExpenses = document.querySelectorAll(`#${idButonSelector}`)
 
   allButtonDeleteExpenses.forEach((button) => {
     button.addEventListener('click', () => {
+      console.log('sters')
       let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
       remove(exactLocationOfItemInDB)
+      console.log(`${locationFile}/${button.dataset.id}`)
     })
   })
 
 } 
+
+
 
 // Aceasta functie calculeaza suma tuturor valorilor din masivul adaugat in argument
 
