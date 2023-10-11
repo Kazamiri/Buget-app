@@ -209,47 +209,52 @@ function addingNewMonths (curentSelectMonth) {
   const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${curentSelectMonth}/incomes`)
   const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${curentSelectMonth}/expenses`)
   const allMonthsInDBGroups = ref(database, `allMonthsSecond/${curentSelectMonth}/groups`)
-
-  addButtonIncome.addEventListener("click", function () {
-    let addIncomeValue = {
-      titlu: `${inputIncomeTitle.value}`,
-      suma: `${inputIncomeSuma.value}`,
-      data: `${inputIncomeDate.value}`,
-      state: `${inputIncomeState.value}`,
-      user: `${inputIncomeUser.value}`
-    } 
-    
-    push(allMonthsInDBIncomes, addIncomeValue)
-    
-  })
-
-  addButtonExpenses.addEventListener("click", function () {
-    let addExpensesValue = {
-      grupa: `${inputGrupa.value}`,
-      titlu: `${inputTitlu.value}`,
-      suma: `${inputSuma.value}`,
-      data: `${inputDate.value}`,
-      state: `${inputState.value}`,
-      level: `${inputLevel.value}`,
-      user: `${inputUser.value}`
-    } 
-    
-    push(allMonthsInDBExpenses, addExpensesValue) 
-    
-  })
-  
-  addButtonGroup.addEventListener("click", function () {
-    let addGroupsValue = {
-      titlu: `${inputGrupaTitlu.value}`,
-      suma: `${inputSumaGrupa.value}`,
-      dataStart: `${inputDateStartGroup.value}`,
-    } 
-    
-    push(allMonthsInDBGroups, addGroupsValue)
-    
-  })
-
+  return curentSelectMonth
 }
+
+function addIncomes (allMonthsInDBIncomes) {
+  let addIncomeValue = {
+    titlu: `${inputIncomeTitle.value}`,
+    suma: `${inputIncomeSuma.value}`,
+    data: `${inputIncomeDate.value}`,
+    state: `${inputIncomeState.value}`,
+    user: `${inputIncomeUser.value}`
+  } 
+  console.log(allMonthsInDBIncomes)
+  console.log(" a functionat")
+
+  
+  //push(allMonthsInDBIncomes, addIncomeValue)
+}
+
+addButtonIncome.addEventListener("click", addIncomes (`allMonthsInDBIncomes`))
+
+addButtonExpenses.addEventListener("click", function () {
+  let addExpensesValue = {
+    grupa: `${inputGrupa.value}`,
+    titlu: `${inputTitlu.value}`,
+    suma: `${inputSuma.value}`,
+    data: `${inputDate.value}`,
+    state: `${inputState.value}`,
+    level: `${inputLevel.value}`,
+    user: `${inputUser.value}`
+  } 
+  console.log(allMonthsInDBExpenses)
+  
+  //push(allMonthsInDBExpenses, addExpensesValue) 
+  
+})
+
+addButtonGroup.addEventListener("click", function () {
+  let addGroupsValue = {
+    titlu: `${inputGrupaTitlu.value}`,
+    suma: `${inputSumaGrupa.value}`,
+    dataStart: `${inputDateStartGroup.value}`,
+  } 
+  console.log(allMonthsInDBGroups)
+  //push(allMonthsInDBGroups, addGroupsValue)
+  
+})
 
 function extractByPeriod (startMonth, groupBD, typeGroup) {
 
@@ -1103,8 +1108,6 @@ function levelExpensese (incomes, expenses) {
   let smallestDate = new Date(expenses[0][1].data);
   let largestDate = new Date(expenses[0][1].data);
 
-  console.log(smallestDate)
-  console.log(largestDate)
 
   // Iterate through the data and update the smallest and largest dates
   for (const item of expenses) {
@@ -1116,6 +1119,7 @@ function levelExpensese (incomes, expenses) {
           largestDate = currentDate;
       }
   }
+
 
   // Convert the smallest and largest dates back to string format
   const smallestDateString = smallestDate.toISOString().split('T')[0];
@@ -1132,8 +1136,6 @@ function levelExpensese (incomes, expenses) {
   
     let procent = diference (calculateSum(incomes), calculateSum(filterPeriod(expenses, smallestDateString, resultDate)))
     
-    console.log(procent)
-
     smallestDate.setDate(smallestDate.getDate() + 1);
 
     ctx.beginPath()
