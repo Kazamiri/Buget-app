@@ -130,9 +130,6 @@ function navigationButtons () {
 navigationButtons ()
 
 
-
-//navigationButtons ()
-
 function navigateByMonth (clicks) {
   const date = new Date();
   date.setDate(1);
@@ -794,6 +791,8 @@ function deletItem (idButonSelector, locationFile) {
 
 
   const allButtonDeleteExpenses = document.querySelectorAll(`#${idButonSelector}`)
+
+  console.log(allButtonDeleteExpenses)
 
   allButtonDeleteExpenses.forEach((button) => {
     button.addEventListener('click', () => {
