@@ -24,6 +24,8 @@ const expensesInDB = ref(database, "allMonths/expenses")
 const groupsInDB = ref(database, "allMonths/groups") 
 const typesOfGroupsInDB = ref(database, "allMonths/types_groups") 
 
+const allMonthsSecond = ref(database, "allMonthsSecond")
+
 
 const inputAddMonth = document.getElementById('js-add-month-value') 
 const addButtonMonth = document.getElementById('js-add-month-button') 
@@ -76,86 +78,142 @@ const closeModulAddMonth = document.getElementById('js-close-month-modul')
 const inputTitleTypesGroup = document.getElementById('js-new-title-types-group')
 const addButtonTitleTypesGroup = document.getElementById('js-add-new-title-types-group')
 
+// De aici se incepe 
 
+onValue(allMonthsSecond, function (snapshot) {
 
-/*onValue(allMonthsInDB, function(snapshot) {
-
-  let addMonthPage = 0; // Aceasta este variabiala indica numarul de oridne a lunii selectate
-  
-  let monthsDateSec = Object.values(snapshot.val()) 
-  monthsDateSec.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
-  listenAll (addMonthPage,monthsDateSec)
-
-
-  navButtonMonthLeft.addEventListener("click", function () {
-    if (addMonthPage != 0) {  
-      addMonthPage --;
-      listenAll (addMonthPage,monthsDateSec)
-    } else {
-      addMonthPage = 0
-      listenAll (addMonthPage, monthsDateSec)
-    }
-  }) // Aceasta functie scade cite o pagina si activeaza functia pentru redarea titlului
-  
-  navButtonMonthRight.addEventListener("click", function () {
-    if (addMonthPage < monthsDateSec.length - 1) {  
-      addMonthPage ++;
-      listenAll (addMonthPage,monthsDateSec)
-    } else {
-      addMonthPage = monthsDateSec.length - 1
-      listenAll (addMonthPage,monthsDateSec)
-    }
-  }) // Aceasta functie adauga cite o pagina si activeaza functia pentru redarea titlului
-  
-})
-
-/*onValue(allMonthsInDB, function(snapshot) {
-
-  let addMonthPage = 0; // Aceasta este variabiala indica numarul de oridne a lunii selectate
-  
-  let monthsDateSec = Object.values(snapshot.val()) 
-  monthsDateSec.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
-  listenAll (addMonthPage,monthsDateSec)
-
+  const data = snapshot.val();
+    
+  let clicks = 0;
+  addingNewMonths (navigateByMonth (clicks))
+  changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+  readingNewMonths (navigateByMonth (clicks))
 
   navButtonMonthLeft.addEventListener("click", function () {
-    if (addMonthPage != 0) {  
-      addMonthPage --;
-      listenAll (addMonthPage,monthsDateSec)
-    } else {
-      addMonthPage = 0
-      listenAll (addMonthPage, monthsDateSec)
-    }
-  }) // Aceasta functie scade cite o pagina si activeaza functia pentru redarea titlului
-  
-  navButtonMonthRight.addEventListener("click", function () {
-    if (addMonthPage < monthsDateSec.length - 1) {  
-      addMonthPage ++;
-      listenAll (addMonthPage,monthsDateSec)
-    } else {
-      addMonthPage = monthsDateSec.length - 1
-      listenAll (addMonthPage,monthsDateSec)
-    }
-  }) // Aceasta functie adauga cite o pagina si activeaza functia pentru redarea titlului
-  
-})*/
-
-
-
-/*function listenAll (numMonths, monthsList) {
-  onValue(allDateInDB, function(snapshot) {
-
-    let itemsArray = Object.entries(snapshot.val()) 
-
-    let monthsExpenses = Object.entries(itemsArray[0][1])
-    let monthsIncomes = Object.entries(itemsArray[2][1])
-    let monthsGroups = Object.entries(itemsArray[1][1])
-  
-
-    //changeMonth (numMonths, monthsIncomes, monthsExpenses, monthsGroups, monthsList)
-
+    clicks ++;
+    addingNewMonths (navigateByMonth (clicks))
+    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+    readingNewMonths (navigateByMonth (clicks))
   })
-}*/
+
+  navButtonMonthRight.addEventListener("click", function () {
+    clicks --;
+    addingNewMonths (navigateByMonth (clicks))
+    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+    readingNewMonths (navigateByMonth (clicks))
+  })
+
+});
+
+
+
+//navigationButtons ()
+
+function navigateByMonth (clicks) {
+  const date = new Date();
+  date.setDate(1);
+  date.setMonth(date.getMonth() + clicks)
+  const isoString = date.toISOString();
+  const formattedDate = isoString.split('T')[0]; // Extracts YYYY-MM-DD
+  return formattedDate
+}
+
+function convertMonthsString (curentSelectMonth) {
+  let months = parseInt(curentSelectMonth.slice(5, 7))
+  let year = parseInt(curentSelectMonth.slice(0, 4))
+  const titleMonths = ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie']
+  const curentTitleMonth = titleMonths[months - 1]
+  return curentTitleMonth
+}
+
+function drawYear (curentSelectMonth) {
+  let year = parseInt(curentSelectMonth.slice(0, 4))
+  return year
+}
+
+function changeTitleMonth (curentTitleMonth, curentSelectYear) {
+  navMonthTitle.innerHTML =`${curentTitleMonth} ${curentSelectYear}` // I se atribuie denumirea lunii si anul lunii selectate.
+}
+
+function readingNewMonths(curentSelectMonth) {
+
+  const currentMonthsInDB = ref(database, `allMonthsSecond/${curentSelectMonth}`);
+
+  onValue(currentMonthsInDB, function (snapshot) {
+    
+    const data = snapshot.val();
+    
+    if (data !== null && typeof data === 'object') {
+      
+      let itemsArray = Object.entries(data);
+
+      if (itemsArray.length >= 3) {
+        let monthsIncomes = Object.entries(itemsArray[2][1]);
+        let monthsExpenses = Object.entries(itemsArray[0][1]);
+        let monthsGroups = Object.entries(itemsArray[1][1]);
+
+        monthsIncomes.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
+        monthsExpenses.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
+        monthsGroups.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
+
+        changeMonth (monthsIncomes, monthsExpenses, monthsGroups,`allMonthsSecond/${curentSelectMonth}`)
+
+      } else {
+        console.error("Not enough items in 'itemsArray'");
+      }
+    } else {
+      console.error("Invalid data received from the database");
+      alert(`Luna ${curentSelectMonth} lipsește, adăugați-o!`);
+    }
+  });
+}
+
+function addingNewMonths (curentSelectMonth,valueRead) {
+
+  const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${curentSelectMonth}/incomes`)
+  const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${curentSelectMonth}/expenses`)
+  const allMonthsInDBGroups = ref(database, `allMonthsSecond/${curentSelectMonth}/groups`)
+
+  addButtonIncome.addEventListener("click", function () {
+    let addIncomeValue = {
+      titlu: `${inputIncomeTitle.value}`,
+      suma: `${inputIncomeSuma.value}`,
+      data: `${inputIncomeDate.value}`,
+      state: `${inputIncomeState.value}`,
+      user: `${inputIncomeUser.value}`
+    } 
+    
+    push(allMonthsInDBIncomes, addIncomeValue)
+    
+  })
+
+  addButtonExpenses.addEventListener("click", function () {
+    let addExpensesValue = {
+      grupa: `${inputGrupa.value}`,
+      titlu: `${inputTitlu.value}`,
+      suma: `${inputSuma.value}`,
+      data: `${inputDate.value}`,
+      state: `${inputState.value}`,
+      level: `${inputLevel.value}`,
+      user: `${inputUser.value}`
+    } 
+    
+    push(allMonthsInDBExpenses, addExpensesValue) 
+    
+  })
+  
+  addButtonGroup.addEventListener("click", function () {
+    let addGroupsValue = {
+      titlu: `${inputGrupaTitlu.value}`,
+      suma: `${inputSumaGrupa.value}`,
+      dataStart: `${inputDateStartGroup.value}`,
+    } 
+    
+    push(allMonthsInDBGroups, addGroupsValue)
+    
+  })
+
+}
 
 function extractByPeriod (startMonth, groupBD, typeGroup) {
 
@@ -176,20 +234,21 @@ function extractByPeriod (startMonth, groupBD, typeGroup) {
 }
 
 
-function changeMonth (monthsIncomes, monthsExpenses, monthsGroups) {
+function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectMonth) {
+
 
   let availableIncomes = fiterItem (monthsIncomes, "state", "Venit")
   let pendingExpenses = fiterItem (monthsExpenses, "state", "Cheltuit")
   let moneyAvailable = (calculateSum(availableIncomes)) - (calculateSum(pendingExpenses))
 
-  readIncomes(monthsIncomes) // Vizualizeaza datele pe pagina HTML
+  readIncomes(monthsIncomes, curentSelectMonth) // Vizualizeaza datele pe pagina HTML
   incomesHtmlDate(calculateSum(monthsIncomes))
   availableIncomesHtmlDate (calculateSum(availableIncomes))
 
   newDateOneArc ('c0', calculateSum(monthsIncomes), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)')
 
 
-  readExpenses(monthsExpenses) // Vizualizeaza datele pe pagina HTML
+  readExpenses(monthsExpenses, curentSelectMonth) // Vizualizeaza datele pe pagina HTML
   expensesHtmlDate (calculateSum(monthsExpenses))
   incurredExpensesHtmlDate (calculateSum(pendingExpenses))
 
@@ -197,7 +256,7 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups) {
 
 
 
-  readGroups(monthsExpenses, monthsGroups, calculateSum(monthsIncomes))
+  readGroups(monthsExpenses, monthsGroups, calculateSum(monthsIncomes),curentSelectMonth)
   allocatedMoneyHtmlDate (calculateSum(monthsGroups))
   moneyAvailableHtmlDate (moneyAvailable)
 
@@ -214,62 +273,6 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups) {
 
 }
 
-/*function selectFilteredSortMonth (numPage, actualBD, monthsList) {
-
-  const curentSelectMonth = new Date(monthsList[numPage].startDateMonth).getMonth() + 1; // Extrage din matrice luna din obiectul a carui indice corespunde cu pagina selectata.
-  const curentSelectYear = new Date(monthsList[numPage].startDateMonth).getFullYear(); // Extrage din matrice anul din obiectul a carui indice corespunde cu pagina selectata.
-
-  let actualMonths = fileredActualMonths (curentSelectMonth, curentSelectYear, actualBD) // Extrage din masiv veniturile care corespund lunii si anului selectat
-
-  return actualMonths.sort((a, b) => a[1].data.localeCompare(b[1].data)); // Sorteaza dupa data valorile extrase
-}
-
-function selectFilteredSortGroupMonth (numPage, actualBD, monthsList) {
-
-  const curentSelectMonth = new Date(monthsList[numPage].startDateMonth).getMonth() + 1; // Extrage din matrice luna din obiectul a carui indice corespunde cu pagina selectata.
-  const curentSelectYear = new Date(monthsList[numPage].startDateMonth).getFullYear(); // Extrage din matrice anul din obiectul a carui indice corespunde cu pagina selectata.
-
-  let actualMonths = fileredActualGroupMonths (curentSelectMonth, curentSelectYear, actualBD) // Extrage din masiv veniturile care corespund lunii si anului selectat
-
-  return actualMonths.sort((a, b) => a[1].dataStart.localeCompare(b[1].dataStart)); // Sorteaza dupa data valorile extrase
-}*/
-
-/*function changeTitleMonth (numPage, monthsList) {
-
-  const titleMonths = ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie'] // Aceste valori sun utilizate pentru a arata pe pagina html care luna a fost selectata
-
-  const curentSelectMonth = new Date(monthsList[numPage].startDateMonth).getMonth() + 1; // Extrage din matrice luna din obiectul a carui indice corespunde cu pagina selectata.
-  const curentSelectYear = new Date(monthsList[numPage].startDateMonth).getFullYear(); // Extrage din matrice anul din obiectul a carui indice corespunde cu pagina selectata.
-  const curentTitleMonth = titleMonths[curentSelectMonth - 1] // I se atribuie din masiv denumirea lunii care a carui indice corespunde cu luna curenta selectata.
-
-  navMonthTitle.innerHTML =`${curentTitleMonth} ${curentSelectYear}` // I se atribuie denumirea lunii si anul lunii selectate.
-
-}*/
-
-
-/*function fileredActualMonths (month, year, bazaDate) {
-  const filteredLuna = bazaDate.filter((luna) => {
-    const entryDate = new Date(luna[1].data);
-    const entryYear = entryDate.getFullYear();
-    const entryMonth = entryDate.getMonth() + 1; // Months are zero-based, so we add 1.
-    return entryYear === year && entryMonth === month;
-  });
-  return filteredLuna;
-} // Selecteaz din baza cheltuielile care corespund cu anul si luna*/
-
-
-/*function fileredActualGroupMonths (month, year, bazaDate) {
-  const filteredLuna = bazaDate.filter((luna) => {
-    const entryDate = new Date(luna[1].dataStart);
-    const entryYear = entryDate.getFullYear();
-    const entryMonth = entryDate.getMonth() + 1; // Months are zero-based, so we add 1.
-    return entryYear === year && entryMonth === month;
-  });
-  return filteredLuna;
-} // Selecteaz din baza cheltuielile care corespund cu anul si luna */
-
-//fiterGroup (groupTitle)
-
 
 function fiterGroup (dataMonth, titleGroup) {
   let filteredObjects = dataMonth.filter(entry => entry[1].grupa === `${titleGroup}`);
@@ -281,25 +284,8 @@ function fiterItem (dataMonth, titleItem, valueItem) {
 }
 
 
-//const filteredData = data.filter(item => item[1]["state"] === "Venit");
-
-
-
 addButtonMonth.addEventListener("click", function () {
 
-      /* import { getDatabase, ref, onValue } from "firebase/database";
-      import { getAuth } from "firebase/auth";
-
-      const db = getDatabase();
-      const auth = getAuth();
-
-      const userId = auth.currentUser.uid;
-      return onValue(ref(db, '/users/' + userId), (snapshot) => {
-        const username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-        // ...
-      }, {
-        onlyOnce: true
-      });*/
 
   onValue(allDateInDB, function(snapshot) {
 
@@ -340,12 +326,6 @@ addButtonMonth.addEventListener("click", function () {
 
   modulAddMonth.close()
 
-  /*function refreshPage() {
-    // Reload the current page
-    location.reload();
-  }
-
-  refreshPage()*/
   
 })
 
@@ -358,53 +338,11 @@ addButtonTitleTypesGroup.addEventListener("click", function () {
   
 })
 
-/*addButtonIncome.addEventListener("click", function () {
-  let addIncomeValue = {
-    titlu: `${inputIncomeTitle.value}`,
-    suma: `${inputIncomeSuma.value}`,
-    data: `${inputIncomeDate.value}`,
-    state: `${inputIncomeState.value}`,
-    user: `${inputIncomeUser.value}`
-  } // Atribuim proprietatilor din obiect valorile introduse in cimpurile venituri
-  
-  push(incomeInDB, addIncomeValue) // Adaugam obiectul cu valorile adugate de user in masivul firebase, venituri
-  
-})*/
-
-
-/*addButtonExpenses.addEventListener("click", function () {
-  let addExpensesValue = {
-    grupa: `${inputGrupa.value}`,
-    titlu: `${inputTitlu.value}`,
-    suma: `${inputSuma.value}`,
-    data: `${inputDate.value}`,
-    state: `${inputState.value}`,
-    level: `${inputLevel.value}`,
-    user: `${inputUser.value}`
-  } // Atribuim proprietatilor din obiect valorile introduse in cimpurile cheltuieli
-  
-  push(expensesInDB, addExpensesValue) // Adaugam obiectul cu valorile adugate de user in masivul firebase
-  
-})
-
-addButtonGroup.addEventListener("click", function () {
-  let addGroupValue = {
-    titlu: `${inputGrupaTitlu.value}`,
-    suma: `${inputSumaGrupa.value}`,
-    dataStart: `${inputDateStartGroup.value}`,
-  } // Atribuim proprietatilor din obiect valorile introduse in cimpurile venituri
-  
-  push(groupsInDB, addGroupValue) // Adaugam obiectul cu valorile adugate de user in masivul firebase, venituri
-  
-})*/
 
 
 
-//listenAll ()
 
-
-
-function readIncomes(monthsIncomes) {
+function readIncomes(monthsIncomes, curentSelectMonth) {
 
   //addingNewMonths (`2023-05-01`,monthsIncomes)
 
@@ -478,15 +416,15 @@ function readIncomes(monthsIncomes) {
 
   newDateRefreshExpenses (`js-item-line-one-income`, 'js-button-update-income' )
 
-  upDateIncomes ('js-button-update-income', 'allMonths/income')
+  upDateIncomes ('js-button-update-income', `${curentSelectMonth}/incomes`)
 
-  deletItem ('js-button-delet-income', 'allMonths/income')
+  deletItem ('js-button-delet-income', `${curentSelectMonth}/incomes`)
 
 } // Functia data citeste masivul si il vizualizeaza lista de venituri pe pagina de baza
 
 
 
-function readExpenses(monthsExpenses) {
+function readExpenses(monthsExpenses, curentSelectMonth) {
 
   //addingNewMonths (`2023-05-01`,monthsExpenses)
 
@@ -595,15 +533,15 @@ function readExpenses(monthsExpenses) {
 
   newDateRefreshExpenses (`js-item-line-one`, 'js-button-updata-expenses' )
 
-  upDataExpenses ('js-button-updata-expenses', 'allMonths/expenses')
+  upDataExpenses ('js-button-updata-expenses', `${curentSelectMonth}/expenses`)
 
-  deletItem ('js-button-delet-expenses', 'allMonths/expenses')
+  deletItem ('js-button-delet-expenses', `${curentSelectMonth}/expenses`)
 
 } // Functia data citeste masivul si il vizualizeaza lista de cheltuieli pe pagina de baza
 
 
 
-function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes) {
+function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelectMonth) {
 
   //addingNewMonths (`2023-05-01`,monthsGroups)
 
@@ -698,9 +636,9 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes) {
 
   newDateRefreshExpenses (`js-item-line-one-group`, 'js-button-update-group' )
 
-  upDateGroups ('js-button-update-group', 'allMonths/groups')
+  upDateGroups ('js-button-update-group', `${curentSelectMonth}/groups`)
 
-  deletItem ('js-button-delet-group', 'allMonths/groups')
+  deletItem ('js-button-delet-group', `${curentSelectMonth}/groups`)
 
 } // Functia data citeste masivul si il vizualizeaza lista de cheltuieli pe pagina de baza
 
@@ -755,9 +693,12 @@ function newDateRefreshExpenses (lineItem, buttonItem) {
   })
 }
 
-
+//Functia data reinoieste un item cum ar fi un venit, o cheltuiala, o grupa
 
 function upDataExpenses (idButonSelector, locationFile) {
+
+  console.log(idButonSelector)
+  console.log(locationFile)
 
   const allButtonUpdateItems = document.querySelectorAll(`#${idButonSelector}`)
 
@@ -780,6 +721,8 @@ function upDataExpenses (idButonSelector, locationFile) {
 
       let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
 
+      console.log(`${locationFile}/${button.dataset.id}`)
+
       update(exactLocationOfItemInDB, {grupa:`${inputGroupsItems.value}`})
       update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
       update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
@@ -790,7 +733,10 @@ function upDataExpenses (idButonSelector, locationFile) {
 
     })
   })
-} //Functia data reinoieste un item cum ar fi un venit, o cheltuiala, o grupa
+}
+
+
+//Functia data reinoieste un item cum ar fi un venit, o cheltuiala, o grupa
 
 function upDateGroups (idButonSelector, locationFile) {
 
@@ -814,10 +760,11 @@ function upDateGroups (idButonSelector, locationFile) {
       update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
       update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
 
-
     })
   })
-} //Functia data reinoieste un item cum ar fi un venit, o cheltuiala, o grupa
+}
+
+//Functia data sterge un item cum ar fi un venit, o cheltuiala, o grupa
 
 function deletItem (idButonSelector, locationFile) {
 
@@ -829,25 +776,30 @@ function deletItem (idButonSelector, locationFile) {
       remove(exactLocationOfItemInDB)
     })
   })
-} //Functia data sterge un item cum ar fi un venit, o cheltuiala, o grupa
 
+} 
 
+// Aceasta functie calculeaza suma tuturor valorilor din masivul adaugat in argument
 
 function calculateSum(addArray) {
-  const sumAll = []; // In acest masiv sunt stocate sumele cheltuielilor
+  // In acest masiv sunt stocate sumele cheltuielilor
+  const sumAll = []; 
 
+  // Adauga sumele cheltuielilor in masiv si le schimba in numere
   for (let i = 0; i < addArray.length; i++) {
     sumAll.push(parseInt(addArray[i][1].suma));
-  } // Adauga sumele cheltuielilor in masiv si le schimba in numere
+  } 
 
-  const sum = sumAll.reduce((accumulator, currentValue) => accumulator + currentValue, 0); // Sumeaza taote sumele
+  // Sumeaza taote sumele
+  const sum = sumAll.reduce((accumulator, currentValue) => accumulator + currentValue, 0); 
 
+  // Sterge toate valorile din masiv
   for (let i = 0; i < sumAll.length; i++) {
-    sumAll.splice(i); // Sterge toate valorile din masiv
+    sumAll.splice(i); 
   }
 
   return sum;
-} // Aceasta functie calculeaza suma tuturor valorilor din masivul adaugat in argument
+} 
 
 
 function cleanLists(addlist) {
@@ -1207,169 +1159,14 @@ inputDateStartGroup.value = currentDate;
 // Elaborarea logici pentru modelul in care lunile sunt separeate
 
 
-/*onValue(allMonthsInDB, function(snapshot) {
-
-  let clicks = 0;
-  
-  let monthsDateSec = Object.values(snapshot.val()) 
-  monthsDateSec.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
-  listenAll (addMonthPage,monthsDateSec)
-
-
-  navButtonMonthLeft.addEventListener("click", function () {
-    if (clicks != 0) {  
-      clicks --;
-      listenAll (clicks,monthsDateSec)
-    } else {
-      clicks = 0
-      listenAll (clicks, monthsDateSec)
-    }
-  }) // Aceasta functie scade cite o pagina si activeaza functia pentru redarea titlului
-  
-  navButtonMonthRight.addEventListener("click", function () {
-    if (clicks < monthsDateSec.length - 1) {  
-      clicks ++;
-      listenAll (clicks,monthsDateSec)
-    } else {
-      clicks = monthsDateSec.length - 1
-      listenAll (clicks,monthsDateSec)
-    }
-  }) // Aceasta functie adauga cite o pagina si activeaza functia pentru redarea titlului
-  
-})*/
-
-function navigationButtons () {
-  let clicks = 0;
-  addingNewMonths (navigateByMonth (clicks))
-  changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
-  readingNewMonths (navigateByMonth (clicks))
-
-  navButtonMonthLeft.addEventListener("click", function () {
-    clicks ++;
-    addingNewMonths (navigateByMonth (clicks))
-    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
-    readingNewMonths (navigateByMonth (clicks))
-  })
-
-  navButtonMonthRight.addEventListener("click", function () {
-    clicks --;
-    addingNewMonths (navigateByMonth (clicks))
-    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
-    readingNewMonths (navigateByMonth (clicks))
-  })
-}
-
-navigationButtons ()
 
 
 
-function navigateByMonth (clicks) {
-  const date = new Date();
-  date.setDate(1);
-  date.setMonth(date.getMonth() + clicks)
-  const isoString = date.toISOString();
-  const formattedDate = isoString.split('T')[0]; // Extracts YYYY-MM-DD
-  return formattedDate
-}
-
-function convertMonthsString (curentSelectMonth) {
-  let months = parseInt(curentSelectMonth.slice(5, 7))
-  let year = parseInt(curentSelectMonth.slice(0, 4))
-  const titleMonths = ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie']
-  const curentTitleMonth = titleMonths[months - 1]
-  return curentTitleMonth
-}
-
-function drawYear (curentSelectMonth) {
-  let year = parseInt(curentSelectMonth.slice(0, 4))
-  return year
-}
-
-function changeTitleMonth (curentTitleMonth, curentSelectYear) {
-  navMonthTitle.innerHTML =`${curentTitleMonth} ${curentSelectYear}` // I se atribuie denumirea lunii si anul lunii selectate.
-}
-
-function readingNewMonths(curentSelectMonth) {
-
-  const currentMonthsInDB = ref(database, `allMonthsSecond/${curentSelectMonth}`);
-
-  onValue(currentMonthsInDB, function (snapshot) {
-    
-    const data = snapshot.val();
-    
-    if (data !== null && typeof data === 'object') {
-      
-      let itemsArray = Object.entries(data);
-
-      if (itemsArray.length >= 3) {
-        let monthsIncomes = Object.entries(itemsArray[2][1]);
-        let monthsExpenses = Object.entries(itemsArray[0][1]);
-        let monthsGroups = Object.entries(itemsArray[1][1]);
-
-        monthsIncomes.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
-        monthsExpenses.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
-        monthsGroups.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
-
-        changeMonth (monthsIncomes, monthsExpenses, monthsGroups)
-
-      } else {
-        console.error("Not enough items in 'itemsArray'");
-      }
-    } else {
-      console.error("Invalid data received from the database");
-      alert(`Luna ${curentSelectMonth} lipsește, adăugați-o!`);
-    }
-  });
-}
-
-function addingNewMonths (curentSelectMonth,valueRead) {
-
-  console.log(curentSelectMonth)
+/*function addingNewMonths (curentSelectMonth,valueRead) {
 
   const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${curentSelectMonth}/incomes`)
   const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${curentSelectMonth}/expenses`)
-  const allMonthsInDBGroups = ref(database, `allMonthsSecond/${curentSelectMonth}/groups`)
-
-  addButtonIncome.addEventListener("click", function () {
-    let addIncomeValue = {
-      titlu: `${inputIncomeTitle.value}`,
-      suma: `${inputIncomeSuma.value}`,
-      data: `${inputIncomeDate.value}`,
-      state: `${inputIncomeState.value}`,
-      user: `${inputIncomeUser.value}`
-    } 
-    
-    push(allMonthsInDBIncomes, addIncomeValue)
-    
-  })
-
-  addButtonExpenses.addEventListener("click", function () {
-    let addExpensesValue = {
-      grupa: `${inputGrupa.value}`,
-      titlu: `${inputTitlu.value}`,
-      suma: `${inputSuma.value}`,
-      data: `${inputDate.value}`,
-      state: `${inputState.value}`,
-      level: `${inputLevel.value}`,
-      user: `${inputUser.value}`
-    } 
-    
-    push(allMonthsInDBExpenses, addExpensesValue) 
-    
-  })
-  
-  addButtonGroup.addEventListener("click", function () {
-    let addGroupsValue = {
-      titlu: `${inputGrupaTitlu.value}`,
-      suma: `${inputSumaGrupa.value}`,
-      dataStart: `${inputDateStartGroup.value}`,
-    } 
-    
-    push(allMonthsInDBGroups, addGroupsValue)
-    
-  })
-
-
+  const allMonthsInDBGroups = ref(database, `allMonthsSecond/${curentSelectMonth}/groups`)*/
 
   /*for (let i = 0; i < valueRead.length; i++) {
 
@@ -1437,10 +1234,9 @@ function addingNewMonths (curentSelectMonth,valueRead) {
 
   push(allMonthsInDBIncomes, addIncomeValue) 
   push(allMonthsInDBExpenses, addExpensesValue) 
-  push(allMonthsInDBGroups, addGroupsValue)*/
+  push(allMonthsInDBGroups, addGroupsValue)
 
-
-}
+}*/
 
 //addingNewMonths (`2023-05-01`)
 
