@@ -791,6 +791,8 @@ function upDateGroups (idButonSelector, locationFile) {
 function deletItem (idButonSelector, locationFile) {
 
   const allButtonDeleteExpenses = document.querySelectorAll(`#${idButonSelector}`)
+  
+  console.log(allButtonDeleteExpenses)
 
   allButtonDeleteExpenses.forEach((button) => {
     button.addEventListener('click', () => {
