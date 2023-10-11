@@ -1077,6 +1077,7 @@ function levelExpensese (incomes, expenses) {
   let smallestDate = new Date(expenses[0][1].data);
   let largestDate = new Date(expenses[0][1].data);
 
+
   // Iterate through the data and update the smallest and largest dates
   for (const item of expenses) {
       const currentDate = new Date(item[1].data);
@@ -1095,6 +1096,7 @@ function levelExpensese (incomes, expenses) {
   const [, , , , , , , , one, two ] = largestDateString;
   const todayDateStr = one + two
   var todayDateNum = parseInt(todayDateStr, 10);
+
 
 
   for (let i = 0; i < todayDateNum; i++) {
