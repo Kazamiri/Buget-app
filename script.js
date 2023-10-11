@@ -82,7 +82,9 @@ const addButtonTitleTypesGroup = document.getElementById('js-add-new-title-types
 
 /*onValue(allMonthsSecond, function (snapshot) {
 
-  const data = snapshot.val();
+  let control = Object.entries(snapshot.val());
+  
+  console.log(control)
     
   let clicks = 0;
   addingNewMonths (navigateByMonth (clicks))
@@ -110,7 +112,6 @@ function navigationButtons () {
   readingNewMonths (navigateByMonth (clicks))
   addingNewMonths (navigateByMonth (clicks))
   changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
-  
 
   navButtonMonthLeft.addEventListener("click", function () {
     clicks ++;
@@ -173,9 +174,23 @@ function readingNewMonths(curentSelectMonth) {
         let monthsExpenses = Object.entries(itemsArray[0][1]);
         let monthsGroups = Object.entries(itemsArray[1][1]);
 
-        monthsIncomes.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
-        monthsExpenses.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
-        monthsGroups.sort((a, b) => new Date(b.startDateMonth) - new Date(a.startDateMonth));
+        monthsIncomes.sort((a, b) => {
+          const dateA = new Date(a[1].data);
+          const dateB = new Date(b[1].data);
+          return dateA - dateB;
+        });
+
+        monthsExpenses.sort((a, b) => {
+          const dateA = new Date(a[1].data);
+          const dateB = new Date(b[1].data);
+          return dateA - dateB;
+        });
+
+        monthsGroups.sort((a, b) => {
+          const dateA = new Date(a[1].data);
+          const dateB = new Date(b[1].data);
+          return dateA - dateB;
+        });
 
         changeMonth (monthsIncomes, monthsExpenses, monthsGroups,`allMonthsSecond/${curentSelectMonth}`)
 
@@ -433,13 +448,14 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
       </div>
   
     </div>`
+
+    newDateRefreshExpenses (`js-item-line-one-income`, 'js-button-update-income' )
+
+    upDateIncomes ('js-button-update-income', `${curentSelectMonth}/incomes`)
+  
+    deletItem ('js-button-delet-income', `${curentSelectMonth}/incomes`)
+
   }
-
-  newDateRefreshExpenses (`js-item-line-one-income`, 'js-button-update-income' )
-
-  upDateIncomes ('js-button-update-income', `${curentSelectMonth}/incomes`)
-
-  deletItem ('js-button-delet-income', `${curentSelectMonth}/incomes`)
 
 } // Functia data citeste masivul si il vizualizeaza lista de venituri pe pagina de baza
 
@@ -546,17 +562,22 @@ function readExpenses(monthsExpenses, curentSelectMonth) {
         </div>
 
       </div>`
+
+      newDateRefreshExpenses (`js-item-line-one`, 'js-button-updata-expenses' )
+
+      upDataExpenses ('js-button-updata-expenses', `${curentSelectMonth}/expenses`)
+    
+      deletItem ('js-button-delet-expenses', `${curentSelectMonth}/expenses`)
+
     }
 
     inputGrupa.innerHTML = `${optionsHTML}`
 
+
+
   })
 
-  newDateRefreshExpenses (`js-item-line-one`, 'js-button-updata-expenses' )
 
-  upDataExpenses ('js-button-updata-expenses', `${curentSelectMonth}/expenses`)
-
-  deletItem ('js-button-delet-expenses', `${curentSelectMonth}/expenses`)
 
 } // Functia data citeste masivul si il vizualizeaza lista de cheltuieli pe pagina de baza
 
@@ -648,6 +669,12 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
         </div>`
   
         newDate (monthsGroups[i][1].suma, calculateSum(fiterGroup (monthsExpenses, monthsGroups[i][1].titlu)), `js-${monthsGroups[i][1].titlu}`, `loading-${monthsGroups[i][1].titlu}`,10)
+
+        newDateRefreshExpenses (`js-item-line-one-group`, 'js-button-update-group' )
+
+        upDateGroups ('js-button-update-group', `${curentSelectMonth}/groups`)
+      
+        deletItem ('js-button-delet-group', `${curentSelectMonth}/groups`)
   
     }  
 
@@ -655,11 +682,7 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
 
   })
 
-  newDateRefreshExpenses (`js-item-line-one-group`, 'js-button-update-group' )
 
-  upDateGroups ('js-button-update-group', `${curentSelectMonth}/groups`)
-
-  deletItem ('js-button-delet-group', `${curentSelectMonth}/groups`)
 
 } // Functia data citeste masivul si il vizualizeaza lista de cheltuieli pe pagina de baza
 
@@ -785,21 +808,14 @@ function upDateGroups (idButonSelector, locationFile) {
 //Functia data sterge un item cum ar fi un venit, o cheltuiala, o grupa
 
 function deletItem (idButonSelector, locationFile) {
-
-  console.log(idButonSelector)
-  console.log(locationFile)
-
-
+  
   const allButtonDeleteExpenses = document.querySelectorAll(`#${idButonSelector}`)
-
-  console.log(allButtonDeleteExpenses)
 
   allButtonDeleteExpenses.forEach((button) => {
     button.addEventListener('click', () => {
-      console.log('sters')
+
       let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
       remove(exactLocationOfItemInDB)
-      console.log(`${locationFile}/${button.dataset.id}`)
     })
   })
 
@@ -1073,7 +1089,6 @@ function levelExpensese (incomes, expenses) {
   let canvas = document.getElementById('c7')
   let ctx = canvas.getContext('2d')
   
-  
   ctx.clearRect(0, 0, 1560, 520)
 
   ctx.beginPath()
@@ -1087,6 +1102,9 @@ function levelExpensese (incomes, expenses) {
   // Initialize variables to store the smallest and largest dates
   let smallestDate = new Date(expenses[0][1].data);
   let largestDate = new Date(expenses[0][1].data);
+
+  console.log(smallestDate)
+  console.log(largestDate)
 
   // Iterate through the data and update the smallest and largest dates
   for (const item of expenses) {
@@ -1113,6 +1131,8 @@ function levelExpensese (incomes, expenses) {
     let resultDate = smallestDate.toISOString().split('T')[0];
   
     let procent = diference (calculateSum(incomes), calculateSum(filterPeriod(expenses, smallestDateString, resultDate)))
+    
+    console.log(procent)
 
     smallestDate.setDate(smallestDate.getDate() + 1);
 
