@@ -114,21 +114,19 @@ function navigationButtons () {
   addingNewMonths (navigateByMonth (clicks))
   changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
 
-  navButtonMonthLeft.addEventListener("click", function () {
+  navButtonMonthLeft.addEventListener("click", function add () {
     clicks ++;
     readingNewMonths (navigateByMonth (clicks))
     addingNewMonths (navigateByMonth (clicks))
     changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
   })
 
-  navButtonMonthRight.addEventListener("click", function () {
+  navButtonMonthRight.addEventListener("click", function del () {
     clicks --;
     readingNewMonths (navigateByMonth (clicks))
     addingNewMonths (navigateByMonth (clicks))
     changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
   })
-
-  console.log(clicks)
 
 }
 
@@ -215,40 +213,6 @@ function addingNewMonths (curentSelectMonth) {
   const allMonthsInDBGroups = ref(database, `allMonthsSecond/${curentSelectMonth}/groups`)
 
 
-  
-  function incomes() {
-    const myArray = []
-    myArray.push(curentSelectMonth);
-    console.log(myArray);
-    console.log(myArray[myArray.length - 1]);
-    //addButtonIncome.removeEventListener("click", incomes);
-  }
-
-  addButtonIncome.addEventListener("click", incomes);
-
-  function executeWithLastParams() {
-    let lastParams = [];
-  
-    return function(...args) {
-      if (args.length > 0) {
-        lastParams = args;
-      } else {
-        // Execute the function with the last set of parameters when called with no arguments
-        console.log("Executing with last parameters:", lastParams);
-        // You can replace the console.log with the actual logic you want to execute
-      }
-    };
-  }
-  
-  const executeLast = executeWithLastParams();
-  
-  // Execute the function with different parameters
-  executeLast(curentSelectMonth);
-
-  
-  // Now, execute the function with the last set of parameters
-  //executeLast(); // It will execute with the last set of parameters, which is [true, false]
-  addButtonIncome.addEventListener("click", executeLast);
 }
 
 
