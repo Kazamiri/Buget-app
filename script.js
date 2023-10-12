@@ -22,7 +22,7 @@ const allMonthsInDB = ref(database, `allMonths/months`)
 //const incomeInDB = ref(database, `allMonths/income`) 
 //const expensesInDB = ref(database, "allMonths/expenses") 
 const groupsInDB = ref(database, "allMonths/groups") 
-const typesOfGroupsInDB = ref(database, "allMonths/types_groups") 
+const typesOfGroupsInDB = ref(database, "allTypesOfGroups") 
 
 //const allMonthsSecond = ref(database, "allMonthsSecond")
 
@@ -211,27 +211,9 @@ function readingNewMonths(curentSelectMonth) {
 }
 
 
-function extractByPeriod (startMonth, groupBD, typeGroup) {
-
-  let userDateValue = new Date(startMonth);
-
-  const currentDate = new Date(startMonth);
-  currentDate.setMonth(userDateValue.getMonth() - 1);
-
-  const threeMonthsAgo = new Date(startMonth);
-  threeMonthsAgo.setMonth(userDateValue.getMonth() - 3);
-
-  const filteredObjects = groupBD.filter(item => {
-      const dataStart = new Date(item[1].dataStart);
-      return dataStart >= threeMonthsAgo && dataStart <= currentDate && item[1].titlu === typeGroup;
-  });
-
-  return calculateSum(filteredObjects)
-}
 
 
 function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectMonth) {
-
 
   let availableIncomes = fiterItem (monthsIncomes, "state", "Venit")
   let pendingExpenses = fiterItem (monthsExpenses, "state", "Cheltuit")
@@ -269,7 +251,25 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
 
 }
 
+// Trebuie de revazut daca este necesar acest code
 
+function extractByPeriod (startMonth, groupBD, typeGroup) {
+
+  let userDateValue = new Date(startMonth);
+
+  const currentDate = new Date(startMonth);
+  currentDate.setMonth(userDateValue.getMonth() - 1);
+
+  const threeMonthsAgo = new Date(startMonth);
+  threeMonthsAgo.setMonth(userDateValue.getMonth() - 3);
+
+  const filteredObjects = groupBD.filter(item => {
+      const dataStart = new Date(item[1].dataStart);
+      return dataStart >= threeMonthsAgo && dataStart <= currentDate && item[1].titlu === typeGroup;
+  });
+
+  return calculateSum(filteredObjects)
+}
 function fiterGroup (dataMonth, titleGroup) {
   let filteredObjects = dataMonth.filter(entry => entry[1].grupa === `${titleGroup}`);
   return filteredObjects
@@ -326,21 +326,18 @@ addButtonMonth.addEventListener("click", function () {
 })
 
 addButtonTitleTypesGroup.addEventListener("click", function () {
+
+  const typesOfGroupsInDB = ref(database, `allTypesOfGroups`)
+
   let addTypesOfGroups = {
-    titlu: `${inputTitleTypesGroup.value}`,
-  } // Atribuim proprietatilor din obiect valorile introduse in cimpurile venituri
-  
-  push(typesOfGroupsInDB, addTypesOfGroups) // Adaugam obiectul cu valorile adugate de user in masivul firebase, venituri
+    titlu: `${inputTitleTypesGroup.value}`
+  }
+  push(typesOfGroupsInDB, addTypesOfGroups)
   
 })
 
 
-
-
-
 function readIncomes(monthsIncomes, curentSelectMonth) {
-
-  //addingNewMonths (`2023-05-01`,monthsIncomes)
 
   cleanLists(incomesList)
 
@@ -530,15 +527,8 @@ function readExpenses(monthsExpenses, curentSelectMonth) {
       deletItem ('js-button-delet-expenses', `${curentSelectMonth}/expenses`)
 
     }
-
     inputGrupa.innerHTML = `${optionsHTML}`
-
-
-
   })
-
-
-
 } // Functia data citeste masivul si il vizualizeaza lista de cheltuieli pe pagina de baza
 
 
@@ -635,9 +625,7 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
         upDateGroups ('js-button-update-group', `${curentSelectMonth}/groups`)
       
         deletItem ('js-button-delet-group', `${curentSelectMonth}/groups`)
-  
     }  
-
     inputGrupaTitlu.innerHTML = `${optionsHTML}`
 
   })
@@ -655,7 +643,6 @@ function pointPositionCorrection (itemValue){
 }
 
 function upDateIncomes (idButonSelector, locationFile) {
-
 
   const allButtonUpdateItems = document.querySelectorAll(`#${idButonSelector}`)
 
@@ -702,7 +689,6 @@ function newDateRefreshExpenses (lineItem, buttonItem) {
 
 function upDataExpenses (idButonSelector, locationFile) {
 
-
   const allButtonUpdateItems = document.querySelectorAll(`#${idButonSelector}`)
 
   allButtonUpdateItems.forEach((button) => {
@@ -721,7 +707,6 @@ function upDataExpenses (idButonSelector, locationFile) {
 
       event.stopPropagation()
   
-
       let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
 
       update(exactLocationOfItemInDB, {grupa:`${inputGroupsItems.value}`})
@@ -811,16 +796,16 @@ function cleanLists(addlist) {
 } // Functia este destinata pentru a curata listele indicate in argument
 
 
-
+// functia data vizualizaeza veniturile totale pe luna
 function incomesHtmlDate (value) {
   let valueHTML = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   inconHTMLValue.innerHTML =`<p>${valueHTML} <span class="styled-lei">lei</span></p>`
-} // functia data vizualizaeza veniturile totale pe luna
-
+} 
+// functia data vizualizaeza veniturile totale pe luna Available income
 function availableIncomesHtmlDate (value) {
   let valueHTML = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   availableIncomesHtmlValue.innerHTML =`<p>${valueHTML} <span class="styled-lei">lei</span></p>`
-} // functia data vizualizaeza veniturile totale pe luna Available income
+} 
 
 function expensesHtmlDate (value) {
   let valueHTML = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
