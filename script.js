@@ -19,12 +19,12 @@ const allDateInDB = ref(database, `allMonths`)
 const allMonthsInDB = ref(database, `allMonths/months`) 
 
 
-const incomeInDB = ref(database, `allMonths/income`) 
-const expensesInDB = ref(database, "allMonths/expenses") 
+//const incomeInDB = ref(database, `allMonths/income`) 
+//const expensesInDB = ref(database, "allMonths/expenses") 
 const groupsInDB = ref(database, "allMonths/groups") 
 const typesOfGroupsInDB = ref(database, "allMonths/types_groups") 
 
-const allMonthsSecond = ref(database, "allMonthsSecond")
+//const allMonthsSecond = ref(database, "allMonthsSecond")
 
 
 const inputAddMonth = document.getElementById('js-add-month-value') 
@@ -80,58 +80,62 @@ const addButtonTitleTypesGroup = document.getElementById('js-add-new-title-types
 
 // De aici se incepe 
 
-/*onValue(allMonthsSecond, function (snapshot) {
+let clicks = 0;
+readingNewMonths (navigateByMonth (clicks))
+changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
 
-  let control = Object.entries(snapshot.val());
-  
-  console.log(control)
-    
-  let clicks = 0;
-  addingNewMonths (navigateByMonth (clicks))
-  changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+navButtonMonthLeft.addEventListener("click", function add () {
+  clicks ++;
   readingNewMonths (navigateByMonth (clicks))
-
-  navButtonMonthLeft.addEventListener("click", function () {
-    clicks ++;
-    addingNewMonths (navigateByMonth (clicks))
-    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
-    readingNewMonths (navigateByMonth (clicks))
-  })
-
-  navButtonMonthRight.addEventListener("click", function () {
-    clicks --;
-    addingNewMonths (navigateByMonth (clicks))
-    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
-    readingNewMonths (navigateByMonth (clicks))
-  })
-
-});*/
-
-
-function navigationButtons () {
-  let clicks = 0;
-  readingNewMonths (navigateByMonth (clicks))
-  addingNewMonths (navigateByMonth (clicks))
   changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+})
 
-  navButtonMonthLeft.addEventListener("click", function add () {
-    clicks ++;
-    readingNewMonths (navigateByMonth (clicks))
-    addingNewMonths (navigateByMonth (clicks))
-    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
-  })
+navButtonMonthRight.addEventListener("click", function del () {
+  clicks --;
+  readingNewMonths (navigateByMonth (clicks))
+  changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
+})
 
-  navButtonMonthRight.addEventListener("click", function del () {
-    clicks --;
-    readingNewMonths (navigateByMonth (clicks))
-    addingNewMonths (navigateByMonth (clicks))
-    changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
-  })
+// Sunt adaugate functiile de adaugare a itemilor
 
-}
+addButtonIncome.addEventListener("click", function () {
+  const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/incomes`)
 
-navigationButtons ()
+  let addIncomeValue = {
+    titlu: `${inputIncomeTitle.value}`,
+    suma: `${inputIncomeSuma.value}`,
+    data: `${inputIncomeDate.value}`,
+    state: `${inputIncomeState.value}`,
+    user: `${inputIncomeUser.value}`
+  } 
+  push(allMonthsInDBIncomes, addIncomeValue)
+})
 
+addButtonExpenses.addEventListener("click", function () {
+  const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/expenses`)
+
+  let addExpensesValue = {
+    grupa: `${inputGrupa.value}`,
+    titlu: `${inputTitlu.value}`,
+    suma: `${inputSuma.value}`,
+    data: `${inputDate.value}`,
+    state: `${inputState.value}`,
+    level: `${inputLevel.value}`,
+    user: `${inputUser.value}`
+  } 
+  push(allMonthsInDBExpenses, addExpensesValue) 
+})
+
+addButtonGroup.addEventListener("click", function () {
+  const allMonthsInDBGroups = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/groups`)
+
+  let addGroupsValue = {
+    titlu: `${inputGrupaTitlu.value}`,
+    suma: `${inputSumaGrupa.value}`,
+    dataStart: `${inputDateStartGroup.value}`,
+  } 
+  push(allMonthsInDBGroups, addGroupsValue)
+})
 
 function navigateByMonth (clicks) {
   const date = new Date();
@@ -206,72 +210,6 @@ function readingNewMonths(curentSelectMonth) {
   });
 }
 
-function addingNewMonths (curentSelectMonth) {
-
-  const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${curentSelectMonth}/incomes`)
-  const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${curentSelectMonth}/expenses`)
-  const allMonthsInDBGroups = ref(database, `allMonthsSecond/${curentSelectMonth}/groups`)
-
-
-}
-
-
-
-
-/*
-function addingNewMonths (curentSelectMonth) {
-
-  addButtonIncome.removeEventListener("click",incomes)
-
-  function incomes () {
-    console.log(curentSelectMonth)
-  }
-  addButtonIncome.addEventListener("click",incomes)
-}
-*/
-/*function addIncomes (allMonthsInDBIncomes) {
-  let addIncomeValue = {
-    titlu: `${inputIncomeTitle.value}`,
-    suma: `${inputIncomeSuma.value}`,
-    data: `${inputIncomeDate.value}`,
-    state: `${inputIncomeState.value}`,
-    user: `${inputIncomeUser.value}`
-  } 
-  console.log(allMonthsInDBIncomes)
-  console.log(" a functionat")
-
-  
-  //push(allMonthsInDBIncomes, addIncomeValue)
-}
-
-addButtonIncome.addEventListener("click", addIncomes (`allMonthsInDBIncomes`))*/
-
-addButtonExpenses.addEventListener("click", function () {
-  let addExpensesValue = {
-    grupa: `${inputGrupa.value}`,
-    titlu: `${inputTitlu.value}`,
-    suma: `${inputSuma.value}`,
-    data: `${inputDate.value}`,
-    state: `${inputState.value}`,
-    level: `${inputLevel.value}`,
-    user: `${inputUser.value}`
-  } 
-  console.log(allMonthsInDBExpenses)
-  
-  //push(allMonthsInDBExpenses, addExpensesValue) 
-  
-})
-
-addButtonGroup.addEventListener("click", function () {
-  let addGroupsValue = {
-    titlu: `${inputGrupaTitlu.value}`,
-    suma: `${inputSumaGrupa.value}`,
-    dataStart: `${inputDateStartGroup.value}`,
-  } 
-  console.log(allMonthsInDBGroups)
-  //push(allMonthsInDBGroups, addGroupsValue)
-  
-})
 
 function extractByPeriod (startMonth, groupBD, typeGroup) {
 
@@ -1224,8 +1162,6 @@ inputDateStartGroup.value = currentDate;
 
 
 // Elaborarea logici pentru modelul in care lunile sunt separeate
-
-
 
 
 
