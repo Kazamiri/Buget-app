@@ -107,6 +107,7 @@ const addButtonTitleTypesGroup = document.getElementById('js-add-new-title-types
 
 });*/
 
+
 function navigationButtons () {
   let clicks = 0;
   readingNewMonths (navigateByMonth (clicks))
@@ -126,6 +127,9 @@ function navigationButtons () {
     addingNewMonths (navigateByMonth (clicks))
     changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
   })
+
+  console.log(clicks)
+
 }
 
 navigationButtons ()
@@ -209,10 +213,59 @@ function addingNewMonths (curentSelectMonth) {
   const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${curentSelectMonth}/incomes`)
   const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${curentSelectMonth}/expenses`)
   const allMonthsInDBGroups = ref(database, `allMonthsSecond/${curentSelectMonth}/groups`)
-  return curentSelectMonth
+
+
+  
+  function incomes() {
+    const myArray = []
+    myArray.push(curentSelectMonth);
+    console.log(myArray);
+    console.log(myArray[myArray.length - 1]);
+    //addButtonIncome.removeEventListener("click", incomes);
+  }
+
+  addButtonIncome.addEventListener("click", incomes);
+
+  function executeWithLastParams() {
+    let lastParams = [];
+  
+    return function(...args) {
+      if (args.length > 0) {
+        lastParams = args;
+      } else {
+        // Execute the function with the last set of parameters when called with no arguments
+        console.log("Executing with last parameters:", lastParams);
+        // You can replace the console.log with the actual logic you want to execute
+      }
+    };
+  }
+  
+  const executeLast = executeWithLastParams();
+  
+  // Execute the function with different parameters
+  executeLast(curentSelectMonth);
+
+  
+  // Now, execute the function with the last set of parameters
+  //executeLast(); // It will execute with the last set of parameters, which is [true, false]
+  addButtonIncome.addEventListener("click", executeLast);
 }
 
-function addIncomes (allMonthsInDBIncomes) {
+
+
+
+/*
+function addingNewMonths (curentSelectMonth) {
+
+  addButtonIncome.removeEventListener("click",incomes)
+
+  function incomes () {
+    console.log(curentSelectMonth)
+  }
+  addButtonIncome.addEventListener("click",incomes)
+}
+*/
+/*function addIncomes (allMonthsInDBIncomes) {
   let addIncomeValue = {
     titlu: `${inputIncomeTitle.value}`,
     suma: `${inputIncomeSuma.value}`,
@@ -227,7 +280,7 @@ function addIncomes (allMonthsInDBIncomes) {
   //push(allMonthsInDBIncomes, addIncomeValue)
 }
 
-addButtonIncome.addEventListener("click", addIncomes (`allMonthsInDBIncomes`))
+addButtonIncome.addEventListener("click", addIncomes (`allMonthsInDBIncomes`))*/
 
 addButtonExpenses.addEventListener("click", function () {
   let addExpensesValue = {
@@ -1291,8 +1344,32 @@ inputDateStartGroup.value = currentDate;
 //addingNewMonths (`2023-05-01`)
 
 
+/*// Step 1: Define a variable
+let count = 0;
 
+// Step 2: Create an event listener function
+function handleClick() {
+  count++;
+  console.log(`Button clicked ${count} times.`);
+  addingNewMonths (count)
+}
 
+// Step 3: Attach the event listener to a DOM element
+const button = document.getElementById("myButton");
+button.addEventListener("click", handleClick);
+
+// Now, when the button is clicked, the handleClick function will be called,
+// and it will depend on the "count" variable.
+
+function addingNewMonths (curentSelectMonth) {
+  
+  function incomes() {
+    console.log(curentSelectMonth);
+  }
+  
+  addButtonIncome.addEventListener("click", incomes);
+}
+*/
 
 
 
