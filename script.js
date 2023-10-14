@@ -132,7 +132,6 @@ addButtonGroup.addEventListener("click", function () {
   let addGroupsValue = {
     titlu: `${inputGrupaTitlu.value}`,
     suma: `${inputSumaGrupa.value}`,
-    dataStart: `${inputDateStartGroup.value}`,
   } 
   push(allMonthsInDBGroups, addGroupsValue)
 })
@@ -141,6 +140,15 @@ function navigateByMonth (clicks) {
   const date = new Date();
   date.setDate(1);
   date.setMonth(date.getMonth() + clicks)
+  const isoString = date.toISOString();
+  const formattedDate = isoString.split('T')[0]; // Extracts YYYY-MM-DD
+  return formattedDate
+}
+
+function navigateByMonthExtract (clicks, monthsAgo) {
+  const date = new Date();
+  date.setDate(1);
+  date.setMonth(date.getMonth() + clicks - monthsAgo)
   const isoString = date.toISOString();
   const formattedDate = isoString.split('T')[0]; // Extracts YYYY-MM-DD
   return formattedDate
@@ -280,7 +288,98 @@ function fiterItem (dataMonth, titleItem, valueItem) {
 }
 
 
+
+
+const allGroup = [];
+
+const months = [1, 2, 3];
+
+months.forEach((month) => {
+  const monthInDBGroups = ref(database, `allMonthsSecond/${navigateByMonthExtract(clicks, month)}/groups`);
+
+  onValue(monthInDBGroups, function(snapshot) {
+    const itemsArray = Object.entries(snapshot.val())
+    //console.log(itemsArray);
+    itemsArray.forEach((item) => {
+      allGroup.push(item)
+    }) 
+  });
+});
+
+const monthInDBTypeGroups = ref(database, `allTypesOfGroups`);
+const allGroupType = [];
+onValue(monthInDBTypeGroups, function(snapshot) {
+  const itemsArray = Object.values(snapshot.val())
+  itemsArray.forEach((item) => {
+    allGroupType.push(item)
+  }) 
+})
+
+
+
 addButtonMonth.addEventListener("click", function () {
+
+  for (let i = 0; i < allGroupType.length; i++) {
+    const filteredData = allGroup.filter((item) => {
+      return item[1].titlu === `${allGroupType[i].titlu}`;
+    });
+
+    let sum = calculateSum(filteredData)/3;
+
+    //console.log(filteredData)
+    console.log(sum)
+  }
+
+
+})
+
+
+  /*let firstMonth = navigateByMonthExtract (clicks, 1)
+  let secondMonth = navigateByMonthExtract (clicks, 2)
+  let thirdMonth = navigateByMonthExtract (clicks, 3)
+
+  const allGroup = []
+
+  const firstMonthInDBGroups = ref(database, `allMonthsSecond/${firstMonth}/groups`)
+  const secondMonthInDBGroups = ref(database, `allMonthsSecond/${secondMonth}/groups`)
+  const thirdMonthInDBGroups = ref(database, `allMonthsSecond/${thirdMonth}/groups`)
+  
+  onValue(firstMonthInDBGroups, function(snapshot) {
+    let itemsArray = Object.entries(snapshot.val())
+
+    itemsArray.forEach((item) => {
+    allGroup.push(item)
+    }) 
+    
+  })
+
+  onValue(secondMonthInDBGroups, function(snapshot) {
+    let itemsArray = Object.entries(snapshot.val())
+
+    itemsArray.forEach((item) => {
+    allGroup.push(item)
+    }) 
+
+  })
+
+  onValue(thirdMonthInDBGroups, function(snapshot) {
+    let itemsArray = Object.entries(snapshot.val())
+
+    itemsArray.forEach((item) => {
+    allGroup.push(item)
+    }) 
+    
+  })
+
+  console.log(filteredObjects)
+
+  let filteredObjects = allGroup.filter(entry => entry[1].titlu === `🚴🏻 Piață`);
+  console.log(filteredObjects)*/
+
+/**
+ * addButtonMonth.addEventListener("click", function () {
+
+  const allMonthsInDBGroups = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/groups`)
 
 
   onValue(allDateInDB, function(snapshot) {
@@ -302,7 +401,6 @@ addButtonMonth.addEventListener("click", function () {
       let addGroupValue = {
         titlu: `${listGroup[i]}`,
         suma: typeGroup,
-        dataStart: `${inputAddMonth.value}`,
       } 
       
       push(groupsInDB, addGroupValue) 
@@ -324,6 +422,7 @@ addButtonMonth.addEventListener("click", function () {
 
   
 })
+ */
 
 addButtonTitleTypesGroup.addEventListener("click", function () {
 
@@ -419,8 +518,6 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
 
 
 function readExpenses(monthsExpenses, curentSelectMonth) {
-
-  //addingNewMonths (`2023-05-01`,monthsExpenses)
 
   cleanLists(expensesList) // Curata lista in HTML si adauga din nou noile valori
 
@@ -642,6 +739,8 @@ function pointPositionCorrection (itemValue){
   return diference
 }
 
+//Functia data reinoieste un venit din lista
+
 function upDateIncomes (idButonSelector, locationFile) {
 
   const allButtonUpdateItems = document.querySelectorAll(`#${idButonSelector}`)
@@ -670,7 +769,7 @@ function upDateIncomes (idButonSelector, locationFile) {
 
     })
   })
-} //Functia data reinoieste un item cum ar fi un venit, o cheltuiala, o grupa
+} 
 
 
 function newDateRefreshExpenses (lineItem, buttonItem) {
@@ -685,7 +784,7 @@ function newDateRefreshExpenses (lineItem, buttonItem) {
   })
 }
 
-//Functia data reinoieste un item cum ar fi un venit, o cheltuiala, o grupa
+//Functia data reinoieste o cheltuiala din lista
 
 function upDataExpenses (idButonSelector, locationFile) {
 
@@ -722,7 +821,7 @@ function upDataExpenses (idButonSelector, locationFile) {
 }
 
 
-//Functia data reinoieste un item cum ar fi un venit, o cheltuiala, o grupa
+//Functia data reinoieste o grupa
 
 function upDateGroups (idButonSelector, locationFile) {
 
