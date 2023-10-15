@@ -311,19 +311,55 @@ onValue(monthInDBTypeGroups, function(snapshot) {
 })
 
 // Incarcarea ultimilor trei luni pentru calcularea mediei
+const allthreeIncomes = [];
+const allthreeExpenses = [];
 const allthreeGroup = [];
-const months = [1, 2, 3];
+inputAddMonth.addEventListener('input', function () {
+  // Extragem informatia despre luna si anul selectat
+  let addYear = inputAddYear.value
+  let addMonth = inputAddMonth.value
+  let addYearMonth = `${addYear}-${addMonth}-01`
+  
+  const months = 3 + 1;
 
-months.forEach((month) => {
-  const monthInDBGroups = ref(database, `allMonthsSecond/${navigateByMonthExtract(clicks, month)}/groups`);
+  for (let i = 1; i < months; i++) {
 
-  onValue(monthInDBGroups, function(snapshot) {
-    const itemsArray = Object.entries(snapshot.val())
-    itemsArray.forEach((item) => {
-      allthreeGroup.push(item)
-    }) 
-  });
-});
+    const date = new Date(addYearMonth)
+    date.setMonth(date.getMonth() - i)
+    const isoString = date.toISOString()
+    const formattedDate = isoString.split('T')[0]; // Extracts YYYY-MM-DD
+
+    const monthInDBIncomes = ref(database, `allMonthsSecond/${formattedDate}/incomes`)
+    const monthInDBExpenses = ref(database, `allMonthsSecond/${formattedDate}/expenses`)
+    const monthInDBGroups = ref(database, `allMonthsSecond/${formattedDate}/groups`)
+
+    onValue(monthInDBIncomes, function(snapshot) {
+      const itemsArray = Object.entries(snapshot.val())
+      itemsArray.forEach((item) => {
+        allthreeIncomes.push(item)
+      }) 
+    })
+
+    onValue(monthInDBExpenses, function(snapshot) {
+      const itemsArray = Object.entries(snapshot.val())
+      itemsArray.forEach((item) => {
+        allthreeExpenses.push(item)
+      }) 
+    })
+
+    onValue(monthInDBGroups, function(snapshot) {
+      const itemsArray = Object.entries(snapshot.val())
+      itemsArray.forEach((item) => {
+        allthreeGroup.push(item)
+      }) 
+    })
+  } 
+  console.log(allthreeIncomes)
+  //console.log(allthreeExpenses)
+  //console.log(allthreeGroup)
+
+})
+
 
 // Efectueaza crearea lunii
 addButtonMonth.addEventListener("click", function () {
@@ -333,8 +369,29 @@ addButtonMonth.addEventListener("click", function () {
   let addMonth = inputAddMonth.value
   let addYearMonth = `${addYear}-${addMonth}-01`
 
+    //Adauga veniturile in luna creata cu media din ultimile trei
+    for (let i = 0; i < allthreeIncomes.length; i++) {
+
+      const firstObject = allthreeIncomes[i][1].titlu;
+
+      const filteredData = allthreeIncomes.filter((item) => {
+        return item[1].titlu === `${firstObject[i].titlu}`;
+      });
+
+      console.log(filteredData); 
+
+    }
+
+
+
+
   //Adauga grupele in luna creata cu media din ultimile trei
   for (let i = 0; i < allGroupType.length; i++) {
+
+    const firstObject = allthreeIncomes[i][1].titlu;
+
+    console.log(firstObject); // This will log "Transfer din luna trecuta"
+  
     const filteredData = allthreeGroup.filter((item) => {
       return item[1].titlu === `${allGroupType[i].titlu}`;
     });
@@ -346,7 +403,8 @@ addButtonMonth.addEventListener("click", function () {
       titlu: `${allGroupType[i].titlu}`,
       suma: `${sumItemTitle}`,
     } 
-    push(allMonthsInDBGroups, addGroupsValue)
+    //console.log(addGroupsValue)
+    //push(allMonthsInDBGroups, addGroupsValue)
   }
 
   modulAddMonth.close()
