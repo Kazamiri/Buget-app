@@ -141,6 +141,7 @@ addButtonGroup.addEventListener("click", function () {
 function navigateByMonth (clicks) {
   const date = new Date();
   date.setDate(1);
+  date.setHours(12);
   date.setMonth(date.getMonth() + clicks)
   const isoString = date.toISOString();
   const formattedDate = isoString.split('T')[0]; // Extracts YYYY-MM-DD
@@ -148,10 +149,11 @@ function navigateByMonth (clicks) {
 }
 
 // Genereaza luna in dependenta de numarul de clicuri cu adaugarea corectiei
-function navigateByMonthExtract (clicks, monthsAgo) {
-  const date = new Date();
+function navigateByMonthExtract (inputNewMonth, monthsAgo) {
+  const date = new Date(inputNewMonth);
   date.setDate(1);
-  date.setMonth(date.getMonth() + clicks - monthsAgo)
+  date.setHours(12);
+  date.setMonth(date.getMonth() - monthsAgo)
   const isoString = date.toISOString();
   const formattedDate = isoString.split('T')[0]; // Extracts YYYY-MM-DD
   return formattedDate
@@ -264,25 +266,6 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
 
 }
 
-// Trebuie de revazut daca este necesar acest code
-
-/*function extractByPeriod (startMonth, groupBD, typeGroup) {
-
-  let userDateValue = new Date(startMonth);
-
-  const currentDate = new Date(startMonth);
-  currentDate.setMonth(userDateValue.getMonth() - 1);
-
-  const threeMonthsAgo = new Date(startMonth);
-  threeMonthsAgo.setMonth(userDateValue.getMonth() - 3);
-
-  const filteredObjects = groupBD.filter(item => {
-      const dataStart = new Date(item[1].dataStart);
-      return dataStart >= threeMonthsAgo && dataStart <= currentDate && item[1].titlu === typeGroup;
-  });
-
-  return calculateSum(filteredObjects)
-}*/
 
 //Filtreaza elementele din matrice care au titlul indicat
 function fiterGroup (dataMonth, titleGroup) {
@@ -311,9 +294,26 @@ onValue(monthInDBTypeGroups, function(snapshot) {
 })
 
 // Incarcarea ultimilor trei luni pentru calcularea mediei
-const allthreeIncomes = [];
-const allthreeExpenses = [];
+
+function itemExtraction (inputNewMonth, monthsAgo, typeItems, pushHere) {
+  const firstformattedDate = navigateByMonthExtract (inputNewMonth, monthsAgo)
+  const firstmonthInDBIncomes = ref(database, `allMonthsSecond/${firstformattedDate}/${typeItems}`)
+
+    onValue(firstmonthInDBIncomes, function(snapshot) {
+      const itemsArray = Object.entries(snapshot.val())
+      itemsArray.forEach((item) => {
+        pushHere.push(item)
+      }) 
+    })
+}
+
+const firstThreeIncomes = [];
+const secondThreeIncomes = [];
+const firstThreeExpenses = [];
+const secondThreeExpenses = [];
 const allthreeGroup = [];
+
+
 inputAddMonth.addEventListener('input', function () {
   // Extragem informatia despre luna si anul selectat
   let addYear = inputAddYear.value
@@ -322,30 +322,16 @@ inputAddMonth.addEventListener('input', function () {
   
   const months = 3 + 1;
 
+    itemExtraction (addYearMonth, 1, `incomes`, firstThreeIncomes)
+    itemExtraction (addYearMonth, 2, `incomes`, secondThreeIncomes)
+    itemExtraction (addYearMonth, 1, `expenses`, firstThreeExpenses)
+    itemExtraction (addYearMonth, 2, `expenses`, secondThreeExpenses)
+
+
   for (let i = 1; i < months; i++) {
 
-    const date = new Date(addYearMonth)
-    date.setMonth(date.getMonth() - i)
-    const isoString = date.toISOString()
-    const formattedDate = isoString.split('T')[0]; // Extracts YYYY-MM-DD
-
-    const monthInDBIncomes = ref(database, `allMonthsSecond/${formattedDate}/incomes`)
-    const monthInDBExpenses = ref(database, `allMonthsSecond/${formattedDate}/expenses`)
-    const monthInDBGroups = ref(database, `allMonthsSecond/${formattedDate}/groups`)
-
-    onValue(monthInDBIncomes, function(snapshot) {
-      const itemsArray = Object.entries(snapshot.val())
-      itemsArray.forEach((item) => {
-        allthreeIncomes.push(item)
-      }) 
-    })
-
-    onValue(monthInDBExpenses, function(snapshot) {
-      const itemsArray = Object.entries(snapshot.val())
-      itemsArray.forEach((item) => {
-        allthreeExpenses.push(item)
-      }) 
-    })
+    const formattedDateD = navigateByMonthExtract (addYearMonth, i)
+    const monthInDBGroups = ref(database, `allMonthsSecond/${formattedDateD}/groups`)
 
     onValue(monthInDBGroups, function(snapshot) {
       const itemsArray = Object.entries(snapshot.val())
@@ -354,57 +340,87 @@ inputAddMonth.addEventListener('input', function () {
       }) 
     })
   } 
-  console.log(allthreeIncomes)
-  //console.log(allthreeExpenses)
-  //console.log(allthreeGroup)
 
 })
-
 
 // Efectueaza crearea lunii
 addButtonMonth.addEventListener("click", function () {
 
-  // Extragem informatia despre luna si anul selectat
-  let addYear = inputAddYear.value
-  let addMonth = inputAddMonth.value
-  let addYearMonth = `${addYear}-${addMonth}-01`
+    // Extragem informatia despre luna si anul selectat
+    let addYearT = inputAddYear.value
+    let addMonthT = inputAddMonth.value
+    let addYearMonthT = `${addYearT}-${addMonthT}-01`
 
-    //Adauga veniturile in luna creata cu media din ultimile trei
-    for (let i = 0; i < allthreeIncomes.length; i++) {
+  //Adauga veniturile ce se repeta in luna creata cu media din ultimile trei
+  for (let i = 0; i < firstThreeIncomes.length; i++) {
 
-      const firstObject = allthreeIncomes[i][1].titlu;
+    const firstObject = firstThreeIncomes[i][1].titlu
+    const filteredData = secondThreeIncomes.filter((item) => item[1].titlu === firstObject);
 
-      const filteredData = allthreeIncomes.filter((item) => {
-        return item[1].titlu === `${firstObject[i].titlu}`;
-      });
+    const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${addYearMonthT}/incomes`)
 
-      console.log(filteredData); 
+    if (filteredData.length > 0) {
 
+      let sumaDecimal = calculateSum(filteredData)/filteredData.length
+      let roundedNum = Math.round(sumaDecimal);
+
+      let addIncomeValue = {
+        titlu: `${firstObject}`,
+        suma: `${roundedNum}`,
+        data: `${addYearMonthT}`,
+        state: "În așteptare",
+        user: "Toti"
+      } 
+      //console.log(addIncomeValue)
+      push(allMonthsInDBIncomes, addIncomeValue)
     }
 
+  }
 
+  //Adauga cheltuielile ce se repeta in luna creata cu media din ultimile trei
+  for (let i = 0; i < firstThreeExpenses.length; i++) {
 
+    const firstObject = firstThreeExpenses[i][1].titlu
+    const filteredData = secondThreeExpenses.filter((item) => item[1].titlu === firstObject);
+
+    const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${addYearMonthT}/expenses`)
+
+    if (filteredData.length > 0) {
+
+      let sumaDecimal = calculateSum(filteredData)/filteredData.length
+      let roundedNum = Math.round(sumaDecimal);
+
+      let addExpensesValue = {
+        grupa: `${filteredData[0][1].grupa}`,
+        titlu: `${firstObject}`,
+        suma: `${roundedNum}`,
+        data: `${addYearMonthT}`,
+        state: "În așteptare",
+        level: "Low",
+        user: "Toti"
+      } 
+      push(allMonthsInDBExpenses, addExpensesValue) 
+      //console.log(addExpensesValue)
+    }
+
+  }
 
   //Adauga grupele in luna creata cu media din ultimile trei
   for (let i = 0; i < allGroupType.length; i++) {
-
-    const firstObject = allthreeIncomes[i][1].titlu;
-
-    console.log(firstObject); // This will log "Transfer din luna trecuta"
   
     const filteredData = allthreeGroup.filter((item) => {
       return item[1].titlu === `${allGroupType[i].titlu}`;
     });
     
     let sumItemTitle = (calculateSum(filteredData)/3).toFixed(0);
-    const allMonthsInDBGroups = ref(database, `allMonthsSecond/${addYearMonth}/groups`)
+    const allMonthsInDBGroups = ref(database, `allMonthsSecond/${addYearMonthT}/groups`)
 
     let addGroupsValue = {
       titlu: `${allGroupType[i].titlu}`,
       suma: `${sumItemTitle}`,
     } 
     //console.log(addGroupsValue)
-    //push(allMonthsInDBGroups, addGroupsValue)
+    push(allMonthsInDBGroups, addGroupsValue)
   }
 
   modulAddMonth.close()
@@ -1228,121 +1244,3 @@ let currentDate = new Date().toISOString().slice(0, 10);
 inputDate.value = currentDate;
 inputIncomeDate.value = currentDate;
 inputDateStartGroup.value = currentDate;
-
-
-// Elaborarea logici pentru modelul in care lunile sunt separeate
-
-
-
-/*function addingNewMonths (curentSelectMonth,valueRead) {
-
-  const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${curentSelectMonth}/incomes`)
-  const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${curentSelectMonth}/expenses`)
-  const allMonthsInDBGroups = ref(database, `allMonthsSecond/${curentSelectMonth}/groups`)*/
-
-  /*for (let i = 0; i < valueRead.length; i++) {
-
-    let addIncomeValue = {
-      data : `${valueRead[i][1].data}`,
-      state : `${valueRead[i][1].state}`,
-      suma : `${valueRead[i][1].suma}`, 
-      titlu : `${valueRead[i][1].titlu}`,
-      user : `${valueRead[i][1].user}`,
-    }  
-    
-    push(allMonthsInDBIncomes, addIncomeValue) 
-
-  }*/
-
-  /*for (let i = 0; i < valueRead.length; i++) {
-
-    let addExpensesValue = {
-      data : `${valueRead[i][1].data}`,
-      grupa : `${valueRead[i][1].grupa}`,
-      level : `${valueRead[i][1].level}`,
-      state : `${valueRead[i][1].state}`,
-      suma : `${valueRead[i][1].suma}`,
-      titlu : `${valueRead[i][1].titlu}`,
-      user : `${valueRead[i][1].user}`,
-    } 
-    
-    push(allMonthsInDBExpenses, addExpensesValue) 
-
-  }*/
-
-  /*for (let i = 0; i < valueRead.length; i++) {
-
-    let addGroupsValue = {
-      suma : `${valueRead[i][1].suma}`,
-      titlu : `${valueRead[i][1].titlu}`,
-    } 
-    
-    push(allMonthsInDBGroups, addGroupsValue)
-
-  }*/
-  /*let addIncomeValue = {
-    data : "2023-06-01",
-    state : "Venit",
-    suma : "9664", 
-    titlu : "Transfer din luna trecuta",
-    user : "Toti",
-  }  
-
-  let addExpensesValue = {
-    data : "2023-06-20",
-    grupa : "🚪 Gazdă",
-    level : "High",
-    state : "Cheltuit",
-    suma : "2952",
-    titlu : "Gazda",
-    user : "Toti",
-  } 
-
-  let addGroupsValue = {
-    dataStart : "2023-06-01",
-    suma : "351",
-    titlu : "🚴🏻 Piață",
-  } 
-
-  push(allMonthsInDBIncomes, addIncomeValue) 
-  push(allMonthsInDBExpenses, addExpensesValue) 
-  push(allMonthsInDBGroups, addGroupsValue)
-
-}*/
-
-//addingNewMonths (`2023-05-01`)
-
-
-/*// Step 1: Define a variable
-let count = 0;
-
-// Step 2: Create an event listener function
-function handleClick() {
-  count++;
-  console.log(`Button clicked ${count} times.`);
-  addingNewMonths (count)
-}
-
-// Step 3: Attach the event listener to a DOM element
-const button = document.getElementById("myButton");
-button.addEventListener("click", handleClick);
-
-// Now, when the button is clicked, the handleClick function will be called,
-// and it will depend on the "count" variable.
-
-function addingNewMonths (curentSelectMonth) {
-  
-  function incomes() {
-    console.log(curentSelectMonth);
-  }
-  
-  addButtonIncome.addEventListener("click", incomes);
-}
-*/
-
-
-
-
-
-
-
