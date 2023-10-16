@@ -80,7 +80,7 @@ const inputTitleTypesGroup = document.getElementById('js-new-title-types-group')
 const addButtonTitleTypesGroup = document.getElementById('js-add-new-title-types-group')
 
 // De aici se incepe 
-// Navigarea prin aplicatie
+// Navigarea prin aplicatie noua
 let clicks = 0;
 readingNewMonths (navigateByMonth (clicks))
 changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
