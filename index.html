@@ -49,8 +49,36 @@
 
     <dialog class="add_month" id="js-month-modal">
       <div class="add_month_inside">
-        <p class="statistics_card_text_title">Selectează prima zi din lună</p>
-        <input class="add__data_modal" type="date" id="js-add-month-value">
+        <p class="statistics_card_text_title">Adaugă luna și anul necesar</p>
+        <select class="add__data_modal" id="js-add-month-value">
+          <option value="01">Ianuarie</option>
+          <option value="02">Februarie</option>
+          <option value="03">Martie</option>
+          <option value="04">Aprilie</option>
+          <option value="05">Mai</option>
+          <option value="06">Iunie</option>
+          <option value="07">Iulie</option>
+          <option value="08">August</option>
+          <option value="09">Septembrie</option>
+          <option value="10">Octombrie</option>
+          <option value="11">Noiembrie</option>
+          <option value="12">Decembrie</option>
+        </select>
+        <select class="add__data_modal" id="js-add-year-value">
+          <option value="2024">2024</option>
+          <option value="2023" selected >2023</option>
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+          <option value="2020">2020</option>
+          <option value="2019">2019</option>
+          <option value="2018">2018</option>
+          <option value="2017">2017</option>
+          <option value="2016">2016</option>
+          <option value="2015">2015</option>
+          <option value="2014">2014</option>
+          <option value="2013">2013</option>
+          <option value="2012">2012</option>
+        </select>
         <div class="add_month_inside_buttons">
           <button class="add_button_modal_secondary" id="js-close-month-modul">
             <span class="material-symbols-outlined">close</span>Cancel
