@@ -599,6 +599,17 @@ main {
         gap: 1rem;
       } 
 
+      .expenses_list_group_filter{
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding-left: 12px;
+        padding-bottom: 12px;
+      }
+       .filter_icon_style{
+        color: var(--color-functional-green-tertiary)
+       }
+
       .incomes_list_group{
         display: inline-flex;
         align-items: center;

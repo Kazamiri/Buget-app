@@ -526,6 +526,34 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
 
 } 
 
+const listOfFilterGroups = document.getElementById('js-list-of-filter')
+
+onValue(typesOfGroupsInDB, function(snapshot) {
+
+  let monthsDateSec = Object.values(snapshot.val())
+  const listGroup = monthsDateSec.map(item => item.titlu);
+  let optionsHTML = "";
+
+  for (let i = 0; i < listGroup.length; i++) {
+
+    let optionHTML = `<option value="${listGroup[i]}">${listGroup[i]}</option>`
+    optionsHTML += optionHTML
+  }
+
+  listOfFilterGroups.innerHTML += `
+  <span class="material-symbols-outlined filter_icon_style">filter_alt</span>
+    <select class="expenses_list_group_icon" name="grupe-cheltuieli">
+      <option value="Filtrează" selected disabled hidden>Filtrează</option>
+      ${optionsHTML}
+    </select>
+  `
+
+
+
+})
+
+
+
 
 // Functia data citeste masivul si il vizualizeaza lista de cheltuieli pe pagina de baza
 function readExpenses(monthsExpenses, curentSelectMonth) {
