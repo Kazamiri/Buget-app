@@ -97,6 +97,27 @@ navButtonMonthRight.addEventListener("click", function del () {
   changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
 })
 
+// Adaugarea mecanismului de filtrare
+
+const listOfFilterGroups = document.getElementById('js-list-of-filter')
+
+onValue(typesOfGroupsInDB, function(snapshot) {
+
+  let monthsDateSec = Object.values(snapshot.val())
+  const listGroup = monthsDateSec.map(item => item.titlu);
+  let optionsHTML = "";
+
+  for (let i = 0; i < listGroup.length; i++) {
+
+    let optionHTML = `<option value="${listGroup[i]}">${listGroup[i]}</option>`
+    optionsHTML += optionHTML
+  }
+
+  listOfFilterGroups.innerHTML += `
+    ${optionsHTML}
+  `
+})
+
 // Functiile de adaugare a itemilor
 
 addButtonIncome.addEventListener("click", function () {
@@ -240,23 +261,34 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
 
   newDateOneArc ('c0', calculateSum(monthsIncomes), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)')
 
-  
-  readExpenses(monthsExpenses, curentSelectMonth) // Vizualizeaza datele pe pagina HTML
-  expensesHtmlDate (calculateSum(monthsExpenses))
-  incurredExpensesHtmlDate (calculateSum(pendingExpenses))
+  // Mecanismul de filtrare -----------------------------
+
+  console.log(listOfFilterGroups.value)
+
+  if(listOfFilterGroups.value === `💎 Toate`){
+    readExpenses(monthsExpenses, curentSelectMonth)
+  } else {
+    readExpenses(fiterItem (monthsExpenses, "grupa", listOfFilterGroups.value), curentSelectMonth)
+  }
 
   function allExpensesFilter () {
     let filterValue = listOfFilterGroups.value
     let filteredItems = fiterItem (monthsExpenses, "grupa", filterValue)
-    if(filterValue === `✅ Toate`){
+    if(filterValue === `💎 Toate`){
       readExpenses(monthsExpenses, curentSelectMonth)
     } else {
       readExpenses(filteredItems, curentSelectMonth)
     }
-    
   }
 
   listOfFilterGroups.addEventListener('input', allExpensesFilter)
+
+  //----------------------------------------------------
+
+  //readExpenses(monthsExpenses, curentSelectMonth) // Vizualizeaza datele pe pagina HTML
+  expensesHtmlDate (calculateSum(monthsExpenses))
+  incurredExpensesHtmlDate (calculateSum(pendingExpenses))
+
 
   newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), 'rgba(254, 152, 112, 1)', calculateSum(monthsIncomes), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)' )
 
@@ -457,29 +489,6 @@ addButtonTitleTypesGroup.addEventListener("click", function () {
   }
   push(typesOfGroupsInDB, addTypesOfGroups)
   
-})
-
-// Adaugarea mecanismului de filtrare
-
-const listOfFilterGroups = document.getElementById('js-list-of-filter')
-
-onValue(typesOfGroupsInDB, function(snapshot) {
-
-  let monthsDateSec = Object.values(snapshot.val())
-  const listGroup = monthsDateSec.map(item => item.titlu);
-  let optionsHTML = "";
-
-  for (let i = 0; i < listGroup.length; i++) {
-
-    let optionHTML = `<option value="${listGroup[i]}">${listGroup[i]}</option>`
-    optionsHTML += optionHTML
-  }
-
-  listOfFilterGroups.innerHTML += `
-    <option value="Filtrează" selected disabled hidden>Filtrează</option>
-    <option value="✅ Toate">✅ Toate</option>
-    ${optionsHTML}
-  `
 })
 
 
