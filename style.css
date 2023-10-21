@@ -1361,9 +1361,16 @@ main {
       width:55%;
       gap: 1%;
     }
-
     .incomes_list_data {
       width: 55%;
+    }
+
+    .expenses_list_group_filter {
+      width:46%;
+      justify-content: space-between;
+      gap: 8px;
+      padding-left: 8px;
+      padding-bottom: 8px;
   }
 
   .linie-tabel-chield-incomes-add-0{
