@@ -245,6 +245,13 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
   expensesHtmlDate (calculateSum(monthsExpenses))
   incurredExpensesHtmlDate (calculateSum(pendingExpenses))
 
+  function allExpensesFilter () {
+    let filterValue = listOfFilterGroups.value
+    let filteredItems = fiterItem (monthsExpenses, "grupa", filterValue)
+    readExpenses(filteredItems, curentSelectMonth)
+  }
+  listOfFilterGroups.addEventListener('input', allExpensesFilter)
+
   newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), 'rgba(254, 152, 112, 1)', calculateSum(monthsIncomes), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)' )
 
 
@@ -526,6 +533,8 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
 
 } 
 
+// Adaugarea mecanismului de filtrare
+
 const listOfFilterGroups = document.getElementById('js-list-of-filter')
 
 onValue(typesOfGroupsInDB, function(snapshot) {
@@ -541,18 +550,10 @@ onValue(typesOfGroupsInDB, function(snapshot) {
   }
 
   listOfFilterGroups.innerHTML += `
-  <span class="material-symbols-outlined filter_icon_style">filter_alt</span>
-    <select class="expenses_list_group_icon" name="grupe-cheltuieli">
-      <option value="Filtrează" selected disabled hidden>Filtrează</option>
-      ${optionsHTML}
-    </select>
+    <option value="Filtrează" selected disabled hidden>Filtrează</option>
+    ${optionsHTML}
   `
-
-
-
 })
-
-
 
 
 // Functia data citeste masivul si il vizualizeaza lista de cheltuieli pe pagina de baza
