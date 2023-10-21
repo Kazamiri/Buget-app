@@ -248,8 +248,14 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
   function allExpensesFilter () {
     let filterValue = listOfFilterGroups.value
     let filteredItems = fiterItem (monthsExpenses, "grupa", filterValue)
-    readExpenses(filteredItems, curentSelectMonth)
+    if(filterValue === `✅ Toate`){
+      readExpenses(monthsExpenses, curentSelectMonth)
+    } else {
+      readExpenses(filteredItems, curentSelectMonth)
+    }
+    
   }
+
   listOfFilterGroups.addEventListener('input', allExpensesFilter)
 
   newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), 'rgba(254, 152, 112, 1)', calculateSum(monthsIncomes), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)' )
@@ -453,6 +459,30 @@ addButtonTitleTypesGroup.addEventListener("click", function () {
   
 })
 
+// Adaugarea mecanismului de filtrare
+
+const listOfFilterGroups = document.getElementById('js-list-of-filter')
+
+onValue(typesOfGroupsInDB, function(snapshot) {
+
+  let monthsDateSec = Object.values(snapshot.val())
+  const listGroup = monthsDateSec.map(item => item.titlu);
+  let optionsHTML = "";
+
+  for (let i = 0; i < listGroup.length; i++) {
+
+    let optionHTML = `<option value="${listGroup[i]}">${listGroup[i]}</option>`
+    optionsHTML += optionHTML
+  }
+
+  listOfFilterGroups.innerHTML += `
+    <option value="Filtrează" selected disabled hidden>Filtrează</option>
+    <option value="✅ Toate">✅ Toate</option>
+    ${optionsHTML}
+  `
+})
+
+
 // Functia data citeste masivul si il vizualizeaza lista de venituri pe pagina de baza
 function readIncomes(monthsIncomes, curentSelectMonth) {
 
@@ -532,28 +562,6 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
   }
 
 } 
-
-// Adaugarea mecanismului de filtrare
-
-const listOfFilterGroups = document.getElementById('js-list-of-filter')
-
-onValue(typesOfGroupsInDB, function(snapshot) {
-
-  let monthsDateSec = Object.values(snapshot.val())
-  const listGroup = monthsDateSec.map(item => item.titlu);
-  let optionsHTML = "";
-
-  for (let i = 0; i < listGroup.length; i++) {
-
-    let optionHTML = `<option value="${listGroup[i]}">${listGroup[i]}</option>`
-    optionsHTML += optionHTML
-  }
-
-  listOfFilterGroups.innerHTML += `
-    <option value="Filtrează" selected disabled hidden>Filtrează</option>
-    ${optionsHTML}
-  `
-})
 
 
 // Functia data citeste masivul si il vizualizeaza lista de cheltuieli pe pagina de baza
