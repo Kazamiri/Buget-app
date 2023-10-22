@@ -1179,8 +1179,6 @@ function levelExpenseseStatistics (valueLow, valueMedium, valueHigh) {
 
 function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
-  const testData = document.getElementById('test_data')
-
   let canvas = document.getElementById('c7')
   let ctx = canvas.getContext('2d')
   
@@ -1242,10 +1240,6 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     ctx.fillRect(52 * dataStat, 0, 52, 520)
   }
 
-  testData.innerHTML = `<p>currentMonthCompare: ${currentMonthCompare} <p/>
-  <p>currentMonthCompareNum: ${currentMonthCompareNum} <p/>
-  <p>monthNum: ${monthNum} <p/>
-`
 }
 
 function levelExpenseseValue (valueHigh, valueMedium, valueLow) {
