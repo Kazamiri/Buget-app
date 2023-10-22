@@ -1242,7 +1242,7 @@ function levelExpensese (incomes, expenses) {
   ctx.fillRect(52 * dataStat, 0, 52, 520);
 
 
-  if(window.innerWidth <= 575) {
+  /*if(window.innerWidth <= 575) {
     ctx.beginPath()
     ctx.strokeStyle = 'rgba(235, 235, 245, 0.30)'
     ctx.lineWidth = 6;
@@ -1258,7 +1258,8 @@ function levelExpensese (incomes, expenses) {
     ctx.lineTo(26 + (52 * dataStat), 512)
     ctx.lineCap = "round"
     ctx.stroke()
-  }
+  }*/
+
 }
 
 function levelExpenseseValue (valueHigh, valueMedium, valueLow) {
