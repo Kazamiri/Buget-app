@@ -1196,7 +1196,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   // Aflam cite zile are luna selectata
 
   let extractDate = curentSelectMonth.slice(16, 30)
-  let selectedMonth = new Date(`2023-10-01`)
+  let selectedMonth = new Date(`${extractDate}`)
   selectedMonth.setDate(1)
   selectedMonth.setHours(12)
   /*let year = selectedMonth.toISOString().slice(0, 4)
