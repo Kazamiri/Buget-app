@@ -1229,10 +1229,14 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   let todayDateNumStat = parseInt(currentDateStat, 10);
   let dataStat = todayDateNumStat-1;
 
-  ctx.beginPath()
-  ctx.fillStyle = "rgba(14, 173, 105, 0.20)";
-  ctx.fillRect(52 * dataStat, 0, 52, 520);
+  let currentMonthCompare = new Date().toISOString().slice(5, 7);
+  let currentMonthCompareNum = parseInt(currentMonthCompare, 10);;
 
+  if(currentMonthCompareNum === monthNum) {
+    ctx.beginPath()
+    ctx.fillStyle = "rgba(14, 173, 105, 0.20)";
+    ctx.fillRect(52 * dataStat, 0, 52, 520);
+  }
 }
 
 function levelExpenseseValue (valueHigh, valueMedium, valueLow) {
