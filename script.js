@@ -79,7 +79,7 @@ const closeModulAddMonth = document.getElementById('js-close-month-modul')
 const inputTitleTypesGroup = document.getElementById('js-new-title-types-group')
 const addButtonTitleTypesGroup = document.getElementById('js-add-new-title-types-group')
 
-// De aici se incepe 
+// De aici se incepe --------------------------------------------------
 // Navigarea prin aplicatie noua
 let clicks = 0;
 readingNewMonths (navigateByMonth (clicks))
@@ -97,7 +97,7 @@ navButtonMonthRight.addEventListener("click", function del () {
   changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
 })
 
-// Adaugarea mecanismului de filtrare
+// Adaugarea mecanismului de filtrare a cheltuielilor----------------------------
 
 const listOfFilterGroups = document.getElementById('js-list-of-filter')
 
@@ -118,7 +118,7 @@ onValue(typesOfGroupsInDB, function(snapshot) {
   `
 })
 
-// Functiile de adaugare a itemilor
+// Functiile de adaugare a itemilor-----------------------------------
 
 addButtonIncome.addEventListener("click", function () {
   const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/incomes`)
@@ -304,7 +304,8 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
 
   levelExpenseseStatistics (diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "Low"))),diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "Medium"))),diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "High"))))
 
-  levelExpensese(monthsIncomes, monthsExpenses)
+  levelExpensese(monthsIncomes, monthsExpenses, curentSelectMonth)
+
 
   levelExpenseseValue (calculateSum(fiterItem (monthsExpenses, "level", "High")), calculateSum(fiterItem (monthsExpenses, "level", "Medium")), calculateSum(fiterItem (monthsExpenses, "level", "Low")),)
 
@@ -1175,7 +1176,8 @@ function levelExpenseseStatistics (valueLow, valueMedium, valueHigh) {
   ctx.stroke()
 }
 
-function levelExpensese (incomes, expenses) {
+
+function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
   let canvas = document.getElementById('c7')
   let ctx = canvas.getContext('2d')
@@ -1189,76 +1191,47 @@ function levelExpensese (incomes, expenses) {
   ctx.lineTo(1560, 0)
   ctx.stroke()
 
-  // Initialize variables to store the smallest and largest dates
-  let smallestDate = new Date(expenses[0][1].data);
-  let largestDate = new Date(expenses[0][1].data);
+  // Aflam cite zile are luna selectata
+  let selectedMonth = new Date(curentSelectMonth);
+  selectedMonth.setDate(1)
+  selectedMonth.setHours(12)
+  let year = selectedMonth.toISOString().slice(0, 4);
+  let month = selectedMonth.toISOString().slice(5, 7);
+  let monthNum = parseInt(month, 10);
+  selectedMonth.setMonth(selectedMonth.getMonth() + 1)
+  selectedMonth.setDate(selectedMonth.getDate() - 1)
+  let lastDay = selectedMonth.toISOString().slice(8, 10);
+  let lastDayNum = parseInt(lastDay, 10);
 
-
-  // Iterate through the data and update the smallest and largest dates
-  for (const item of expenses) {
-      const currentDate = new Date(item[1].data);
-      if (currentDate < smallestDate) {
-          smallestDate = currentDate;
-      }
-      if (currentDate > largestDate) {
-          largestDate = currentDate;
-      }
-  }
-
-
-  // Convert the smallest and largest dates back to string format
-  const smallestDateString = smallestDate.toISOString().split('T')[0];
-  const largestDateString = largestDate.toISOString().split('T')[0];
-
-  const [, , , , , , , , one, two ] = largestDateString;
-  const todayDateStr = one + two
-  var todayDateNum = parseInt(todayDateStr, 10);
-
-
-  for (let i = 0; i < todayDateNum; i++) {
-
-    let resultDate = smallestDate.toISOString().split('T')[0];
+  // Vizualizam pe grafic
   
-    let procent = diference (calculateSum(incomes), calculateSum(filterPeriod(expenses, smallestDateString, resultDate)))
+  let procenGraphic = 0
+
+  for (let i = 1, j = 0; i < lastDayNum; i++, j++) {
+
+    let day = String(i).padStart(2, '0')
+    let monthGraph = String(monthNum).padStart(2, '0')
+
+    let procent = diference (calculateSum(monthsIncomes), calculateSum(fiterItem (monthsExpenses, "data",`${year}-${monthGraph}-${day}`)))
     
-    smallestDate.setDate(smallestDate.getDate() + 1);
+    procenGraphic = procenGraphic + procent
 
     ctx.beginPath()
     ctx.strokeStyle = '#0EAD69'
     ctx.lineWidth = 5;
-    ctx.moveTo(0 + (i * 52), 520 - (procent*5.2))
-    ctx.lineTo(52 + (i * 52), 520 - (procent*5.2))
+    ctx.moveTo(0 + (j * 52), 520 - (procenGraphic * 5.2))
+    ctx.lineTo(52 + (j * 52), 520 - (procenGraphic * 5.2))
     ctx.stroke()
   }
 
-  
   // Functionalul de evidentiere a zilei curente
   let currentDateStat = new Date().toISOString().slice(8, 10);
-  var todayDateNumStat = parseInt(currentDateStat, 10);
+  let todayDateNumStat = parseInt(currentDateStat, 10);
   let dataStat = todayDateNumStat-1;
 
   ctx.beginPath()
   ctx.fillStyle = "rgba(14, 173, 105, 0.20)";
   ctx.fillRect(52 * dataStat, 0, 52, 520);
-
-
-  /*if(window.innerWidth <= 575) {
-    ctx.beginPath()
-    ctx.strokeStyle = 'rgba(235, 235, 245, 0.30)'
-    ctx.lineWidth = 6;
-    ctx.moveTo(22 + (52 * dataStat), 512)
-    ctx.lineTo(30 + (52 * dataStat), 512)
-    ctx.lineCap = "round"
-    ctx.stroke()
-  } else{
-    ctx.beginPath()
-    ctx.strokeStyle = 'rgba(235, 235, 245, 0.30)'
-    ctx.lineWidth = 8;
-    ctx.moveTo(26 + (52 * dataStat), 512)
-    ctx.lineTo(26 + (52 * dataStat), 512)
-    ctx.lineCap = "round"
-    ctx.stroke()
-  }*/
 
 }
 
