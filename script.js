@@ -1199,24 +1199,24 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   let selectedMonth = new Date(`${extractDate}`)
   selectedMonth.setDate(1)
   selectedMonth.setHours(12)
-  /*let year = selectedMonth.toISOString().slice(0, 4)
+  let year = selectedMonth.toISOString().slice(0, 4)
   let month = selectedMonth.toISOString().slice(5, 7)
   let monthNum = parseInt(month, 10);
   selectedMonth.setMonth(selectedMonth.getMonth() + 1)
   selectedMonth.setDate(selectedMonth.getDate() - 1)
   let lastDay = selectedMonth.toISOString().slice(8, 10)
-  let lastDayNum = parseInt(lastDay, 10)*/
+  let lastDayNum = parseInt(lastDay, 10)
 
   // Vizualizam pe grafic
   
   let procenGraphic = 0
 
-  for (let i = 1, j = 0; i < 31; i++, j++) {
+  for (let i = 1, j = 0; i < lastDayNum; i++, j++) {
 
     let day = String(i).padStart(2, '0')
-    //let monthGraph = String(monthNum).padStart(2, '0')
+    let monthGraph = String(monthNum).padStart(2, '0')
 
-    let procent = diference (calculateSum(monthsIncomes), calculateSum(fiterItem (monthsExpenses, "data",`2023-10-${day}`)))
+    let procent = diference (calculateSum(monthsIncomes), calculateSum(fiterItem (monthsExpenses, "data",`${year}-${monthGraph}-${day}`)))
     
     procenGraphic = procenGraphic + procent
 
