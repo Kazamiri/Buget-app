@@ -1229,7 +1229,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   }
 
   // Functionalul de evidentiere a zilei curente
-  /*let currentDateStat = new Date().toISOString().slice(8, 10)
+  let currentDateStat = new Date().toISOString().slice(8, 10)
   let todayDateNumStat = parseInt(currentDateStat, 10)
   let dataStat = todayDateNumStat-1
 
@@ -1240,10 +1240,11 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     ctx.beginPath()
     ctx.fillStyle = "rgba(14, 173, 105, 0.20)"
     ctx.fillRect(52 * dataStat, 0, 52, 520)
-  }*/
+  }
 
-  testData.innerHTML = `<p>curentSelectMonth: ${curentSelectMonth} <p/>
-  <p>selectedMonth: ${selectedMonth} <p/>
+  testData.innerHTML = `<p>currentMonthCompare: ${currentMonthCompare} <p/>
+  <p>currentMonthCompareNum: ${currentMonthCompareNum} <p/>
+  <p>monthNum: ${monthNum} <p/>
 `
 }
 
