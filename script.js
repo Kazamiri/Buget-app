@@ -1189,7 +1189,6 @@ function levelExpensese (incomes, expenses) {
   ctx.lineTo(1560, 0)
   ctx.stroke()
 
- 
   // Initialize variables to store the smallest and largest dates
   let smallestDate = new Date(expenses[0][1].data);
   let largestDate = new Date(expenses[0][1].data);
@@ -1232,11 +1231,15 @@ function levelExpensese (incomes, expenses) {
     ctx.stroke()
   }
 
-  let currentDateStat = new Date().toISOString().slice(0, 10);
-  const [, , , , , , , , oneS, twoS ] = currentDateStat;
-  const todayDateStat = oneS + twoS
-  var todayDateNumStat = parseInt(todayDateStat, 10);
+  
+  // Functionalul de evidentiere a zilei curente
+  let currentDateStat = new Date().toISOString().slice(8, 10);
+  var todayDateNumStat = parseInt(currentDateStat, 10);
   let dataStat = todayDateNumStat-1;
+
+  ctx.beginPath()
+  ctx.fillStyle = "rgba(14, 173, 105, 0.20)";
+  ctx.fillRect(52 * dataStat, 0, 52, 520);
 
 
   if(window.innerWidth <= 575) {
