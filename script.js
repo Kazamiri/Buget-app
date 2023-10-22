@@ -1214,7 +1214,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     let day = String(i).padStart(2, '0')
     let monthGraph = String(monthNum).padStart(2, '0')
 
-    let procent = diference (calculateSum(monthsIncomes), calculateSum(fiterItem (monthsExpenses, "data",`${year}-${monthGraph}-${day}`)))
+    let procent = diference (calculateSum(monthsIncomes), calculateSum(fiterItem (monthsExpenses, "data",`${year}-11-${day}`)))
     
     procenGraphic = procenGraphic + procent
 
