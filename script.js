@@ -1194,7 +1194,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   ctx.stroke()
 
   // Aflam cite zile are luna selectata
-  let selectedMonth = new Date(curentSelectMonth)
+  /*let selectedMonth = new Date(curentSelectMonth)
   selectedMonth.setDate(1)
   selectedMonth.setHours(12)
   let year = selectedMonth.toISOString().slice(0, 4)
@@ -1203,18 +1203,18 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   selectedMonth.setMonth(selectedMonth.getMonth() + 1)
   selectedMonth.setDate(selectedMonth.getDate() - 1)
   let lastDay = selectedMonth.toISOString().slice(8, 10)
-  let lastDayNum = parseInt(lastDay, 10)
+  let lastDayNum = parseInt(lastDay, 10)*/
 
   // Vizualizam pe grafic
   
   let procenGraphic = 0
 
-  for (let i = 1, j = 0; i < lastDayNum; i++, j++) {
+  for (let i = 1, j = 0; i < 31; i++, j++) {
 
     let day = String(i).padStart(2, '0')
-    let monthGraph = String(monthNum).padStart(2, '0')
+    //let monthGraph = String(monthNum).padStart(2, '0')
 
-    let procent = diference (calculateSum(monthsIncomes), calculateSum(fiterItem (monthsExpenses, "data",`${year}-${monthGraph}-${day}`)))
+    let procent = diference (calculateSum(monthsIncomes), calculateSum(fiterItem (monthsExpenses, "data",`2023-10-${day}`)))
     
     procenGraphic = procenGraphic + procent
 
@@ -1240,11 +1240,11 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     ctx.fillRect(52 * dataStat, 0, 52, 520)
   }
 
-  testData.innerHTML = `<p>curentSelectMonth: ${curentSelectMonth} <p/>
+  /*testData.innerHTML = `<p>curentSelectMonth: ${curentSelectMonth} <p/>
   <p>selectedMonth: ${selectedMonth} <p/>
   <p>monthNum: ${monthNum} <p/>
   <p>year: ${year} <p/>
-  <p>lastDayNum: ${lastDayNum} <p/>`
+  <p>lastDayNum: ${lastDayNum} <p/>`*/
 }
 
 function levelExpenseseValue (valueHigh, valueMedium, valueLow) {
