@@ -1179,6 +1179,8 @@ function levelExpenseseStatistics (valueLow, valueMedium, valueHigh) {
 
 function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
+  const testData = document.getElementById('test_data')
+
   let canvas = document.getElementById('c7')
   let ctx = canvas.getContext('2d')
   
@@ -1186,22 +1188,22 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
   ctx.beginPath()
   ctx.strokeStyle = '#FE9870'
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2
   ctx.moveTo(0, 520)
   ctx.lineTo(1560, 0)
   ctx.stroke()
 
   // Aflam cite zile are luna selectata
-  let selectedMonth = new Date(curentSelectMonth);
+  let selectedMonth = new Date(curentSelectMonth)
   selectedMonth.setDate(1)
   selectedMonth.setHours(12)
-  let year = selectedMonth.toISOString().slice(0, 4);
-  let month = selectedMonth.toISOString().slice(5, 7);
+  let year = selectedMonth.toISOString().slice(0, 4)
+  let month = selectedMonth.toISOString().slice(5, 7)
   let monthNum = parseInt(month, 10);
   selectedMonth.setMonth(selectedMonth.getMonth() + 1)
   selectedMonth.setDate(selectedMonth.getDate() - 1)
-  let lastDay = selectedMonth.toISOString().slice(8, 10);
-  let lastDayNum = parseInt(lastDay, 10);
+  let lastDay = selectedMonth.toISOString().slice(8, 10)
+  let lastDayNum = parseInt(lastDay, 10)
 
   // Vizualizam pe grafic
   
@@ -1218,25 +1220,31 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
     ctx.beginPath()
     ctx.strokeStyle = '#0EAD69'
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 5
     ctx.moveTo(0 + (j * 52), 520 - (procenGraphic * 5.2))
     ctx.lineTo(52 + (j * 52), 520 - (procenGraphic * 5.2))
     ctx.stroke()
   }
 
   // Functionalul de evidentiere a zilei curente
-  let currentDateStat = new Date().toISOString().slice(8, 10);
-  let todayDateNumStat = parseInt(currentDateStat, 10);
-  let dataStat = todayDateNumStat-1;
+  let currentDateStat = new Date().toISOString().slice(8, 10)
+  let todayDateNumStat = parseInt(currentDateStat, 10)
+  let dataStat = todayDateNumStat-1
 
-  let currentMonthCompare = new Date().toISOString().slice(5, 7);
-  let currentMonthCompareNum = parseInt(currentMonthCompare, 10);;
+  let currentMonthCompare = new Date().toISOString().slice(5, 7)
+  let currentMonthCompareNum = parseInt(currentMonthCompare, 10)
 
   if(currentMonthCompareNum === monthNum) {
     ctx.beginPath()
-    ctx.fillStyle = "rgba(14, 173, 105, 0.20)";
-    ctx.fillRect(52 * dataStat, 0, 52, 520);
+    ctx.fillStyle = "rgba(14, 173, 105, 0.20)"
+    ctx.fillRect(52 * dataStat, 0, 52, 520)
   }
+
+  testData.innerHTML = `<p>curentSelectMonth: ${curentSelectMonth} <p/>
+  <p>selectedMonth: ${selectedMonth} <p/>
+  <p>monthNum: ${monthNum} <p/>
+  <p>year: ${year} <p/>
+  <p>lastDayNum: ${lastDayNum} <p/>`
 }
 
 function levelExpenseseValue (valueHigh, valueMedium, valueLow) {
