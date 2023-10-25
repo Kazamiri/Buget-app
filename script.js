@@ -1260,10 +1260,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     let day = String(i).padStart(2, '0')
     let monthGraph = String(monthNum).padStart(2, '0')
 
-    let selectday = fiterItem (monthsExpenses, "data",`${year}-${monthGraph}-${day}`)
-    let dayExpense = fiterItem (selectday, "state", "Cheltuit")
-
-    let procent = diference (calculateSum(monthsIncomes), calculateSum(dayExpense))
+    let procent = diference (calculateSum(monthsIncomes), calculateSum(fiterItem (fiterItem (monthsExpenses, "data",`${year}-${monthGraph}-${day}`), "state", "Cheltuit")))
     
     procentExpensesIncurred = procentExpensesIncurred + procent
 
