@@ -1205,11 +1205,33 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   let lastDay = selectedMonth.toISOString().slice(8, 10)
   let lastDayNum = parseInt(lastDay, 10)
 
+  // Vizaulizam dinamica lunara a veniturilor
+
+  let procenGraphicIncome = 0
+
+  for (let i = 1, j = 0; j < lastDayNum; i++, j++) {
+    
+    let day = String(i).padStart(2, '0')
+    let monthGraph = String(monthNum).padStart(2, '0')
+
+    let procent = diference (calculateSum(monthsIncomes), calculateSum(fiterItem (monthsIncomes, "data",`${year}-${monthGraph}-${day}`)))
+    
+    procenGraphicIncome = procenGraphicIncome + procent
+
+    ctx.beginPath()
+    ctx.fillStyle = "rgba(14, 173, 105, 0.08)"
+    ctx.fillRect((52 * j), 520, 52,  - (procenGraphicIncome * 5.2))
+
+    ctx.beginPath()
+    ctx.fillStyle = "rgba(14, 173, 105, 1)"
+    ctx.fillRect((52 * j), 520 - (procenGraphicIncome * 5.2), 52,  4)
+  }
+
   // Vizualizam pe grafic
   
   let procenGraphic = 0
 
-  for (let i = 1, j = 0; i < lastDayNum; i++, j++) {
+  for (let i = 1, j = 0; j < lastDayNum; i++, j++) {
 
     let day = String(i).padStart(2, '0')
     let monthGraph = String(monthNum).padStart(2, '0')
@@ -1218,36 +1240,24 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     
     procenGraphic = procenGraphic + procent
 
+    ctx.clearRect(52 * j, 520, 52,  - (procenGraphic * 5.2))
+
     ctx.beginPath()
-    ctx.strokeStyle = '#0EAD69'
-    ctx.lineWidth = 5
-    ctx.moveTo(0 + (j * 52), 520 - (procenGraphic * 5.2))
-    ctx.lineTo(52 + (j * 52), 520 - (procenGraphic * 5.2))
-    ctx.stroke()
+    ctx.fillStyle = "rgba(254, 152, 112, 0.20)"
+    ctx.fillRect(52 * j, 520, 52,  - (procenGraphic * 5.2))
+
+    ctx.beginPath()
+    ctx.fillStyle = "rgba(254, 152, 112, 1)"
+    ctx.fillRect(52 * j, 520 - (procenGraphic * 5.2), 52, 4)
   }
 
-  // Vizaulizam dinamica lunara a veniturilor
+  ctx.beginPath()
+  ctx.strokeStyle = 'rgba(255, 202, 98, 1)'
+  ctx.lineWidth = 4
+  ctx.moveTo(0, 520)
+  ctx.lineTo(1560, 0)
+  ctx.stroke()
 
-  /*let procenGraphicIncome = 0
-
-  for (let i = 1, j = 0; i < lastDayNum; i++, j++) {
-
-    let day = String(i).padStart(2, '0')
-    let monthGraph = String(monthNum).padStart(2, '0')
-
-    let procent = diference (calculateSum(monthsIncomes), calculateSum(fiterItem (monthsIncomes, "data",`${year}-${monthGraph}-${day}`)))
-    
-    procenGraphicIncome = procenGraphicIncome + procent
-
-    console.log(procenGraphicIncome)
-
-    ctx.beginPath()
-    ctx.strokeStyle = 'rgba(254, 152, 112, 0.4)'
-    ctx.lineWidth = 5
-    ctx.moveTo(0 + (j * 52), 520 - (procenGraphicIncome * 5.2))
-    ctx.lineTo(52 + (j * 52), 520 - (procenGraphicIncome * 5.2))
-    ctx.stroke()
-  }*/
 
   // Functionalul de evidentiere a zilei curente
   let currentDateStat = new Date().toISOString().slice(8, 10)
@@ -1259,7 +1269,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
   if(currentMonthCompareNum === monthNum) {
     ctx.beginPath()
-    ctx.fillStyle = "rgba(14, 173, 105, 0.20)"
+    ctx.fillStyle = "rgba(254, 152, 112, 0.20)"
     ctx.fillRect(52 * dataStat, 0, 52, 520)
   }
 
