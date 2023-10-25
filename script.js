@@ -1226,6 +1226,29 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     ctx.stroke()
   }
 
+  // Vizaulizam dinamica lunara a veniturilor
+
+  /*let procenGraphicIncome = 0
+
+  for (let i = 1, j = 0; i < lastDayNum; i++, j++) {
+
+    let day = String(i).padStart(2, '0')
+    let monthGraph = String(monthNum).padStart(2, '0')
+
+    let procent = diference (calculateSum(monthsIncomes), calculateSum(fiterItem (monthsIncomes, "data",`${year}-${monthGraph}-${day}`)))
+    
+    procenGraphicIncome = procenGraphicIncome + procent
+
+    console.log(procenGraphicIncome)
+
+    ctx.beginPath()
+    ctx.strokeStyle = 'rgba(254, 152, 112, 0.4)'
+    ctx.lineWidth = 5
+    ctx.moveTo(0 + (j * 52), 520 - (procenGraphicIncome * 5.2))
+    ctx.lineTo(52 + (j * 52), 520 - (procenGraphicIncome * 5.2))
+    ctx.stroke()
+  }*/
+
   // Functionalul de evidentiere a zilei curente
   let currentDateStat = new Date().toISOString().slice(8, 10)
   let todayDateNumStat = parseInt(currentDateStat, 10)

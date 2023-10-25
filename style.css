@@ -1084,6 +1084,15 @@ main {
       background: var(--color-functional-green-primary);
     }
 
+@media all and (min-width: 992px) and (max-width: 1199px){
+  .linie-tabel {
+    flex-wrap: nowrap;
+    padding: 16px;
+    gap: 2rem;
+}
+
+}
+
 @media all and (min-width: 320px) and (max-width: 575px){
   main {
     margin: 16px;
