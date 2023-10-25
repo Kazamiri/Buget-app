@@ -1303,7 +1303,9 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     ctx.fillText(day, (widthDivideDays * j)+(widthDivideDays / 5), (heightCanvas - 14));
   }
 
-  for (let i = 1, j = 2; j < 10; i++, j++) {
+  //Adaugare linii orizontale ----------------------------------
+
+  for (let i = 1; i < 10; i++) {
 
     ctx.strokeStyle = "rgba(255, 255, 255, 0.03)"
     ctx.lineWidth = 6
@@ -1311,12 +1313,16 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     ctx.moveTo(widthDivideDays, heightDivideProcent * i)
     ctx.lineTo(wideCanvas, heightDivideProcent * i)
     ctx.stroke()
+  }
 
-    // Adaugarea procentelor --------------------------------
+  // Adaugarea procentelor text --------------------------------
+
+  for (let i = 1; i < 9; i++) {
+
     ctx.font = "30px sans-serif";
     ctx.fontWeight = "lighter"
     ctx.fillStyle = "rgba(235, 235, 245, 0.18)";
-    ctx.fillText(100 - (10 * i), 0, (heightDivideProcent * i)+(heightDivideProcent / 5));
+    ctx.fillText(100 - (10 * i), 0, (heightDivideProcent * i)+(heightDivideProcent / 5))
 
   }
 
