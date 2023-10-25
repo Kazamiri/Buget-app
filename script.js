@@ -1191,7 +1191,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   ctx.lineTo(1560, 0)
   ctx.stroke()
 
-  // Aflam cite zile are luna selectata
+  // Aflam cite zile are luna selectata ---------------------------------
 
   let extractDate = curentSelectMonth.slice(16, 30)
   let selectedMonth = new Date(`${extractDate}`)
@@ -1205,7 +1205,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   let lastDay = selectedMonth.toISOString().slice(8, 10)
   let lastDayNum = parseInt(lastDay, 10)
 
-  // Vizaulizam dinamica lunara a veniturilor
+  // Vizaulizam dinamica lunara a veniturilor ----------------------------
 
   let procenGraphicIncome = 0
 
@@ -1223,11 +1223,11 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     ctx.fillRect((52 * j), 520, 52,  - (procenGraphicIncome * 5.2))
 
     ctx.beginPath()
-    ctx.fillStyle = "rgba(14, 173, 105, 1)"
+    ctx.fillStyle = "rgba(14, 173, 105, 0.6)"
     ctx.fillRect((52 * j), 520 - (procenGraphicIncome * 5.2), 52,  4)
   }
 
-  // Vizualizam pe grafic
+  // Vizualizarea cheltuielilor planificate -------------------------------
   
   let procenGraphic = 0
 
@@ -1251,15 +1251,46 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     ctx.fillRect(52 * j, 520 - (procenGraphic * 5.2), 52, 4)
   }
 
+  // Vizualizarea cheltuielilor efectuate ---------------------------
+
+  let procentExpensesIncurred = 0
+
+  for (let i = 1, j = 0; j < lastDayNum; i++, j++) {
+
+    let day = String(i).padStart(2, '0')
+    let monthGraph = String(monthNum).padStart(2, '0')
+
+    let selectday = fiterItem (monthsExpenses, "data",`${year}-${monthGraph}-${day}`)
+    let dayExpense = fiterItem (selectday, "state", "Cheltuit")
+
+    let procent = diference (calculateSum(monthsIncomes), calculateSum(dayExpense))
+    
+    procentExpensesIncurred = procentExpensesIncurred + procent
+
+    ctx.clearRect(52 * j, 520, 52,  - (procentExpensesIncurred * 5.2))
+
+    ctx.beginPath()
+    ctx.fillStyle = "rgba(250, 65, 105, 0.20)"
+    ctx.fillRect(52 * j, 520, 52,  - (procentExpensesIncurred * 5.2))
+
+    ctx.beginPath()
+    ctx.fillStyle = "rgba(250, 65, 105, 1)"
+    ctx.fillRect(52 * j, 520 - (procentExpensesIncurred * 5.2), 52, 4)
+  }
+
+  // Vizualizam raspindirea uniforma ------------------------------
+
   ctx.beginPath()
   ctx.strokeStyle = 'rgba(255, 202, 98, 1)'
-  ctx.lineWidth = 4
+  ctx.lineWidth = 3
   ctx.moveTo(0, 520)
   ctx.lineTo(1560, 0)
   ctx.stroke()
 
 
-  // Functionalul de evidentiere a zilei curente
+  // Functionalul de evidentiere a zilei curente--------------------
+
+
   let currentDateStat = new Date().toISOString().slice(8, 10)
   let todayDateNumStat = parseInt(currentDateStat, 10)
   let dataStat = todayDateNumStat-1
