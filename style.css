@@ -996,8 +996,7 @@ main {
         #c7{
           width: 100%;
           height: auto;
-          background-image: url(graphic.svg);
-          background-size: 100% 100%;
+          background-color: var(--color-backgrounds-primary);
         }
 
 .add_linie_tabel{
@@ -1458,8 +1457,6 @@ main {
       #c7{
         width: 100%;
         aspect-ratio: 3/2;
-        background-image: url(graphic_mob.svg);
-        background-size: 100% 100%;
       }
 
 }

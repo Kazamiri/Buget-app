@@ -1179,18 +1179,6 @@ function levelExpenseseStatistics (valueLow, valueMedium, valueHigh) {
 
 function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
-  let canvas = document.getElementById('c7')
-  let ctx = canvas.getContext('2d')
-  
-  ctx.clearRect(0, 0, 1560, 520)
-
-  ctx.beginPath()
-  ctx.strokeStyle = '#FE9870'
-  ctx.lineWidth = 2
-  ctx.moveTo(0, 520)
-  ctx.lineTo(1560, 0)
-  ctx.stroke()
-
   // Aflam cite zile are luna selectata ---------------------------------
 
   let extractDate = curentSelectMonth.slice(16, 30)
@@ -1204,6 +1192,28 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   selectedMonth.setDate(selectedMonth.getDate() - 1)
   let lastDay = selectedMonth.toISOString().slice(8, 10)
   let lastDayNum = parseInt(lastDay, 10)
+
+  // Initiem canvas ---------------------------------------------------
+
+  let canvas = document.getElementById('c7')
+  let ctx = canvas.getContext('2d')
+
+  let wideCanvas = 1560
+  let heightCanvas = 520
+  
+  ctx.clearRect(0, 0, wideCanvas, heightCanvas)
+
+  ctx.beginPath()
+  ctx.strokeStyle = '#FE9870'
+  ctx.lineWidth = 2
+  ctx.moveTo(0, heightCanvas)
+  ctx.lineTo(wideCanvas, 0)
+  ctx.stroke()
+
+  // Creem o variabila care divizeaza latimea la numarul de zile, iar a doua inaltimea la procente
+
+  let widthDivideDays = wideCanvas / lastDayNum
+  let heightDivideProcent = heightCanvas / 10
 
   // Vizaulizam dinamica lunara a veniturilor ----------------------------
 
@@ -1220,11 +1230,11 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
     ctx.beginPath()
     ctx.fillStyle = "rgba(14, 173, 105, 0.08)"
-    ctx.fillRect((52 * j), 520, 52,  - (procenGraphicIncome * 5.2))
+    ctx.fillRect((widthDivideDays * j), heightCanvas, widthDivideDays,  - (procenGraphicIncome * 5.2))
 
     ctx.beginPath()
     ctx.fillStyle = "rgba(14, 173, 105, 0.6)"
-    ctx.fillRect((52 * j), 520 - (procenGraphicIncome * 5.2), 52,  4)
+    ctx.fillRect((widthDivideDays * j), heightCanvas - (procenGraphicIncome * 5.2), widthDivideDays,  4)
   }
 
   // Vizualizarea cheltuielilor planificate -------------------------------
@@ -1240,15 +1250,15 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     
     procenGraphic = procenGraphic + procent
 
-    ctx.clearRect(52 * j, 520, 52,  - (procenGraphic * 5.2))
+    ctx.clearRect(widthDivideDays * j, heightCanvas, widthDivideDays,  - (procenGraphic * 5.2))
 
     ctx.beginPath()
     ctx.fillStyle = "rgba(254, 152, 112, 0.20)"
-    ctx.fillRect(52 * j, 520, 52,  - (procenGraphic * 5.2))
+    ctx.fillRect(widthDivideDays * j, heightCanvas, widthDivideDays,  - (procenGraphic * 5.2))
 
     ctx.beginPath()
     ctx.fillStyle = "rgba(254, 152, 112, 1)"
-    ctx.fillRect(52 * j, 520 - (procenGraphic * 5.2), 52, 4)
+    ctx.fillRect(widthDivideDays * j, heightCanvas - (procenGraphic * 5.2), widthDivideDays, 4)
   }
 
   // Vizualizarea cheltuielilor efectuate ---------------------------
@@ -1264,15 +1274,50 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     
     procentExpensesIncurred = procentExpensesIncurred + procent
 
-    ctx.clearRect(52 * j, 520, 52,  - (procentExpensesIncurred * 5.2))
+    ctx.clearRect(widthDivideDays * j, heightCanvas, widthDivideDays,  - (procentExpensesIncurred * 5.2))
 
     ctx.beginPath()
     ctx.fillStyle = "rgba(250, 65, 105, 0.20)"
-    ctx.fillRect(52 * j, 520, 52,  - (procentExpensesIncurred * 5.2))
+    ctx.fillRect(widthDivideDays * j, heightCanvas, widthDivideDays,  - (procentExpensesIncurred * 5.2))
 
     ctx.beginPath()
     ctx.fillStyle = "rgba(250, 65, 105, 1)"
-    ctx.fillRect(52 * j, 520 - (procentExpensesIncurred * 5.2), 52, 4)
+    ctx.fillRect(widthDivideDays * j, heightCanvas - (procentExpensesIncurred * 5.2), widthDivideDays, 4)
+    
+  }
+
+  // Crearea fundalului ----------------------------------------------------
+
+  for (let i = 1, j = 0; j < lastDayNum; i++, j++) {
+
+    let day = String(i).padStart(2, '0')
+
+    ctx.beginPath()
+    ctx.fillStyle = "rgba(255, 255, 255, 0.03)"
+    ctx.fillRect(((widthDivideDays * 2) * j), heightCanvas, widthDivideDays, -(heightCanvas))
+
+    // Adaugarea zilei lunii --------------------------------
+    ctx.font = "30px sans-serif";
+    ctx.fontWeight = "lighter"
+    ctx.fillStyle = "rgba(235, 235, 245, 0.18)";
+    ctx.fillText(day, (widthDivideDays * j)+(widthDivideDays / 5), (heightCanvas - 14));
+  }
+
+  for (let i = 1, j = 2; j < 10; i++, j++) {
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.03)"
+    ctx.lineWidth = 6
+    ctx.beginPath()
+    ctx.moveTo(widthDivideDays, heightDivideProcent * i)
+    ctx.lineTo(wideCanvas, heightDivideProcent * i)
+    ctx.stroke()
+
+    // Adaugarea procentelor --------------------------------
+    ctx.font = "30px sans-serif";
+    ctx.fontWeight = "lighter"
+    ctx.fillStyle = "rgba(235, 235, 245, 0.18)";
+    ctx.fillText(100 - (10 * i), 0, (heightDivideProcent * i)+(heightDivideProcent / 5));
+
   }
 
   // Vizualizam raspindirea uniforma ------------------------------
@@ -1280,13 +1325,12 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   ctx.beginPath()
   ctx.strokeStyle = 'rgba(255, 202, 98, 1)'
   ctx.lineWidth = 3
-  ctx.moveTo(0, 520)
-  ctx.lineTo(1560, 0)
+  ctx.moveTo(0, heightCanvas)
+  ctx.lineTo(wideCanvas, 0)
   ctx.stroke()
 
 
-  // Functionalul de evidentiere a zilei curente--------------------
-
+  // Functionalul de evidentiere a zilei curente --------------------
 
   let currentDateStat = new Date().toISOString().slice(8, 10)
   let todayDateNumStat = parseInt(currentDateStat, 10)
@@ -1298,7 +1342,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
   if(currentMonthCompareNum === monthNum) {
     ctx.beginPath()
     ctx.fillStyle = "rgba(254, 152, 112, 0.20)"
-    ctx.fillRect(52 * dataStat, 0, 52, 520)
+    ctx.fillRect(widthDivideDays * dataStat, 0, widthDivideDays, 520)
   }
 
 }
