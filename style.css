@@ -998,6 +998,30 @@ main {
           height: auto;
           background-color: var(--color-backgrounds-primary);
         }
+        .scrollable-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          max-height: 160px;
+          overflow: auto;
+
+          font-family: var(--font-default);
+          font-weight: var(--font-weight-default);
+          line-height: var(--s1-subtitle-height);
+          font-size: var(--s1-subtitle-size);
+        }
+        .perceRounded{
+          padding-top: 2px;
+          padding-bottom: 2px;
+          padding-right: 6px;
+          padding-left: 6px;
+          border-radius: 10px;
+        }
+        .clusterGroup{
+          display: flex;
+          flex-direction: row;
+          gap: 8px;
+        }
 
 .add_linie_tabel{
   margin-top: 3rem;
@@ -1458,6 +1482,7 @@ main {
         width: 100%;
         aspect-ratio: 3/2;
       }
+      
 
 }
 

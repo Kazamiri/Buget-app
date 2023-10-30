@@ -289,7 +289,7 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
   expensesHtmlDate (calculateSum(monthsExpenses))
   incurredExpensesHtmlDate (calculateSum(pendingExpenses))
 
-
+  groupVisuallisation (monthsExpenses)
   newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), 'rgba(254, 152, 112, 1)', calculateSum(monthsIncomes), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)' )
 
 
@@ -302,12 +302,12 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
 
 
 
-  levelExpenseseStatistics (diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "Low"))),diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "Medium"))),diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "High"))))
+  //levelExpenseseStatistics (diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "Low"))),diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "Medium"))),diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "High"))))
 
   levelExpensese(monthsIncomes, monthsExpenses, curentSelectMonth)
 
 
-  levelExpenseseValue (calculateSum(fiterItem (monthsExpenses, "level", "High")), calculateSum(fiterItem (monthsExpenses, "level", "Medium")), calculateSum(fiterItem (monthsExpenses, "level", "Low")),)
+  //levelExpenseseValue (calculateSum(fiterItem (monthsExpenses, "level", "High")), calculateSum(fiterItem (monthsExpenses, "level", "Medium")), calculateSum(fiterItem (monthsExpenses, "level", "Low")),)
 
 
 }
@@ -1121,7 +1121,7 @@ function diference (dividend, divisor) {
   return chelProcente
 }
 
-function levelExpenseseStatistics (valueLow, valueMedium, valueHigh) {
+/*function levelExpenseseStatistics (valueLow, valueMedium, valueHigh) {
   
   let canvas = document.getElementById('c6')
   let ctx = canvas.getContext('2d')
@@ -1174,8 +1174,97 @@ function levelExpenseseStatistics (valueLow, valueMedium, valueHigh) {
   ctx.strokeStyle = '#FA4169'
   ctx.arc(56, 56, 28, medium, high, false)
   ctx.stroke()
+}*/
+
+/*function levelExpenseseValue (valueHigh, valueMedium, valueLow) {
+  const levelTitleHigh = document.getElementById('js-title-high')
+  const levelTitleMedium = document.getElementById('js-title-medium')
+  const levelTitleLow = document.getElementById('js-title-low')
+
+  let valueStringHigh = valueHigh.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  let valueStringMedium = valueMedium.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  let valueStringLow = valueLow.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+  levelTitleHigh.innerHTML = `<p>High: <span class="level_text_title_bold">${valueStringHigh}</span> lei</p>`
+  levelTitleMedium.innerHTML = `<p>Medium: <span class="level_text_title_bold">${valueStringMedium}</span> lei</p>`
+  levelTitleLow.innerHTML = `<p>Low: <span class="level_text_title_bold">${valueStringLow}</span> lei</p>`
+
+}*/
+
+// Vizualizam infograficul cu grupele pe lună
+
+function groupVisuallisation (monthsExpenses) {
+
+  const clusterGroup = document.getElementById('js-cluster_group')
+  
+  let canvas = document.getElementById('c6')
+  let ctx = canvas.getContext('2d')
+  let pi = Math.PI
+
+  let rect = canvas.getBoundingClientRect()
+  canvas.width = rect.width * devicePixelRatio;
+  canvas.height = rect.height * devicePixelRatio; 
+
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+
+  canvas.style.width = rect.width + "px"
+  canvas.style.height = rect.height + "px"
+
+
+  function radianCalc (percentItem) {
+    let degree = percentItem * 3.6;
+    let radian = (Math.PI / 180) * degree;
+    return radian
+  }
+
+  ctx.clearRect(0, 0, 112, 112)
+
+
+  onValue(typesOfGroupsInDB, function(snapshot) {
+
+    let monthsDateSec = Object.values(snapshot.val())
+
+    let allGroupsPercentages = []
+
+    let colorGroup = ['#EF4444','#F97316', '#F59E0B', '#EAB308', '#84CC16', '#22C55E', '#10B981', '#06B6D4', '#0EA5E9', '#3B82F6', '#6366F1', '#8B5CF6', '#A855F7', '#D946EF', '#EC4899', '#F43F5E']
+
+    for (let i = 0; i < monthsDateSec.length; i++) {
+
+      let groupPercentages = {
+        grupa: monthsDateSec[i].titlu,
+        percentage: diference(calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "grupa", monthsDateSec[i].titlu)))
+      }
+      allGroupsPercentages.push(groupPercentages)
+    }
+
+    allGroupsPercentages.sort((a, b) => b.percentage - a.percentage)
+    
+    let startRadian = 0
+    
+    clusterGroup.innerHTML = ''
+
+    for (let i = 0; i < allGroupsPercentages.length; i++) {
+
+      let perceString = parseFloat(allGroupsPercentages[i].percentage)
+      let perceRounded = perceString.toFixed(1)
+      clusterGroup.innerHTML += `<div class="clusterGroup"><div class="perceRounded" style="background-color:${colorGroup[i]};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
+
+      ctx.beginPath()
+      ctx.lineWidth = 56;
+      ctx.strokeStyle = `${colorGroup[i]}`
+      ctx.arc(56, 56, 28, startRadian, startRadian + radianCalc (allGroupsPercentages[i].percentage), false)
+      ctx.stroke()
+      startRadian += radianCalc (allGroupsPercentages[i].percentage)
+    }
+  
+  })
+
 }
 
+
+
+
+// Vizualizam infograficul cu dimanica pe o lună
 
 function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
@@ -1353,20 +1442,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
 }
 
-function levelExpenseseValue (valueHigh, valueMedium, valueLow) {
-  const levelTitleHigh = document.getElementById('js-title-high')
-  const levelTitleMedium = document.getElementById('js-title-medium')
-  const levelTitleLow = document.getElementById('js-title-low')
 
-  let valueStringHigh = valueHigh.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  let valueStringMedium = valueMedium.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  let valueStringLow = valueLow.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-
-  levelTitleHigh.innerHTML = `<p>High: <span class="level_text_title_bold">${valueStringHigh}</span> lei</p>`
-  levelTitleMedium.innerHTML = `<p>Medium: <span class="level_text_title_bold">${valueStringMedium}</span> lei</p>`
-  levelTitleLow.innerHTML = `<p>Low: <span class="level_text_title_bold">${valueStringLow}</span> lei</p>`
-
-}
 
 function filterPeriod (data, startDate, endDate) {
 
