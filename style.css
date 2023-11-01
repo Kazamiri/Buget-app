@@ -1154,7 +1154,17 @@ main {
     flex-wrap: nowrap;
     padding: 16px;
     gap: 2rem;
-}
+  }
+  .card_venituri{
+
+    padding: 24px 32px 24px 32px;
+  }
+  .level{
+
+    padding: 0px var(--space-distance-xxl, 32px);
+
+
+  }
 
 }
 
@@ -1172,6 +1182,7 @@ main {
     align-items: stretch;
     margin-top: 1.5rem;
   }
+  
 
   .card_venituri{
     flex: 1;
