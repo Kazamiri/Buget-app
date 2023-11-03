@@ -1255,8 +1255,20 @@ function groupVisuallisation (monthsExpenses) {
       ctx.strokeStyle = `${colorGroup[i]}`
       ctx.arc(56, 56, 28, startRadian, startRadian + radianCalc (allGroupsPercentages[i].percentage), false)
       ctx.stroke()
+
+      ctx.beginPath()
+      ctx.lineWidth = 12;
+      ctx.strokeStyle = `rgba(23, 24, 26, 0.6)`
+      ctx.arc(56, 56, 50, startRadian + radianCalc (allGroupsPercentages[i].percentage)-0.02, startRadian + radianCalc (allGroupsPercentages[i].percentage), false)
+      ctx.stroke()
       startRadian += radianCalc (allGroupsPercentages[i].percentage)
     }
+
+    ctx.beginPath()
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(23, 24, 26, 0.6)'
+    ctx.arc(56, 56, 44, 0, 2*pi, false)
+    ctx.stroke()
   
   })
 
