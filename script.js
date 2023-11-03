@@ -1226,7 +1226,8 @@ function groupVisuallisation (monthsExpenses) {
 
     let allGroupsPercentages = []
 
-    let colorGroup = ['#EF4444','#F97316', '#F59E0B', '#EAB308', '#84CC16', '#22C55E', '#10B981', '#06B6D4', '#0EA5E9', '#3B82F6', '#6366F1', '#8B5CF6', '#A855F7', '#D946EF', '#EC4899', '#F43F5E']
+    let colorGroup = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#09A8C3', '#1091CB', '#2571EF', '#4548E8', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#9D2035']
+
 
     for (let i = 0; i < monthsDateSec.length; i++) {
 
