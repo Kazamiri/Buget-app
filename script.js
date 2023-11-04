@@ -1121,77 +1121,8 @@ function diference (dividend, divisor) {
   return chelProcente
 }
 
-/*function levelExpenseseStatistics (valueLow, valueMedium, valueHigh) {
-  
-  let canvas = document.getElementById('c6')
-  let ctx = canvas.getContext('2d')
-  let pi = Math.PI
 
-  let rect = canvas.getBoundingClientRect()
-  canvas.width = rect.width * devicePixelRatio;
-  canvas.height = rect.height * devicePixelRatio; 
-
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-
-  canvas.style.width = rect.width + "px"
-  canvas.style.height = rect.height + "px"
-
-
-  function radianCalc (percentItem) {
-    let percent = percentItem;
-    let degree = percent * 3.6;
-    let radian = (Math.PI / 180) * degree;
-    return radian
-  }
-
-    let low = radianCalc (valueLow)
-    let medium = radianCalc (valueLow) + radianCalc (valueMedium);
-    let high = radianCalc (valueLow) + radianCalc (valueMedium) + radianCalc (valueHigh);
-
-  ctx.clearRect(0, 0, 112, 112)
-
-
-  ctx.beginPath()
-  ctx.lineWidth = 56;
-  ctx.strokeStyle = '#27282A'
-  ctx.arc(56, 56, 28, 0, 2*pi, false)
-  ctx.stroke()
-
- ctx.beginPath()
-  ctx.lineWidth = 56;
-  ctx.strokeStyle = '#0EAD69'
-  ctx.arc(56, 56, 28, 0, low, false)
-  ctx.stroke()
-
-  ctx.beginPath()
-  ctx.lineWidth = 56;
-  ctx.strokeStyle = '#FE9870'
-  ctx.arc(56, 56, 28, low, medium, false)
-  ctx.stroke()
-
-  ctx.beginPath()
-  ctx.lineWidth = 56;
-  ctx.strokeStyle = '#FA4169'
-  ctx.arc(56, 56, 28, medium, high, false)
-  ctx.stroke()
-}*/
-
-/*function levelExpenseseValue (valueHigh, valueMedium, valueLow) {
-  const levelTitleHigh = document.getElementById('js-title-high')
-  const levelTitleMedium = document.getElementById('js-title-medium')
-  const levelTitleLow = document.getElementById('js-title-low')
-
-  let valueStringHigh = valueHigh.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  let valueStringMedium = valueMedium.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  let valueStringLow = valueLow.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-
-  levelTitleHigh.innerHTML = `<p>High: <span class="level_text_title_bold">${valueStringHigh}</span> lei</p>`
-  levelTitleMedium.innerHTML = `<p>Medium: <span class="level_text_title_bold">${valueStringMedium}</span> lei</p>`
-  levelTitleLow.innerHTML = `<p>Low: <span class="level_text_title_bold">${valueStringLow}</span> lei</p>`
-
-}*/
-
-// Vizualizam infograficul cu grupele pe lună
+// Vizualizam infograficul cheltuielilor pe grupe in lună
 
 function groupVisuallisation (monthsExpenses) {
 
@@ -1226,7 +1157,7 @@ function groupVisuallisation (monthsExpenses) {
 
     let allGroupsPercentages = []
 
-    let colorGroup = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#09A8C3', '#1091CB', '#2571EF', '#4548E8', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#9D2035']
+    let colorGroup = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#9D2035']
 
 
     for (let i = 0; i < monthsDateSec.length; i++) {
@@ -1241,41 +1172,31 @@ function groupVisuallisation (monthsExpenses) {
     allGroupsPercentages.sort((a, b) => b.percentage - a.percentage)
     
     let startRadian = 0
-    
     clusterGroup.innerHTML = ''
 
+
     for (let i = 0; i < allGroupsPercentages.length; i++) {
+
+      let lineWidth = 56-(i*1.4)
+      let arcRadius = lineWidth/2
 
       let perceString = parseFloat(allGroupsPercentages[i].percentage)
       let perceRounded = perceString.toFixed(1)
       clusterGroup.innerHTML += `<div class="clusterGroup"><div class="perceRounded" style="background-color:${colorGroup[i]};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
 
       ctx.beginPath()
-      ctx.lineWidth = 56;
+      ctx.lineWidth = lineWidth;
       ctx.strokeStyle = `${colorGroup[i]}`
-      ctx.arc(56, 56, 28, startRadian, startRadian + radianCalc (allGroupsPercentages[i].percentage), false)
+      ctx.arc(56, 56, arcRadius, startRadian, startRadian + radianCalc (allGroupsPercentages[i].percentage), false)
       ctx.stroke()
 
-      ctx.beginPath()
-      ctx.lineWidth = 12;
-      ctx.strokeStyle = `rgba(23, 24, 26, 0.6)`
-      ctx.arc(56, 56, 50, startRadian + radianCalc (allGroupsPercentages[i].percentage)-0.02, startRadian + radianCalc (allGroupsPercentages[i].percentage), false)
-      ctx.stroke()
       startRadian += radianCalc (allGroupsPercentages[i].percentage)
+
     }
 
-    ctx.beginPath()
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = 'rgba(23, 24, 26, 0.6)'
-    ctx.arc(56, 56, 44, 0, 2*pi, false)
-    ctx.stroke()
-  
   })
 
 }
-
-
-
 
 // Vizualizam infograficul cu dimanica pe o lună
 
@@ -1456,19 +1377,6 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 }
 
 
-
-function filterPeriod (data, startDate, endDate) {
-
-  //const startDate = '2023-09-01';
-  //const endDate = '2023-09-02';
-  
-  const filteredData = data.filter(([_, item]) => {
-    const itemDate = item.data;
-    return itemDate >= startDate && itemDate <= endDate;
-  });
-  
-  return filteredData
-}
 
 let currentDate = new Date().toISOString().slice(0, 10);
 inputDate.value = currentDate;
