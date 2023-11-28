@@ -468,6 +468,8 @@ addButtonMonth.addEventListener("click", function () {
 
 })
 
+// Acest code deschide modalul pentru adaugarea lunii -------------------------------
+
 openModulAddMonth.addEventListener("click", function () {
   modulAddMonth.show()
 })
@@ -475,6 +477,27 @@ openModulAddMonth.addEventListener("click", function () {
 closeModulAddMonth.addEventListener("click", function () {
   modulAddMonth.close()
 })
+
+// Acest code deschide modalul pentru vizualizarea graifcului pe perioada -------------------------------
+
+const openCloseModulCharts = document.getElementById('js-open-modal_chart')
+const modulCharts = document.getElementById('js-all_chart')
+
+let checkOpening = false
+
+openCloseModulCharts.addEventListener("click", function () {
+  if(checkOpening === false) {
+    modulCharts.show()
+    openCloseModulCharts.innerHTML = 'Mai puține'
+    checkOpening = true
+  } else if (checkOpening === true) {
+    modulCharts.close()
+    openCloseModulCharts.innerHTML = 'Mai multe'
+    checkOpening = false
+  } 
+
+})
+
 
 
 // Acest code adauga un tip de grupă nou în baza de date
@@ -1582,7 +1605,7 @@ function filteringPeriods (groupChart) {
 
       if (switchingGroups != "💎 Toate") {
         let sumGroupsChartString = sumGroupsSelected.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-        sumGroupChart.innerHTML = `Grupa ${sumGroupsChartString}`
+        sumGroupChart.innerHTML = `Grupa ${sumGroupsChartString} lei`
         console.log(colorGroupR[index])
         sumGroupChart.style.color = colorGroupR[index]
       } else {
@@ -1596,16 +1619,16 @@ function filteringPeriods (groupChart) {
   
       let canvasR = document.getElementById('c9')
       let ctxR = canvasR.getContext('2d')
-      let pi = Math.PI
   
-      let rect = canvasR.getBoundingClientRect()
-      canvasR.width = rect.width * devicePixelRatio;
-      canvasR.height = rect.height * devicePixelRatio; 
+      let rect = 122
+      canvasR.width = rect * devicePixelRatio;
+      canvasR.height = rect * devicePixelRatio; 
   
       ctxR.scale(devicePixelRatio, devicePixelRatio);
   
-      canvasR.style.width = rect.width + "px"
-      canvasR.style.height = rect.height + "px"
+      canvasR.style.width = rect + "px"
+      canvasR.style.height = rect + "px"
+
   
       //Functia data converteste procentele in radian -----------------------
   
@@ -1714,7 +1737,7 @@ function filteringPeriods (groupChart) {
       // Vizualizam suma totala pe pagina
       const allSumChart = document.getElementById('js-filter-all-chart')
       let allSumChartString = allexpenses.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-      allSumChart.innerHTML = `Total ${allSumChartString}`
+      allSumChart.innerHTML = `Total ${allSumChartString} lei`
 
       // Alfam care este ce mai mare valoare
 

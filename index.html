@@ -155,29 +155,39 @@
 
     </div>
 
+    <dialog class="modal_chart" id="js-all_chart">
 
-
-    <div class="dynamics_level">
-      <div class="chart-filter-money">
-        <div class="expenses_list_group_filter">
-          <span class="material-symbols-outlined filter_icon_style">filter_alt</span>
-          <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-list-of-filter-chart">
-            <option value="💎 Toate" selected>💎 Toate</option>
-          </select>
+      <div class="dynamics_level">
+        <div class="chart-filter-money">
+          <div class="expenses_list_group_filter">
+            <span class="material-symbols-outlined filter_icon_style">filter_alt</span>
+            <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-list-of-filter-chart">
+              <option value="💎 Toate" selected>💎 Toate</option>
+            </select>
+          </div>
+          <span class="group_sum_text" id="js-filter-group-sum-chart"></span>
+          <span class="group_sum_text" id="js-filter-all-chart"></span>
         </div>
-        <span class="group_sum_text" id="js-filter-group-sum-chart"></span>
-        <span class="group_sum_text" id="js-filter-all-chart"></span>
-      </div>
-      <div class="dynamic">
-        <canvas id="c8" width="1560px" height="520px"></canvas>
-      </div>
-      <div class="level">
-        <div class="scrollable-list"  id="js-cluster_group_all">
+        <div class="dynamic">
+          <canvas id="c8" width="1560px" height="520px"></canvas>
         </div>
-        <canvas id="c9" width="112px" height="112px"></canvas>
+        <div class="level">
+          <div class="scrollable-list"  id="js-cluster_group_all">
+          </div>
+          <canvas id="c9" width="112px" height="112px"></canvas>
+        </div>
+  
       </div>
 
+    </dialog>
+
+    <div class="add_month_open_modal">
+      <button class="open_button_modal_chart" id="js-open-modal_chart">
+        Mai multe
+      </button>
     </div>
+
+
 
     <div class="tab">
       <button id="tab-months-incomes" class="tablinks">Venituri</button>

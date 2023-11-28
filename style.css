@@ -258,6 +258,40 @@ main {
           background: var(--color-backgrounds-quaternary);
         }
 
+  .open_button_modal_chart{
+
+    border: none;
+    padding-top: 24px;
+    padding-bottom: 4px;
+
+    border-bottom: 1px solid var(--color-labels-tertiary);
+
+    background: none;
+
+    color: var(--color-labels-tertiary);
+
+    font-family: var(--font-default);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--bu2-button-height);
+    font-size: var(--bu2-button-size);
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .open_button_modal_chart:hover{
+    color: var(--color-labels-secondary);
+  }
+
+.modal_chart{
+  position: relative;
+  padding: 0px;
+  margin-top: 1rem;
+  color: var(--color-labels-primary);
+  border: none;
+  background: none;
+}
+
+
 
 .all_card{
   display: flex;
