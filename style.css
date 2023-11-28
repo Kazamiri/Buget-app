@@ -389,6 +389,26 @@ main {
         font-size: var(--s1-subtitle-size);
       }
 
+      .group_sum_text {
+        font-family: var(--font-default);
+        font-weight: var(--font-weight-medium);
+        line-height: var(--s2-subtitle-height);
+        font-size: var(--s2-subtitle-size);
+      }
+
+.chart-filter-money{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+
+  grid-column-start: 1;
+  grid-column-end: 9;
+  padding: 0px var(--space-distance-xxxl);
+
+}
+
 /* Style the tab */
 
 .tab {
@@ -1017,6 +1037,11 @@ main {
           height: auto;
           background-color: var(--color-backgrounds-primary);
         }
+        #c8{
+          width: 100%;
+          height: auto;
+          background-color: var(--color-backgrounds-primary);
+        }
         .scrollable-list {
           display: flex;
           flex-direction: column;
@@ -1532,6 +1557,11 @@ main {
       }
 
       #c7{
+        width: 100%;
+        aspect-ratio: 3/2;
+      }
+
+      #c8{
         width: 100%;
         aspect-ratio: 3/2;
       }

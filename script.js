@@ -16,7 +16,7 @@ const navButtonMonthRight = document.getElementById('js-nav-right')
 const navMonthTitle = document.getElementById('js-nav-month') // Acesta este componentul de navigare printre paginii. 
 
 const allDateInDB = ref(database, `allMonths`) 
-const allMonthsInDB = ref(database, `allMonths/months`) 
+const allMonthsInDB = ref(database, `allMonthsSecond`) 
 
 
 //const incomeInDB = ref(database, `allMonths/income`) 
@@ -116,7 +116,11 @@ onValue(typesOfGroupsInDB, function(snapshot) {
   listOfFilterGroups.innerHTML += `
     ${optionsHTML}
   `
+  listOfFilterGroupsChart.innerHTML += `
+  ${optionsHTML}`
 })
+
+//console.log(listOfFilterGroupsChart.value)
 
 // Functiile de adaugare a itemilor-----------------------------------
 
@@ -263,8 +267,6 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
 
   // Mecanismul de filtrare -----------------------------
 
-  console.log(listOfFilterGroups.value)
-
   if(listOfFilterGroups.value === `💎 Toate`){
     readExpenses(monthsExpenses, curentSelectMonth)
   } else {
@@ -283,7 +285,7 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
 
   listOfFilterGroups.addEventListener('input', allExpensesFilter)
 
-  //----------------------------------------------------
+  //------------------------------------------------------------
 
   //readExpenses(monthsExpenses, curentSelectMonth) // Vizualizeaza datele pe pagina HTML
   expensesHtmlDate (calculateSum(monthsExpenses))
@@ -293,22 +295,15 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
   newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), 'rgba(254, 152, 112, 1)', calculateSum(monthsIncomes), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)' )
 
 
-
+  //Groups -----------------------------------------------------
+  
   readGroups(monthsExpenses, monthsGroups, calculateSum(monthsIncomes),curentSelectMonth)
   allocatedMoneyHtmlDate (calculateSum(monthsGroups))
   moneyAvailableHtmlDate (moneyAvailable)
 
   newDateArc ('c2', calculateSum(monthsIncomes), calculateSum(monthsGroups), 'rgba(37, 116, 255, 1)', calculateSum(availableIncomes), moneyAvailable, 'rgba(235, 235, 245, 0.60)' )
 
-
-
-  //levelExpenseseStatistics (diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "Low"))),diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "Medium"))),diference (calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "level", "High"))))
-
   levelExpensese(monthsIncomes, monthsExpenses, curentSelectMonth)
-
-
-  //levelExpenseseValue (calculateSum(fiterItem (monthsExpenses, "level", "High")), calculateSum(fiterItem (monthsExpenses, "level", "Medium")), calculateSum(fiterItem (monthsExpenses, "level", "Low")),)
-
 
 }
 
@@ -512,7 +507,7 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
     let percentOfTotal = diference(calculateSum(monthsIncomes), monthsIncomes[i][1].suma).toFixed(0);
 
     incomesList.innerHTML += `
-    <div class="linie-tabel" id="js-item-line-one-income" data-id="${monthsIncomes[i][0]}">
+    <div class="linie-tabel" id="js-item-line-one-income" data-id="${monthsIncomes[i][0]}" data-type="infolineinco">
 
       <div class="linie-tabel-chield-incomes-0">
         <div class="incomes_list_group">
@@ -553,23 +548,22 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
 
       <div class="linie-tabel-chield-incomes-3">
         <div class="expenses_list_both-buttons" >
-          <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-income" data-id="${monthsIncomes[i][0]}">
-          <span class="material-symbols-outlined">autorenew</span></button>
-          <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-income" data-id="${monthsIncomes[i][0]}">
-          <span class="material-symbols-outlined">delete_forever</span>
+          <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-income" data-id="${monthsIncomes[i][0]}"  data-type="updatinco">
+          <span class="material-symbols-outlined" data-id="${monthsIncomes[i][0]}" data-type="updatinco">autorenew</span></button>
+          <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-income" data-id="${monthsIncomes[i][0]}" data-type="delete">
+          <span class="material-symbols-outlined" data-id="${monthsIncomes[i][0]}" data-type="delete">delete_forever</span>
           </button>
         </div>
       </div>
   
     </div>`
 
-    newDateRefreshExpenses (`js-item-line-one-income`, 'js-button-update-income' )
-
-    upDateIncomes ('js-button-update-income', `${curentSelectMonth}/incomes`)
   
-    deletItem ('js-button-delet-income', `${curentSelectMonth}/incomes`)
-
   }
+
+  newDateRefreshExpenses (`infolineinco`, 'js-button-update-income', 'js-income-list' )
+  upDateIncomes ('updatinco', `${curentSelectMonth}/incomes`)
+  deletItem ('delete', `${curentSelectMonth}/incomes`)
 
 } 
 
@@ -615,7 +609,7 @@ function readExpenses(monthsExpenses, curentSelectMonth) {
 
     for (let i = 0; i < monthsExpenses.length; i++) {
       expensesList.innerHTML += `
-      <div class="linie-tabel" id="js-item-line-one" data-id="${monthsExpenses[i][0]}">
+      <div class="linie-tabel" id="js-item-line-one" data-id="${monthsExpenses[i][0]}" data-type="infolineexp">
 
         <div class="linie-tabel-chield-0">
           <div class="expenses_list_group">
@@ -663,11 +657,11 @@ function readExpenses(monthsExpenses, curentSelectMonth) {
             <option value="Simona">Simona</option>
           </select>
           <div class="expenses_list_both-buttons" >
-            <button class="expenses_list_button expenses_list_button_refresh" id="js-button-updata-expenses" data-id="${monthsExpenses[i][0]}">
-              <span class="material-symbols-outlined">autorenew</span>
+            <button class="expenses_list_button expenses_list_button_refresh" id="js-button-updata-expenses" data-id="${monthsExpenses[i][0]}" data-type="updatexp">
+              <span class="material-symbols-outlined" data-id="${monthsExpenses[i][0]}" data-type="updatexp">autorenew</span>
             </button>
-            <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-expenses" data-id="${monthsExpenses[i][0]}">
-              <span class="material-symbols-outlined">delete_forever</span>
+            <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-expenses" data-id="${monthsExpenses[i][0]}" data-type="delete">
+              <span class="material-symbols-outlined" data-id="${monthsExpenses[i][0]}" data-type="delete">delete_forever</span>
             </button>
           </div>
         
@@ -675,16 +669,18 @@ function readExpenses(monthsExpenses, curentSelectMonth) {
 
       </div>`
 
-      newDateRefreshExpenses (`js-item-line-one`, 'js-button-updata-expenses' )
-
-      upDataExpenses ('js-button-updata-expenses', `${curentSelectMonth}/expenses`)
+      
     
-      deletItem ('js-button-delet-expenses', `${curentSelectMonth}/expenses`)
-
     }
     inputGrupa.innerHTML = `${optionsHTML}`
+
+    newDateRefreshExpenses (`infolineexp`, 'js-button-updata-expenses', 'js-lista' )
+    upDataExpenses ('updatexp', `${curentSelectMonth}/expenses`)
+    deletItem ('delete', `${curentSelectMonth}/expenses`)
+
   })
 } 
+
 
 
 // Functia data citeste masivul si il vizualizeaza lista de grupe pe pagina de baza
@@ -725,7 +721,7 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
       let diferencePointHtml = pointPositionCorrection (diference(monthsGroups[i][1].suma, calculateSum(fiterItem (fiterGroup (monthsExpenses, monthsGroups[i][1].titlu), "state", "Cheltuit"))).toFixed(0))
       
       groupsList.innerHTML += `
-        <div class="linie-tabel" id="js-item-line-one-group" data-id="${monthsGroups[i][0]}">
+        <div class="linie-tabel" id="js-item-line-one-group" data-id="${monthsGroups[i][0]}" data-type="infolinegroup">
     
           <div class="linie-tabel-chield-group-0">
             <div class="expenses_list_group">
@@ -763,10 +759,10 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
               <p id="loading-${monthsGroups[i][1].titlu}" class="procente-style-second">10%</p>
             </div>
             <div class="expenses_list_both-buttons" >
-              <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-group" data-id="${monthsGroups[i][0]}">
-              <span class="material-symbols-outlined">autorenew</span></button>
-              <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-group" data-id="${monthsGroups[i][0]}">
-              <span class="material-symbols-outlined">delete_forever</span>
+              <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-group" data-id="${monthsGroups[i][0]}" data-type="updategroup">
+              <span class="material-symbols-outlined" data-id="${monthsGroups[i][0]}" data-type="updategroup">autorenew</span></button>
+              <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-group" data-id="${monthsGroups[i][0]}" data-type="delete">
+              <span class="material-symbols-outlined" data-id="${monthsGroups[i][0]}" data-type="delete">delete_forever</span>
               </button>
             </div>
         </div>
@@ -775,21 +771,20 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
   
         newDate (monthsGroups[i][1].suma, calculateSum(fiterGroup (monthsExpenses, monthsGroups[i][1].titlu)), `js-${monthsGroups[i][1].titlu}`, `loading-${monthsGroups[i][1].titlu}`,10)
 
-        newDateRefreshExpenses (`js-item-line-one-group`, 'js-button-update-group' )
-
-        upDateGroups ('js-button-update-group', `${curentSelectMonth}/groups`)
-      
-        deletItem ('js-button-delet-group', `${curentSelectMonth}/groups`)
+ 
+        
     }  
     inputGrupaTitlu.innerHTML = `${optionsHTML}`
 
+    newDateRefreshExpenses (`infolinegroup`, 'js-button-update-group', 'js-group-list' )
+    upDateGroups ('updategroup', `${curentSelectMonth}/groups`)
+    deletItem ('delete', `${curentSelectMonth}/groups`)
+
   })
-
-
 
 } 
 
-//Ceva cu corectarea punctului de la grupe
+//Ceva cu corectarea punctului de la grupe ------------------------
 function pointPositionCorrection (itemValue){
   let diference = itemValue
   if (diference > 0) {
@@ -798,72 +793,86 @@ function pointPositionCorrection (itemValue){
   return diference
 }
 
-//Functia data reinoieste un venit din lista
-function upDateIncomes (idButonSelector, locationFile) {
+//Functia data reinoieste un venit din lista ------------------------------------------
+function upDateIncomes (typeButonSelector, locationFile) {
 
-  const allButtonUpdateItems = document.querySelectorAll(`#${idButonSelector}`)
+  window.addEventListener('click', function(event) {
 
-  allButtonUpdateItems.forEach((button) => {
+    if (event.target.dataset.type === typeButonSelector) {
+      const inputTitleItems = document.querySelector(`#js-venit-titlu-${event.target.dataset.id}`)
+      const inputSumaItems = document.querySelector(`#js-venit-suma-${event.target.dataset.id}`)
+      const inputDataItems = document.querySelector(`#js-venit-data-${event.target.dataset.id}`)
+      const inputStateItems = document.querySelector(`#js-venit-state-${event.target.dataset.id}`)
+      const inputUserItems = document.querySelector(`#js-venit-user-${event.target.dataset.id}`)
 
-    button.addEventListener('click', (event) => {
-      const inputTitleItems = document.querySelector(`#js-venit-titlu-${button.dataset.id}`)
-      const inputSumaItems = document.querySelector(`#js-venit-suma-${button.dataset.id}`)
-      const inputDataItems = document.querySelector(`#js-venit-data-${button.dataset.id}`)
-      const inputStateItems = document.querySelector(`#js-venit-state-${button.dataset.id}`)
-      const inputUserItems = document.querySelector(`#js-venit-user-${button.dataset.id}`)
-
-      let itemOneLineSelect = document.querySelector(`#js-button-update-income[data-id="${button.dataset.id}"]`)
+      let itemOneLineSelect = document.querySelector(`#js-button-update-income[data-id="${event.target.dataset.id}"]`)
       itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
 
       event.stopPropagation()
 
-      let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
+      let exactLocationOfItemInDB = ref(database, `${locationFile}/${event.target.dataset.id}`)
 
       update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
       update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
       update(exactLocationOfItemInDB, {data:inputDataItems.value})
       update(exactLocationOfItemInDB, {state:`${inputStateItems.value}`})
       update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
+      
+    }
 
-    })
   })
+
 } 
 
+// Functia data schimba culoarea la butonul update daca se face clic pe linia respectiva --------------
 
-function newDateRefreshExpenses (lineItem, buttonItem) {
+function newDateRefreshExpenses (typeSelector, buttonItem, listName) {
 
-  const allItemLine = document.querySelectorAll(`#${lineItem}`)
+  let tabel = document.getElementById(listName)
 
-  allItemLine.forEach((line) => {
-    line.addEventListener('click', () => {
-      let itemOneLineSelect = document.querySelector(`#${buttonItem}[data-id="${line.dataset.id}"]`)
-      itemOneLineSelect.style.color = 'var(--color-functional-green-secondary)'
-    })
+  tabel.addEventListener('click', function(event) {
+
+    let clickedElement = event.target
+    let targetParentId = typeSelector
+  
+    while (clickedElement != null) {
+  
+      if (clickedElement.dataset.type === targetParentId) {
+
+        let itemOneLineSelect = document.querySelector(`#${buttonItem}[data-id="${clickedElement.dataset.id}"]`)
+        itemOneLineSelect.style.color = 'var(--color-functional-green-secondary)'
+      
+        break
+      }
+        clickedElement = clickedElement.parentNode
+    }
+
   })
+
 }
 
-//Functia data reinoieste o cheltuiala din lista
-function upDataExpenses (idButonSelector, locationFile) {
 
-  const allButtonUpdateItems = document.querySelectorAll(`#${idButonSelector}`)
+//Functia data reinoieste o cheltuiala din lista --------------------------------
+function upDataExpenses (typeButonSelector, locationFile) {
 
-  allButtonUpdateItems.forEach((button) => {
+  window.addEventListener('click', function(event) {
 
-    button.addEventListener('click', (event) => {
-      const inputGroupsItems = document.querySelector(`#js-grupe-${button.dataset.id}`)
-      const inputTitleItems = document.querySelector(`#js-titlu-${button.dataset.id}`)
-      const inputSumaItems = document.querySelector(`#js-suma-${button.dataset.id}`)
-      const inputDataItems = document.querySelector(`#js-data-${button.dataset.id}`)
-      const inputStateItems = document.querySelector(`#js-state-${button.dataset.id}`)
-      const inputLevelItems = document.querySelector(`#js-level-${button.dataset.id}`)
-      const inputUserItems = document.querySelector(`#js-user-${button.dataset.id}`)
+    if (event.target.dataset.type === typeButonSelector) {
 
-      let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${button.dataset.id}"]`)
+      const inputGroupsItems = document.querySelector(`#js-grupe-${event.target.dataset.id}`)
+      const inputTitleItems = document.querySelector(`#js-titlu-${event.target.dataset.id}`)
+      const inputSumaItems = document.querySelector(`#js-suma-${event.target.dataset.id}`)
+      const inputDataItems = document.querySelector(`#js-data-${event.target.dataset.id}`)
+      const inputStateItems = document.querySelector(`#js-state-${event.target.dataset.id}`)
+      const inputLevelItems = document.querySelector(`#js-level-${event.target.dataset.id}`)
+      const inputUserItems = document.querySelector(`#js-user-${event.target.dataset.id}`)
+
+      let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${event.target.dataset.id}"]`)
       itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
 
       event.stopPropagation()
   
-      let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
+      let exactLocationOfItemInDB = ref(database, `${locationFile}/${event.target.dataset.id}`)
 
       update(exactLocationOfItemInDB, {grupa:`${inputGroupsItems.value}`})
       update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
@@ -873,53 +882,56 @@ function upDataExpenses (idButonSelector, locationFile) {
       update(exactLocationOfItemInDB, {level:`${inputLevelItems.value}`})
       update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
 
-    })
+    }
+
   })
+
 }
 
 
-//Functia data reinoieste o grupa
-function upDateGroups (idButonSelector, locationFile) {
+//Functia data reinoieste o grupa ----------------------------------------
+function upDateGroups (typeButonSelector, locationFile) {
 
-  const allButtonUpdateItems = document.querySelectorAll(`#${idButonSelector}`)
+  window.addEventListener('click', function(event) {
 
-  allButtonUpdateItems.forEach((button) => {
+    if (event.target.dataset.type === typeButonSelector) {
 
-    button.addEventListener('click', (event) => {
+      const inputTitleItems = document.querySelector(`#js-grupe-titlu-${event.target.dataset.id}`)
 
-      const inputTitleItems = document.querySelector(`#js-grupe-titlu-${button.dataset.id}`)
+      const inputSumaItems = document.querySelector(`#js-grupe-suma-${event.target.dataset.id}`)
 
-      const inputSumaItems = document.querySelector(`#js-grupe-suma-${button.dataset.id}`)
-
-      let itemOneLineSelect = document.querySelector(`#js-button-update-group[data-id="${button.dataset.id}"]`)
+      let itemOneLineSelect = document.querySelector(`#js-button-update-group[data-id="${event.target.dataset.id}"]`)
       itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
 
       event.stopPropagation()
 
-      let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
+      let exactLocationOfItemInDB = ref(database, `${locationFile}/${event.target.dataset.id}`)
 
       update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
       update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
 
-    })
+      
+    }
+
   })
+
 }
 
-//Functia data sterge un item cum ar fi un venit, o cheltuiala, o grupa
-function deletItem (idButonSelector, locationFile) {
-  
-  const allButtonDeleteExpenses = document.querySelectorAll(`#${idButonSelector}`)
+//Functia data sterge un item cum ar fi un venit, o cheltuiala, o grupa -------------------
+function deletItem (typeButonSelector, locationFile) {
 
-  allButtonDeleteExpenses.forEach((button) => {
-    button.addEventListener('click', () => {
+  window.addEventListener('click', function(event) {
 
-      let exactLocationOfItemInDB = ref(database, `${locationFile}/${button.dataset.id}`)
+    if (event.target.dataset.type === typeButonSelector) {
+
+      let exactLocationOfItemInDB = ref(database, `${locationFile}/${event.target.dataset.id}`)
       remove(exactLocationOfItemInDB)
-    })
+
+    }
+
   })
-
+  
 } 
-
 
 
 // Aceasta functie calculeaza suma tuturor valorilor din masivul adaugat in argument
@@ -939,7 +951,6 @@ function calculateSum(addArray) {
   for (let i = 0; i < sumAll.length; i++) {
     sumAll.splice(i); 
   }
-
   return sum;
 } 
 
@@ -1122,12 +1133,15 @@ function diference (dividend, divisor) {
 }
 
 
-// Vizualizam infograficul cheltuielilor pe grupe in lună
+// Vizualizam infograficul cheltuielilor pe grupe in lună ----------------------
 
 function groupVisuallisation (monthsExpenses) {
 
+  // Adaugam lista cheltuielilor
   const clusterGroup = document.getElementById('js-cluster_group')
-  
+
+  // Initiem canvas ----------------------------------------------------
+
   let canvas = document.getElementById('c6')
   let ctx = canvas.getContext('2d')
   let pi = Math.PI
@@ -1141,6 +1155,7 @@ function groupVisuallisation (monthsExpenses) {
   canvas.style.width = rect.width + "px"
   canvas.style.height = rect.height + "px"
 
+  //Functia data converteste procentele in radian -----------------------
 
   function radianCalc (percentItem) {
     let degree = percentItem * 3.6;
@@ -1150,18 +1165,22 @@ function groupVisuallisation (monthsExpenses) {
 
   ctx.clearRect(0, 0, 112, 112)
 
+  // Aceasta functie asculta BD si extrage tipurile de grupe --------------------------
 
   onValue(typesOfGroupsInDB, function(snapshot) {
 
     let monthsDateSec = Object.values(snapshot.val())
 
-    let allGroupsPercentages = []
+    //Acestea sunt culorile utilizate pentru vizualizarea graficului circular --------
 
     let colorGroup = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#9D2035']
 
+    // Acest loop calculeaza procentele pentru luna curenta ------------------------
+
+    // Aceasta matrice este utilizata pentru pastrea grupelelor si procentele lor
+    let allGroupsPercentages = []
 
     for (let i = 0; i < monthsDateSec.length; i++) {
-
       let groupPercentages = {
         grupa: monthsDateSec[i].titlu,
         percentage: diference(calculateSum(monthsExpenses), calculateSum(fiterItem (monthsExpenses, "grupa", monthsDateSec[i].titlu)))
@@ -1169,11 +1188,14 @@ function groupVisuallisation (monthsExpenses) {
       allGroupsPercentages.push(groupPercentages)
     }
 
+    // Acesta cod aranjeaza in ordine crescatoare matricea cu grupe si procente --------------
+
     allGroupsPercentages.sort((a, b) => b.percentage - a.percentage)
+
+    // Aici are loc vizaulizare graficului ---------------------------
     
     let startRadian = 0
     clusterGroup.innerHTML = ''
-
 
     for (let i = 0; i < allGroupsPercentages.length; i++) {
 
@@ -1260,6 +1282,12 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     ctx.fillRect((widthDivideDays * j), heightCanvas - (procenGraphicIncome * 5.2), widthDivideDays,  4)
   }
 
+  //Adaugarea unu semn pentru a gasi mai repede pocentul veniturilor
+
+  ctx.beginPath()
+  ctx.fillStyle = "rgba(14, 173, 105, 0.6)"
+  ctx.fillRect(42, heightCanvas - (procenGraphicIncome * 5.2), 10,  4)
+
   // Vizualizarea cheltuielilor planificate -------------------------------
   
   let procenGraphic = 0
@@ -1283,6 +1311,14 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     ctx.fillStyle = "rgba(254, 152, 112, 1)"
     ctx.fillRect(widthDivideDays * j, heightCanvas - (procenGraphic * 5.2), widthDivideDays, 4)
   }
+
+  //Adaugarea unu semn pentru a gasi mai repede pocentul cheltuielilor planificate
+
+  ctx.beginPath()
+  ctx.fillStyle = "rgba(254, 152, 112, 1)"
+  ctx.fillRect(42, heightCanvas - (procenGraphic * 5.2), 10, 4)
+
+
 
   // Vizualizarea cheltuielilor efectuate ---------------------------
 
@@ -1308,6 +1344,12 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     ctx.fillRect(widthDivideDays * j, heightCanvas - (procentExpensesIncurred * 5.2), widthDivideDays, 4)
     
   }
+
+  //Adaugarea unu semn pentru a gasi mai repede pocentul cheltuielilor efectuate
+
+  ctx.beginPath()
+  ctx.fillStyle = "rgba(250, 65, 105, 1)"
+  ctx.fillRect(42, heightCanvas - (procentExpensesIncurred * 5.2), 10, 4)
 
   // Crearea fundalului ----------------------------------------------------
 
@@ -1376,9 +1418,501 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
 }
 
+// Crearea graficului pentru toate lunile -----------------------------
 
+function filteringPeriods (groupChart) {
+
+  onValue(allMonthsInDB, function(snapshot) {
+
+    // Incarcam din BD toate lunile
+    let monthsDateSec = Object.entries(snapshot.val())
+
+    onValue(typesOfGroupsInDB, function(snapshot) {
+
+      // Comutam de la toate lunile la una ---------------------------
+
+      let filterTerm = "🚴🏻 Piață" 
+      let switchingGroups = groupChart
+  
+      if (switchingGroups != "💎 Toate") {
+        filterTerm = switchingGroups
+      }
+  
+      // Extragem lunile care corespund perioadei -----------------
+  
+      const startDate = new Date('2023-04-01');
+      const endDate = new Date('2023-11-01');
+  
+      const filteredData = monthsDateSec.filter((item) => {
+        const currentDate = new Date(item[0]);
+        return currentDate >= startDate && currentDate <= endDate;
+      })
+  
+      // Extragem grupele din lunile filtrate --------------------
+  
+      let allGroupsFromMonths = []
+  
+      for (let i = 0; i < filteredData.length; i++) {
+        
+        let groupsOnly = {
+          months: filteredData[i][0],
+          groups: Object.entries(filteredData[i][1].groups)
+        }
+  
+        allGroupsFromMonths.push(groupsOnly)
+  
+      }
+  
+      // Aflam cheltuielile pe luna --------------------------
+  
+      let allGroupsExpensesMonths = []
+  
+      for (let i = 0; i < allGroupsFromMonths.length; i++) {
+        let groups = allGroupsFromMonths[i].groups
+  
+        let groupsExpenses = 0
+  
+        for (let i = 0; i < groups.length; i++) {
+        let num = parseInt(groups[i][1].suma)
+        groupsExpenses += num
+        }
+  
+        let allExpensesMonth = {
+          data: allGroupsFromMonths[i].months,
+          suma: groupsExpenses
+        }
+  
+        allGroupsExpensesMonths.push(allExpensesMonth)
+  
+      }
+  
+  
+      // Extragem o grupa concreta din lunile filtrate, aflam suma totala pe grupa ------------
+  
+      let sumGroupsSelected = 0 //Aici este totalul grupei pe toate lunile selectate
+    
+      let selectedGroup = [] //Aici sunt luna si suma grupei
+  
+      for (let i = 0; i < allGroupsFromMonths.length; i++) {
+  
+        const filteredData = allGroupsFromMonths[i].groups.filter(([id, item]) => item.titlu === filterTerm)
+  
+        let num = parseInt(filteredData[0][1].suma)
+  
+        sumGroupsSelected += num
+  
+        let concreetGroup = {
+          date: allGroupsFromMonths[i].months,
+          suma: num
+        }
+  
+        selectedGroup.push(concreetGroup)
+  
+      }
+  
+      // Alfla suma lunilor si toturor grupelelor filtrate ----------------------------
+  
+      let allGroupsSum = []
+  
+      for (let i = 0; i < allGroupsFromMonths.length; i++) {
+        allGroupsSum.push(calculateSum(allGroupsFromMonths[i].groups))
+      }
+  
+      let allexpenses = 0
+  
+      for (let i = 0; i < allGroupsSum.length; i++) {
+        allexpenses += allGroupsSum[i]
+      }
+
+      let monthstypesOfGroups = Object.values(snapshot.val())
+
+      //Acestea sunt culorile utilizate pentru vizualizarea graficului circular --------
+
+      let colorGroupR = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#9D2035']
+
+      // Acest loop calculeaza procentele pentru grupe in raport cu toata perioada ------------------------
+      // Aceasta matrice este utilizata pentru pastrea grupelelor si procentele lor
+
+      let allGroupsPercentages = []
+
+      for (let i = 0; i < monthstypesOfGroups.length; i++) {
+
+        // Extragem o grupa concreta din lunile filtrate, aflam suma totala pe grupa ------------
+
+        let sumGroupsSelected = 0 
+
+        for (let j = 0; j < allGroupsFromMonths.length; j++) {
+          
+          const filteredData = allGroupsFromMonths[j].groups.filter(([id, item]) => item.titlu === monthstypesOfGroups[i].titlu)
+
+          let num = parseInt(filteredData[0][1].suma)
+
+          sumGroupsSelected += num
+
+        }
+
+        let groupPercentages = {
+          grupa: monthstypesOfGroups[i].titlu,
+          percentage: diference(allexpenses, sumGroupsSelected)
+        }
+        allGroupsPercentages.push(groupPercentages)
+
+      }
+
+        // Acesta cod aranjeaza in ordine crescatoare matricea cu grupe si procente --------------
+
+        allGroupsPercentages.sort((a, b) => b.percentage - a.percentage)
+
+        // Aflu indexul grupe selectate pentru a selecta culoarea corecta
+        const index = allGroupsPercentages.findIndex(item => item.grupa === filterTerm);
+
+
+        // Aici are loc vizaulizare graficului ---------------------------
+
+        // Adaugam lista cheltuielilor
+        const clusterGroupAll = document.getElementById('js-cluster_group_all')
+
+        
+        let startRadian = 0
+        clusterGroupAll.innerHTML = ''
+
+      // Vizualizam suma grupei filtrate pe pagina
+
+      const sumGroupChart = document.getElementById('js-filter-group-sum-chart')
+
+      if (switchingGroups != "💎 Toate") {
+        let sumGroupsChartString = sumGroupsSelected.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+        sumGroupChart.innerHTML = `Grupa ${sumGroupsChartString}`
+        console.log(colorGroupR[index])
+        sumGroupChart.style.color = colorGroupR[index]
+      } else {
+        sumGroupChart.innerHTML = ``
+  
+      }
+
+
+  
+      // Initiem canvas pentru graficul circular ----------------------------------------------------
+  
+      let canvasR = document.getElementById('c9')
+      let ctxR = canvasR.getContext('2d')
+      let pi = Math.PI
+  
+      let rect = canvasR.getBoundingClientRect()
+      canvasR.width = rect.width * devicePixelRatio;
+      canvasR.height = rect.height * devicePixelRatio; 
+  
+      ctxR.scale(devicePixelRatio, devicePixelRatio);
+  
+      canvasR.style.width = rect.width + "px"
+      canvasR.style.height = rect.height + "px"
+  
+      //Functia data converteste procentele in radian -----------------------
+  
+      function radianCalc (percentItem) {
+        let degree = percentItem * 3.6;
+        let radian = (Math.PI / 180) * degree;
+        return radian
+      }
+  
+      ctxR.clearRect(0, 0, 112, 112)
+
+      if (switchingGroups === "💎 Toate" ) {
+      
+        for (let i = 0; i < allGroupsPercentages.length; i++) {
+
+          let lineWidth = 56-(i*1.4)
+          let arcRadius = lineWidth/2
+    
+          let perceString = parseFloat(allGroupsPercentages[i].percentage)
+          let perceRounded = perceString.toFixed(1)
+          clusterGroupAll.innerHTML += `<div class="clusterGroup"><div class="perceRounded" style="background-color:${colorGroupR[i]};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
+    
+          ctxR.beginPath()
+          ctxR.lineWidth = lineWidth;
+          ctxR.strokeStyle = `${colorGroupR[i]}`
+          ctxR.arc(56, 56, arcRadius, startRadian, startRadian + radianCalc (allGroupsPercentages[i].percentage), false)
+          ctxR.stroke()
+    
+          startRadian += radianCalc (allGroupsPercentages[i].percentage)
+    
+        }
+
+      } else {
+
+        let allGroupsPercentages = []
+
+        for (let i = 0; i < monthstypesOfGroups.length; i++) {
+
+          // Extragem o grupa concreta din lunile filtrate, aflam suma totala pe grupa ------------
+
+          let sumGroupsSelected = 0 
+
+          for (let j = 0; j < allGroupsFromMonths.length; j++) {
+            
+            const filteredData = allGroupsFromMonths[j].groups.filter(([id, item]) => item.titlu === monthstypesOfGroups[i].titlu)
+
+            let num = parseInt(filteredData[0][1].suma)
+
+            sumGroupsSelected += num
+
+          }
+
+          let groupPercentages = {
+            grupa: monthstypesOfGroups[i].titlu,
+            percentage: diference(allexpenses, sumGroupsSelected)
+          }
+          allGroupsPercentages.push(groupPercentages)
+
+        }
+
+        // Acesta cod aranjeaza in ordine crescatoare matricea cu grupe si procente --------------
+
+        allGroupsPercentages.sort((a, b) => b.percentage - a.percentage)
+
+        // Aici are loc vizaulizare graficului ---------------------------
+
+        // Adaugam lista cheltuielilor
+        const clusterGroupAll = document.getElementById('js-cluster_group_all')
+
+        
+        let startRadian = 0
+        clusterGroupAll.innerHTML = ''
+
+
+        for (let i = 0; i < allGroupsPercentages.length; i++) {
+
+          let lineWidth = 56-(i*1.4)
+          let arcRadius = lineWidth/2
+    
+          let perceString = parseFloat(allGroupsPercentages[i].percentage)
+          let perceRounded = perceString.toFixed(1)
+
+    
+          ctxR.beginPath()
+          ctxR.lineWidth = lineWidth;
+          
+          if (switchingGroups != "💎 Toate" && filterTerm === allGroupsPercentages[i].grupa) {
+            clusterGroupAll.innerHTML += `<div class="clusterGroup" style="opacity: 1"><div class="perceRounded" style="background-color:${colorGroupR[i]};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
+            ctxR.strokeStyle = `${colorGroupR[i]}`
+            ctxR.globalAlpha = 1
+
+          } else {
+            clusterGroupAll.innerHTML += `<div class="clusterGroup" style="opacity: 0.2"><div class="perceRounded" style="background-color:${colorGroupR[i]};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
+            ctxR.strokeStyle = `${colorGroupR[i]}`
+            ctxR.globalAlpha = 0.2
+          }
+          ctxR.arc(56, 56, arcRadius, startRadian, startRadian + radianCalc (allGroupsPercentages[i].percentage), false)
+          ctxR.stroke()
+    
+          startRadian += radianCalc (allGroupsPercentages[i].percentage)
+    
+        }
+
+      }
+
+      // Vizualizam suma totala pe pagina
+      const allSumChart = document.getElementById('js-filter-all-chart')
+      let allSumChartString = allexpenses.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+      allSumChart.innerHTML = `Total ${allSumChartString}`
+
+      // Alfam care este ce mai mare valoare
+
+      let maxValue = Math.max(...allGroupsSum)
+
+      //Declaram grupa de culori
+  
+      let colorGroup = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#9D2035']
+
+      // Creem primul canvas
+
+      let canvas = document.getElementById('c8')
+      let ctx = canvas.getContext('2d')
+    
+      let wideCanvas = 1560
+      let heightCanvas = 520
+  
+      // Variabile pentru introducerea denumiri lunii
+      let nameMonth = 40
+      let chartHeight = heightCanvas - nameMonth
+  
+      ctx.clearRect(0, 0, wideCanvas, heightCanvas)
+  
+      // Desenam fundalul pentru denumirea lunii
+  
+      ctx.beginPath()
+      ctx.fillStyle = "rgba(26, 27, 29, 1)"
+      ctx.fillRect(0, heightCanvas, wideCanvas, -nameMonth)
+
+      // Desenam liniile orizontale pentru fundal
+
+      let divideUnit = 1000
+      let switchA = true
+      let distributionMonths = maxValue / divideUnit
+      let roundedUp = Math.ceil(distributionMonths) +1
+      let procentUnit = (roundedUp * divideUnit)/100
+    
+      for (let i = 0; i < roundedUp; i++) {
+  
+        if(switchA === true){
+          ctx.beginPath()
+          ctx.fillStyle = "rgba(26, 27, 29, 1)"
+          ctx.fillRect(0, (chartHeight/roundedUp)*i, wideCanvas, chartHeight/roundedUp)
+          switchA = false
+        } else if (switchA === false){
+          ctx.beginPath()
+          ctx.fillStyle = "rgba(26, 27, 29, 0)"
+          ctx.fillRect(0, (chartHeight/roundedUp)*i, wideCanvas, chartHeight/roundedUp)
+          switchA = true
+        }
+      }
+  
+      // Desenam liniile verticale pentru fundal
+  
+      let switchVertical = true
+      let numVerticalLine = allGroupsFromMonths.length
+      let numIterationVertical = numVerticalLine * 2
+      let columWide = (wideCanvas * 0.75)/numVerticalLine
+      let gapWide = (wideCanvas * 0.25)/(numVerticalLine - 1)
+  
+      let wideOrder = 0
+      let iteraGroup = 0
+      
+
+      // Vizualizam valorile pe graficul rectangular
+
+      for (let i = 0; i < numIterationVertical; i++) {
+
+        if(switchVertical === true){
+
+          //Calcularea inaltime la taota luna ---------------------------------------------
+          let sumhighGroups = ((chartHeight)/100)*(allGroupsExpensesMonths[iteraGroup].suma/procentUnit)
+
+          //Vizualizarea pe toata in fundal a lunii
+          roundedRect(ctx, wideOrder, chartHeight, columWide, -sumhighGroups, 24, "rgba(39, 40, 42, 0.6)" )
+
+          /*ctx.beginPath()
+          ctx.fillStyle = "rgba(39, 40, 42, 1)"
+          ctx.fillRect(wideOrder, chartHeight, columWide, -sumhighGroups)*/
+
+          // Ce se intimpla daca este selectat toate lunile
+          if (switchingGroups === "💎 Toate") {
+
+            // Vizualizarea toturor grupeleor din lunine selectate ----------------------
+
+            let iterateSingleGroup = allGroupsFromMonths[iteraGroup]
+
+            iterateSingleGroup.groups.sort((a, b) => {
+              const sumaA = parseInt(a[1].suma);
+              const sumaB = parseInt(b[1].suma);
+              return sumaB - sumaA;
+          });
+
+            let startGraph = 0
+    
+            for (let i = 0; i < iterateSingleGroup.groups.length; i++) {
+    
+              let startGraphSecond = chartHeight - startGraph
+              let num = parseInt(iterateSingleGroup.groups[i][1].suma)
+
+              let indexAll = allGroupsPercentages.findIndex(item => item.grupa === iterateSingleGroup.groups[i][1].titlu);
+
+              let highGroup = ((chartHeight)/100)*(num/procentUnit)
+              ctx.beginPath()
+              ctx.fillStyle = colorGroup[indexAll]
+              ctx.fillRect(wideOrder, startGraphSecond, columWide, -highGroup)
+    
+              startGraph += highGroup
+    
+            }
+
+          } else {
+
+            //Vizualizarea doar unei singure luni selectate -----------------------------
+            let highGroup = ((chartHeight)/100)*(selectedGroup[iteraGroup].suma/procentUnit)
+  
+            // Vizualizarea sumei pe grupa ----------------------------------------------
+            ctx.fillStyle = colorGroup[index]
+            ctx.font = " 30px 'Jost'";
+            ctx.textAlign = "center"
+            ctx.fillText(`${selectedGroup[iteraGroup].suma}`, wideOrder+(columWide/2), (chartHeight-highGroup)-20)
+  
+  
+            // Vizualizam grupa ----------------------------
+            ctx.beginPath()
+            ctx.fillStyle = colorGroup[index]
+            ctx.fillRect(wideOrder, chartHeight, columWide, -highGroup)
+          }
+
+          // Vizualizarea denumirea lunii ----------------------------------------
+          let groupMonth = allGroupsExpensesMonths[iteraGroup].data
+          let actualMonth = groupMonth.slice(5, 7)
+          let actualMonthNum = parseInt(actualMonth)
+
+          const titleMonths = ['Ian', 'Feb', 'Mart', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+
+          ctx.fillStyle = "rgba(235, 235, 245, 0.3)"
+          ctx.font = " 28px 'Jost'";
+          ctx.textAlign = "center"
+          ctx.fillText(`${titleMonths[actualMonthNum-1]}`, wideOrder+(columWide/2), heightCanvas - 10 )
+
+          // Vizualizarea cheltuielilor pe toata luna ----------------------------
+          ctx.fillStyle = "rgba(235, 235, 245, 0.6)"
+          ctx.font = "28px 'Jost'";
+          ctx.textAlign = "center"
+          ctx.fillText(`${allGroupsExpensesMonths[iteraGroup].suma}`, wideOrder+(columWide/2), (chartHeight - sumhighGroups) + 40)
+
+          iteraGroup ++
+          switchVertical = false
+          wideOrder += columWide
+        } else if (switchVertical === false){
+          ctx.beginPath()
+          ctx.fillStyle = "rgba(26, 27, 29, 0)"
+          ctx.fillRect(wideOrder, 0, gapWide, chartHeight)
+          wideOrder += gapWide
+          switchVertical = true
+        }
+
+      }
+  
+      // Functie pentru crearea rectangularelor cu coltuir rotungite
+      function roundedRect(ctx, x, y, width, height, radius, color) {
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.arcTo(x + width, y, x + width, y + height, 0);
+        ctx.arcTo(x + width, y + height, x, y + height, radius);
+        ctx.arcTo(x, y + height, x, y, radius);
+        ctx.arcTo(x, y, x + width, y, 0);
+        ctx.closePath();
+        
+        ctx.fillStyle = color
+        ctx.fill();
+      }
+      
+      
+    })
+
+  })
+
+}
+
+// Mecanismul de ascultare a cimplului cu grupe pentru chart ------------------------
+
+const listOfFilterGroupsChart = document.getElementById('js-list-of-filter-chart')
+
+function allExpensesFilterChart () {
+  filteringPeriods (`${listOfFilterGroupsChart.value}`)
+}
+
+listOfFilterGroupsChart.addEventListener('input', allExpensesFilterChart)
+
+filteringPeriods ("💎 Toate")
+
+
+// Acest cod adauga data curenta in cimpurile cu data ----------------------
 
 let currentDate = new Date().toISOString().slice(0, 10);
 inputDate.value = currentDate;
 inputIncomeDate.value = currentDate;
 inputDateStartGroup.value = currentDate;
+

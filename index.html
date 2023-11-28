@@ -151,14 +151,30 @@
         <div class="scrollable-list" id="js-cluster_group">
         </div>
         <canvas id="c6" width="112px" height="112px"></canvas>
-        <!--
-          <div class="level_cluster_title">
-          <div id="js-title-high" class="level_text_title level_text_title_high"></div>
-          <div id="js-title-medium" class="level_text_title level_text_title_medium"></div>
-          <div id="js-title-low"class="level_text_title level_text_title_low"></div>
-          </div>
-          <canvas id="c6" width="112px" height="112px"></canvas>
-        -->
+      </div>
+
+    </div>
+
+
+
+    <div class="dynamics_level">
+      <div class="chart-filter-money">
+        <div class="expenses_list_group_filter">
+          <span class="material-symbols-outlined filter_icon_style">filter_alt</span>
+          <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-list-of-filter-chart">
+            <option value="💎 Toate" selected>💎 Toate</option>
+          </select>
+        </div>
+        <span class="group_sum_text" id="js-filter-group-sum-chart"></span>
+        <span class="group_sum_text" id="js-filter-all-chart"></span>
+      </div>
+      <div class="dynamic">
+        <canvas id="c8" width="1560px" height="520px"></canvas>
+      </div>
+      <div class="level">
+        <div class="scrollable-list"  id="js-cluster_group_all">
+        </div>
+        <canvas id="c9" width="112px" height="112px"></canvas>
       </div>
 
     </div>
@@ -299,8 +315,9 @@
     </div>
     
   </main>
-  <footer id="footer"></footer>
 
+  <footer id="footer"></footer>
+  
   <script src="navigation-script.js" type="module"></script>
   <script src="script.js" type="module"></script>
   
