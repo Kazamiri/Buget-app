@@ -120,11 +120,13 @@ onValue(typesOfGroupsInDB, function(snapshot) {
   ${optionsHTML}`
 })
 
-//console.log(listOfFilterGroupsChart.value)
 
-// Functiile de adaugare a itemilor-----------------------------------
+// Adaugare a itemilor -----------------------------------
+
+// Adaugarea veniturilor in lista -------------------------------------
 
 addButtonIncome.addEventListener("click", function () {
+
   const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/incomes`)
 
   let addIncomeValue = {
@@ -136,6 +138,50 @@ addButtonIncome.addEventListener("click", function () {
   } 
   push(allMonthsInDBIncomes, addIncomeValue)
 })
+
+
+//Reinoieste un venit din lista --------------------------------
+
+window.addEventListener('click', function(event) {
+
+  if (event.target.dataset.type === 'updatinco') {
+    const inputTitleItems = document.querySelector(`#js-venit-titlu-${event.target.dataset.id}`)
+    const inputSumaItems = document.querySelector(`#js-venit-suma-${event.target.dataset.id}`)
+    const inputDataItems = document.querySelector(`#js-venit-data-${event.target.dataset.id}`)
+    const inputStateItems = document.querySelector(`#js-venit-state-${event.target.dataset.id}`)
+    const inputUserItems = document.querySelector(`#js-venit-user-${event.target.dataset.id}`)
+
+    let itemOneLineSelect = document.querySelector(`#js-button-update-income[data-id="${event.target.dataset.id}"]`)
+    itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+
+    event.stopPropagation()
+
+    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/incomes/${event.target.dataset.id}`)
+
+    update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
+    update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
+    update(exactLocationOfItemInDB, {data:inputDataItems.value})
+    update(exactLocationOfItemInDB, {state:`${inputStateItems.value}`})
+    update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
+    
+  }
+
+})
+
+// Stergerea unui venit din lista --------------------------------
+
+window.addEventListener('click', function(event) {
+
+  if (event.target.dataset.type === 'delete_inco') {
+
+    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/incomes/${event.target.dataset.id}`)
+    remove(exactLocationOfItemInDB)
+
+  }
+
+})
+
+// Adaugare unei cheltuieli ------------------------
 
 addButtonExpenses.addEventListener("click", function () {
   const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/expenses`)
@@ -152,6 +198,52 @@ addButtonExpenses.addEventListener("click", function () {
   push(allMonthsInDBExpenses, addExpensesValue) 
 })
 
+//Reinoieste o cheltuiala din lista --------------------------------
+
+window.addEventListener('click', function(event) {
+
+  if (event.target.dataset.type === 'updatexp') {
+
+    const inputGroupsItems = document.querySelector(`#js-grupe-${event.target.dataset.id}`)
+    const inputTitleItems = document.querySelector(`#js-titlu-${event.target.dataset.id}`)
+    const inputSumaItems = document.querySelector(`#js-suma-${event.target.dataset.id}`)
+    const inputDataItems = document.querySelector(`#js-data-${event.target.dataset.id}`)
+    const inputStateItems = document.querySelector(`#js-state-${event.target.dataset.id}`)
+    const inputLevelItems = document.querySelector(`#js-level-${event.target.dataset.id}`)
+    const inputUserItems = document.querySelector(`#js-user-${event.target.dataset.id}`)
+
+    let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${event.target.dataset.id}"]`)
+    itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+
+    event.stopPropagation()
+
+    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/expenses/${event.target.dataset.id}`)
+
+    update(exactLocationOfItemInDB, {grupa:`${inputGroupsItems.value}`})
+    update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
+    update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
+    update(exactLocationOfItemInDB, {data:inputDataItems.value})
+    update(exactLocationOfItemInDB, {state:`${inputStateItems.value}`})
+    update(exactLocationOfItemInDB, {level:`${inputLevelItems.value}`})
+    update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
+
+  }
+
+})
+
+window.addEventListener('click', function(event) {
+
+  if (event.target.dataset.type === 'delete_exp') {
+
+    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/expenses/${event.target.dataset.id}`)
+    remove(exactLocationOfItemInDB)
+
+  }
+
+})
+
+//Adaugarea unei grupe ---------------------------------------
+
 addButtonGroup.addEventListener("click", function () {
   const allMonthsInDBGroups = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/groups`)
 
@@ -161,6 +253,43 @@ addButtonGroup.addEventListener("click", function () {
   } 
   push(allMonthsInDBGroups, addGroupsValue)
 })
+
+//Reinoieste o grupa ----------------------------------------
+
+window.addEventListener('click', function(event) {
+
+  if (event.target.dataset.type === 'updategroup') {
+
+    const inputTitleItems = document.querySelector(`#js-grupe-titlu-${event.target.dataset.id}`)
+
+    const inputSumaItems = document.querySelector(`#js-grupe-suma-${event.target.dataset.id}`)
+
+    let itemOneLineSelect = document.querySelector(`#js-button-update-group[data-id="${event.target.dataset.id}"]`)
+    itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+
+    event.stopPropagation()
+
+    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/groups/${event.target.dataset.id}`)
+
+    update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
+    update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
+
+    
+  }
+
+})
+
+//Stergerea unei grupe
+
+window.addEventListener('click', function(event) {
+
+  if (event.target.dataset.type === 'delete_group') {
+    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/groups/${event.target.dataset.id}`)
+    remove(exactLocationOfItemInDB)
+  }
+
+})
+
 
 // Genereaza luna in dependenta de numarul de clicuri
 function navigateByMonth (clicks) {
@@ -412,7 +541,6 @@ addButtonMonth.addEventListener("click", function () {
         state: "În așteptare",
         user: "Toti"
       } 
-      //console.log(addIncomeValue)
       push(allMonthsInDBIncomes, addIncomeValue)
     }
 
@@ -441,7 +569,6 @@ addButtonMonth.addEventListener("click", function () {
         user: "Toti"
       } 
       push(allMonthsInDBExpenses, addExpensesValue) 
-      //console.log(addExpensesValue)
     }
 
   }
@@ -460,7 +587,6 @@ addButtonMonth.addEventListener("click", function () {
       titlu: `${allGroupType[i].titlu}`,
       suma: `${sumItemTitle}`,
     } 
-    //console.log(addGroupsValue)
     push(allMonthsInDBGroups, addGroupsValue)
   }
 
@@ -573,8 +699,8 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
         <div class="expenses_list_both-buttons" >
           <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-income" data-id="${monthsIncomes[i][0]}"  data-type="updatinco">
           <span class="material-symbols-outlined" data-id="${monthsIncomes[i][0]}" data-type="updatinco">autorenew</span></button>
-          <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-income" data-id="${monthsIncomes[i][0]}" data-type="delete">
-          <span class="material-symbols-outlined" data-id="${monthsIncomes[i][0]}" data-type="delete">delete_forever</span>
+          <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-income" data-id="${monthsIncomes[i][0]}" data-type="delete_inco">
+          <span class="material-symbols-outlined" data-id="${monthsIncomes[i][0]}" data-type="delete_inco">delete_forever</span>
           </button>
         </div>
       </div>
@@ -585,9 +711,6 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
   }
 
   newDateRefreshExpenses (`infolineinco`, 'js-button-update-income', 'js-income-list' )
-  upDateIncomes ('updatinco', `${curentSelectMonth}/incomes`)
-  deletItem ('delete', `${curentSelectMonth}/incomes`)
-
 } 
 
 
@@ -683,8 +806,8 @@ function readExpenses(monthsExpenses, curentSelectMonth) {
             <button class="expenses_list_button expenses_list_button_refresh" id="js-button-updata-expenses" data-id="${monthsExpenses[i][0]}" data-type="updatexp">
               <span class="material-symbols-outlined" data-id="${monthsExpenses[i][0]}" data-type="updatexp">autorenew</span>
             </button>
-            <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-expenses" data-id="${monthsExpenses[i][0]}" data-type="delete">
-              <span class="material-symbols-outlined" data-id="${monthsExpenses[i][0]}" data-type="delete">delete_forever</span>
+            <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-expenses" data-id="${monthsExpenses[i][0]}" data-type="delete_exp">
+              <span class="material-symbols-outlined" data-id="${monthsExpenses[i][0]}" data-type="delete_exp">delete_forever</span>
             </button>
           </div>
         
@@ -698,12 +821,8 @@ function readExpenses(monthsExpenses, curentSelectMonth) {
     inputGrupa.innerHTML = `${optionsHTML}`
 
     newDateRefreshExpenses (`infolineexp`, 'js-button-updata-expenses', 'js-lista' )
-    upDataExpenses ('updatexp', `${curentSelectMonth}/expenses`)
-    deletItem ('delete', `${curentSelectMonth}/expenses`)
-
   })
 } 
-
 
 
 // Functia data citeste masivul si il vizualizeaza lista de grupe pe pagina de baza
@@ -784,8 +903,8 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
             <div class="expenses_list_both-buttons" >
               <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-group" data-id="${monthsGroups[i][0]}" data-type="updategroup">
               <span class="material-symbols-outlined" data-id="${monthsGroups[i][0]}" data-type="updategroup">autorenew</span></button>
-              <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-group" data-id="${monthsGroups[i][0]}" data-type="delete">
-              <span class="material-symbols-outlined" data-id="${monthsGroups[i][0]}" data-type="delete">delete_forever</span>
+              <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-group" data-id="${monthsGroups[i][0]}" data-type="delete_group">
+              <span class="material-symbols-outlined" data-id="${monthsGroups[i][0]}" data-type="delete_group">delete_forever</span>
               </button>
             </div>
         </div>
@@ -800,12 +919,10 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
     inputGrupaTitlu.innerHTML = `${optionsHTML}`
 
     newDateRefreshExpenses (`infolinegroup`, 'js-button-update-group', 'js-group-list' )
-    upDateGroups ('updategroup', `${curentSelectMonth}/groups`)
-    deletItem ('delete', `${curentSelectMonth}/groups`)
-
   })
 
 } 
+
 
 //Ceva cu corectarea punctului de la grupe ------------------------
 function pointPositionCorrection (itemValue){
@@ -815,37 +932,6 @@ function pointPositionCorrection (itemValue){
   }
   return diference
 }
-
-//Functia data reinoieste un venit din lista ------------------------------------------
-function upDateIncomes (typeButonSelector, locationFile) {
-
-  window.addEventListener('click', function(event) {
-
-    if (event.target.dataset.type === typeButonSelector) {
-      const inputTitleItems = document.querySelector(`#js-venit-titlu-${event.target.dataset.id}`)
-      const inputSumaItems = document.querySelector(`#js-venit-suma-${event.target.dataset.id}`)
-      const inputDataItems = document.querySelector(`#js-venit-data-${event.target.dataset.id}`)
-      const inputStateItems = document.querySelector(`#js-venit-state-${event.target.dataset.id}`)
-      const inputUserItems = document.querySelector(`#js-venit-user-${event.target.dataset.id}`)
-
-      let itemOneLineSelect = document.querySelector(`#js-button-update-income[data-id="${event.target.dataset.id}"]`)
-      itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
-
-      event.stopPropagation()
-
-      let exactLocationOfItemInDB = ref(database, `${locationFile}/${event.target.dataset.id}`)
-
-      update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
-      update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
-      update(exactLocationOfItemInDB, {data:inputDataItems.value})
-      update(exactLocationOfItemInDB, {state:`${inputStateItems.value}`})
-      update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
-      
-    }
-
-  })
-
-} 
 
 // Functia data schimba culoarea la butonul update daca se face clic pe linia respectiva --------------
 
@@ -873,88 +959,6 @@ function newDateRefreshExpenses (typeSelector, buttonItem, listName) {
   })
 
 }
-
-
-//Functia data reinoieste o cheltuiala din lista --------------------------------
-function upDataExpenses (typeButonSelector, locationFile) {
-
-  window.addEventListener('click', function(event) {
-
-    if (event.target.dataset.type === typeButonSelector) {
-
-      const inputGroupsItems = document.querySelector(`#js-grupe-${event.target.dataset.id}`)
-      const inputTitleItems = document.querySelector(`#js-titlu-${event.target.dataset.id}`)
-      const inputSumaItems = document.querySelector(`#js-suma-${event.target.dataset.id}`)
-      const inputDataItems = document.querySelector(`#js-data-${event.target.dataset.id}`)
-      const inputStateItems = document.querySelector(`#js-state-${event.target.dataset.id}`)
-      const inputLevelItems = document.querySelector(`#js-level-${event.target.dataset.id}`)
-      const inputUserItems = document.querySelector(`#js-user-${event.target.dataset.id}`)
-
-      let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${event.target.dataset.id}"]`)
-      itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
-
-      event.stopPropagation()
-  
-      let exactLocationOfItemInDB = ref(database, `${locationFile}/${event.target.dataset.id}`)
-
-      update(exactLocationOfItemInDB, {grupa:`${inputGroupsItems.value}`})
-      update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
-      update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
-      update(exactLocationOfItemInDB, {data:inputDataItems.value})
-      update(exactLocationOfItemInDB, {state:`${inputStateItems.value}`})
-      update(exactLocationOfItemInDB, {level:`${inputLevelItems.value}`})
-      update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
-
-    }
-
-  })
-
-}
-
-
-//Functia data reinoieste o grupa ----------------------------------------
-function upDateGroups (typeButonSelector, locationFile) {
-
-  window.addEventListener('click', function(event) {
-
-    if (event.target.dataset.type === typeButonSelector) {
-
-      const inputTitleItems = document.querySelector(`#js-grupe-titlu-${event.target.dataset.id}`)
-
-      const inputSumaItems = document.querySelector(`#js-grupe-suma-${event.target.dataset.id}`)
-
-      let itemOneLineSelect = document.querySelector(`#js-button-update-group[data-id="${event.target.dataset.id}"]`)
-      itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
-
-      event.stopPropagation()
-
-      let exactLocationOfItemInDB = ref(database, `${locationFile}/${event.target.dataset.id}`)
-
-      update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
-      update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
-
-      
-    }
-
-  })
-
-}
-
-//Functia data sterge un item cum ar fi un venit, o cheltuiala, o grupa -------------------
-function deletItem (typeButonSelector, locationFile) {
-
-  window.addEventListener('click', function(event) {
-
-    if (event.target.dataset.type === typeButonSelector) {
-
-      let exactLocationOfItemInDB = ref(database, `${locationFile}/${event.target.dataset.id}`)
-      remove(exactLocationOfItemInDB)
-
-    }
-
-  })
-  
-} 
 
 
 // Aceasta functie calculeaza suma tuturor valorilor din masivul adaugat in argument
@@ -1606,7 +1610,6 @@ function filteringPeriods (groupChart) {
       if (switchingGroups != "💎 Toate") {
         let sumGroupsChartString = sumGroupsSelected.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
         sumGroupChart.innerHTML = `Grupa ${sumGroupsChartString} lei`
-        console.log(colorGroupR[index])
         sumGroupChart.style.color = colorGroupR[index]
       } else {
         sumGroupChart.innerHTML = ``
