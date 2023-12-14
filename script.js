@@ -1465,24 +1465,46 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
         filterTerm = switchingGroups
       }
 
+
+      let startDate
+      let endDate 
+
+      if(startMonth !== undefined) {
+        startDate = new Date(startMonth)
+        endDate = new Date(endMonth)
+      } else {
+        
+        let allMonthsFromBD = []
+
+        for (let i = 0; i < monthsDateSec.length; i++) {
+          allMonthsFromBD.push(monthsDateSec[i][0])
+        }
+
+        // Convert date strings to Date objects
+        const dates = allMonthsFromBD.map(allMonthsFromBD => new Date(allMonthsFromBD))
+
+        // Custom sorting function for date strings
+        const sortByDate = (a, b) => {
+          const dateA = new Date(a)
+          const dateB = new Date(b)
+          return dateA - dateB
+        };
+
+        // Sort the array of date strings
+        const sortedDates = dates.sort(sortByDate)
+
+        startDate = new Date(sortedDates[sortedDates.length-6])
+        endDate = new Date(sortedDates[sortedDates.length-1])
+      }
+
       // Extragem lunile care corespund perioadei -----------------
-  
-      const startDate = new Date()
-
-      startDate.setMonth(startDate.getMonth() - startMonth)
-
-      const endDate = new Date()
-
-      endDate.setMonth(endDate.getMonth() - endMonth)
 
       const filteredData = monthsDateSec.filter((item) => {
         const currentDate = new Date(item[0])
-        return currentDate >= endDate && currentDate <= startDate
+        return currentDate >= startDate && currentDate <= endDate
       })
 
-      filteredData.sort((a, b) => new Date(b[0]) - new Date(a[0]));
 
-  
       // Extragem grupele din lunile filtrate --------------------
   
       let allGroupsFromMonths = []
@@ -1497,7 +1519,6 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
         allGroupsFromMonths.push(groupsOnly)
   
       }
-
   
       // Aflam cheltuielile pe luna --------------------------
   
@@ -1936,7 +1957,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
 const listOfFilterGroupsChart = document.getElementById('js-list-of-filter-chart')
 const inputStartMonth = document.getElementById('js-start-month') 
 const inputEndMonth = document.getElementById('js-end-month') 
-const monthsAgo = 5
+const monthsAgo = 4
 
 onValue(allMonthsInDB, function(snapshot) {
 
@@ -1952,92 +1973,132 @@ onValue(allMonthsInDB, function(snapshot) {
   }
 
   // Convert date strings to Date objects
-  const dates = allMonthsFromBD.map(allMonthsFromBD => new Date(allMonthsFromBD))
+  const datesOne = allMonthsFromBD.map(allMonthsFromBD => new Date(allMonthsFromBD))
 
-  // Sort the array of Date objects
-  dates.sort((a, b) => b - a)
+  // Custom sorting function for date strings
+  const sortByDate = (a, b) => {
+    const dateA = new Date(a)
+    const dateB = new Date(b)
+    return dateA - dateB
+  };
 
-  const titleMonthsInput = ['Ian', 'Feb', 'Mart', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+  // Sort the array of date strings
+  const dates = datesOne.sort(sortByDate)
+
+  let startDate = new Date(dates[dates.length-6])
+  let endDate = new Date(dates[dates.length-1])
+
+
+  // Adaugarea lunilor existente in inputul start
+
+  for (let i = 0; i < dates.length; i++) {
+
+    // introducerea datelor in partea vizibila
+    let shortYear = dates[i].getFullYear().toString().slice(-2)
+    let monthAbbreviation = dates[i].toLocaleString('default', { month: 'short' })
+
+    //introducerea datelor in value
+    let formattedDate = dates[i].toISOString().split('T')[0]
+
+    if(startDate.getTime() === dates[i].getTime()) {
+      inputStartMonth.innerHTML += `<option value="${formattedDate}" selected>${monthAbbreviation} ${shortYear}</option>`
+    }else {
+      inputStartMonth.innerHTML += `<option value="${formattedDate}">${monthAbbreviation} ${shortYear}</option>`
+    }
+
+
+  }
+
+  // Adaugarea lunilor existente in inputul end
 
   for (let i = 0; i < dates.length; i++) {
 
     let shortYear = dates[i].getFullYear().toString().slice(-2)
-    let shortMonth = dates[i].getMonth()
+    let monthAbbreviation = dates[i].toLocaleString('default', { month: 'short' })
+    let formattedDate = dates[i].toISOString().split('T')[0];
 
-    inputStartMonth.innerHTML += `<option value="${titleMonthsInput[shortMonth]} ${shortYear} ${i}">${titleMonthsInput[shortMonth]} ${shortYear}</option>`
+    if (endDate.getTime() === dates[i].getTime()) {
+      inputEndMonth.innerHTML += `<option value="${formattedDate}" selected>${monthAbbreviation} ${shortYear}</option>`
+    }else{
+      inputEndMonth.innerHTML += `<option value="${formattedDate}">${monthAbbreviation} ${shortYear}</option>`
+    }
 
   }
 
+  // Schimbarea lunii in inputul start
 
-  for (let i = monthsAgo; i < dates.length; i++) {
+  inputStartMonth.addEventListener('input', function  () {
 
-    let shortYear = dates[i].getFullYear().toString().slice(-2)
-    let shortMonth = dates[i].getMonth()
+    // Extragem din input data selectata de tip string
+    let indexMonthsSelect = inputStartMonth.value
 
-    inputEndMonth.innerHTML += `<option value="${titleMonthsInput[shortMonth]} ${shortYear} ${i}">${titleMonthsInput[shortMonth]} ${shortYear}</option>`
-    
-  }
+    // Convertim data de tip data
+    const thresholdDate = new Date(indexMonthsSelect)
 
-  inputStartMonth.addEventListener('input', function allExpensesFilterChart () {
-    let indexMonthsSelect = inputStartMonth.value.slice(-2)
-    let indexMonthsSelectNum = parseInt(indexMonthsSelect)
+    // creem un nou array care contine valorile de la data selectata in sus
+    const filteredDates = dates.filter(date => new Date(date) > thresholdDate)
 
+    let lastMonthID 
+
+    if(monthsAgo < filteredDates.length){
+      lastMonthID = monthsAgo
+    } else{
+      lastMonthID = filteredDates.length - 1
+    }
+
+    // Curatim drop de fiecare data
     inputEndMonth.innerHTML = ''
 
-    for (let i = indexMonthsSelectNum; i < dates.length; i++) {
+    // Adaugam valorile deja filtrate in imputul end
 
-      let shortYear = dates[i].getFullYear().toString().slice(-2)
-      let shortMonth = dates[i].getMonth()
+    for (let i = 0; i < filteredDates.length; i++) {
 
-      let diference = dates.length - indexMonthsSelectNum 
-      let lastMonthID
-      
-      if (diference > monthsAgo){
-        lastMonthID = indexMonthsSelectNum + monthsAgo
-      }else{
-        lastMonthID = indexMonthsSelectNum + diference - 1
-      }
+      let shortYear = filteredDates[i].getFullYear().toString().slice(-2)
+      let monthAbbreviation = filteredDates[i].toLocaleString('default', { month: 'short' })
+      let formattedDate = filteredDates[i].toISOString().split('T')[0];
 
+      ///console.log(lastMonthID === i)
+
+  
       if (lastMonthID === i) {
-        inputEndMonth.innerHTML += `<option value="${titleMonthsInput[shortMonth]} ${shortYear} ${i}" selected >${titleMonthsInput[shortMonth]} ${shortYear}</option>`
-
-        filteringPeriods (`${listOfFilterGroupsChart.value}`, indexMonthsSelectNum, lastMonthID + 1)
-      } else {
-        inputEndMonth.innerHTML += `<option value="${titleMonthsInput[shortMonth]} ${shortYear} ${i}">${titleMonthsInput[shortMonth]} ${shortYear}</option>`
+        inputEndMonth.innerHTML += `<option value="${formattedDate}" selected>${monthAbbreviation} ${shortYear}</option>`
+        filteringPeriods (`${listOfFilterGroupsChart.value}`, indexMonthsSelect, formattedDate)
+      }else{
+        inputEndMonth.innerHTML += `<option value="${formattedDate}">${monthAbbreviation} ${shortYear}</option>`
       }
-
+  
     }
 
   })
 
-  inputEndMonth.addEventListener('input', function allExpensesFilterChart () {
+  // Schimbarea lunii in inputul end
 
-    let indexStartMonthsSelect = inputStartMonth.value.slice(-2)
-    let indexStartMonthsSelectNum = parseInt(indexStartMonthsSelect)
+  inputEndMonth.addEventListener('input', function  () {
 
+    // Extragem din input data selectata de tip string
+    let indexStartMonthsSelect = inputStartMonth.value
+    let indexEndMonthsSelect = inputEndMonth.value
 
-    let indexEndMonthsSelect = inputEndMonth.value.slice(-2)
-    let indexEndtMonthsSelectNum = parseInt(indexEndMonthsSelect)
+    // Facem renderul la grafic
+    filteringPeriods (`${listOfFilterGroupsChart.value}`, indexStartMonthsSelect, indexEndMonthsSelect)
 
-    filteringPeriods (`${listOfFilterGroupsChart.value}`, indexStartMonthsSelectNum, indexEndtMonthsSelectNum + 1)
   })
 
+
   function allExpensesFilterChart () {
-    let indexStartMonthsSelect = inputStartMonth.value.slice(-2)
-    let indexStartMonthsSelectNum = parseInt(indexStartMonthsSelect)
+    // Extragem din input data selectata de tip string
+    let indexStartMonthsSelect = inputStartMonth.value
+    let indexEndMonthsSelect = inputEndMonth.value
 
-
-    let indexEndMonthsSelect = inputEndMonth.value.slice(-2)
-    let indexEndtMonthsSelectNum = parseInt(indexEndMonthsSelect)
-
-    filteringPeriods (`${listOfFilterGroupsChart.value}`, indexStartMonthsSelectNum, indexEndtMonthsSelectNum + 1)
+    // Facem renderul la grafic
+    filteringPeriods (`${listOfFilterGroupsChart.value}`, indexStartMonthsSelect, indexEndMonthsSelect)
   }
   
   listOfFilterGroupsChart.addEventListener('input', allExpensesFilterChart)
 
 })
 
-filteringPeriods ("💎 Toate", 0, 6)
+filteringPeriods ("💎 Toate")
 
 // Acest cod adauga data curenta in cimpurile cu data ----------------------
 
