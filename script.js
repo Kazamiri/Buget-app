@@ -1991,6 +1991,8 @@ onValue(allMonthsInDB, function(snapshot) {
 
   // Adaugarea lunilor existente in inputul start
 
+  inputStartMonth.innerHTML = ``
+
   for (let i = 0; i < dates.length; i++) {
 
     // introducerea datelor in partea vizibila
@@ -2011,11 +2013,13 @@ onValue(allMonthsInDB, function(snapshot) {
 
   // Adaugarea lunilor existente in inputul end
 
+  inputEndMonth.innerHTML =``
+
   for (let i = 0; i < dates.length; i++) {
 
     let shortYear = dates[i].getFullYear().toString().slice(-2)
     let monthAbbreviation = dates[i].toLocaleString('default', { month: 'short' })
-    let formattedDate = dates[i].toISOString().split('T')[0];
+    let formattedDate = dates[i].toISOString().split('T')[0]
 
     if (endDate.getTime() === dates[i].getTime()) {
       inputEndMonth.innerHTML += `<option value="${formattedDate}" selected>${monthAbbreviation} ${shortYear}</option>`
