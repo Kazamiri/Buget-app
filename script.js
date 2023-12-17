@@ -1957,7 +1957,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
 const listOfFilterGroupsChart = document.getElementById('js-list-of-filter-chart')
 const inputStartMonth = document.getElementById('js-start-month') 
 const inputEndMonth = document.getElementById('js-end-month') 
-const monthsAgo = 4
+const monthsAgo = 5
 
 onValue(allMonthsInDB, function(snapshot) {
 
@@ -2015,7 +2015,7 @@ onValue(allMonthsInDB, function(snapshot) {
 
   inputEndMonth.innerHTML =``
 
-  for (let i = 0; i < dates.length; i++) {
+  for (let i = 3; i < dates.length; i++) {
 
     let shortYear = dates[i].getFullYear().toString().slice(-2)
     let monthAbbreviation = dates[i].toLocaleString('default', { month: 'short' })
@@ -2040,7 +2040,7 @@ onValue(allMonthsInDB, function(snapshot) {
     const thresholdDate = new Date(indexMonthsSelect)
 
     // creem un nou array care contine valorile de la data selectata in sus
-    const filteredDates = dates.filter(date => new Date(date) > thresholdDate)
+    const filteredDates = dates.filter(date => new Date(date) >= thresholdDate)
 
     let lastMonthID 
 
