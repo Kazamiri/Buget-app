@@ -1749,9 +1749,16 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
           ctxR.lineWidth = lineWidth;
           
           if (switchingGroups != "💎 Toate" && filterTerm === allGroupsPercentages[i].grupa) {
-            clusterGroupAll.innerHTML += `<div class="clusterGroup" style="opacity: 1"><div class="perceRounded" style="background-color:${colorGroupR[i]};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
+            clusterGroupAll.innerHTML += `<div class="clusterGroup" style="opacity: 1" id="active_month"><div class="perceRounded" style="background-color:${colorGroupR[i]};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
             ctxR.strokeStyle = `${colorGroupR[i]}`
             ctxR.globalAlpha = 1
+
+            //Asigura navigarea pina la luna activa
+
+            clusterGroupAll.scrollTo({
+              top: i*40,
+              behavior: 'smooth'
+            });
 
           } else {
             clusterGroupAll.innerHTML += `<div class="clusterGroup" style="opacity: 0.2"><div class="perceRounded" style="background-color:${colorGroupR[i]};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
