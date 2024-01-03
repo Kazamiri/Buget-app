@@ -484,37 +484,36 @@ const secondThreeExpenses = [];
 const allthreeGroup = [];
 
 
-inputAddMonth.addEventListener('input', function () {
-  // Extragem informatia despre luna si anul selectat
-  let addYear = inputAddYear.value
-  let addMonth = inputAddMonth.value
-  let addYearMonth = `${addYear}-${addMonth}-01`
-  
-  const months = 3 + 1;
-
-    itemExtraction (addYearMonth, 1, `incomes`, firstThreeIncomes)
-    itemExtraction (addYearMonth, 2, `incomes`, secondThreeIncomes)
-    itemExtraction (addYearMonth, 1, `expenses`, firstThreeExpenses)
-    itemExtraction (addYearMonth, 2, `expenses`, secondThreeExpenses)
-
-
-  for (let i = 1; i < months; i++) {
-
-    const formattedDateD = navigateByMonthExtract (addYearMonth, i)
-    const monthInDBGroups = ref(database, `allMonthsSecond/${formattedDateD}/groups`)
-
-    onValue(monthInDBGroups, function(snapshot) {
-      const itemsArray = Object.entries(snapshot.val())
-      itemsArray.forEach((item) => {
-        allthreeGroup.push(item)
-      }) 
-    })
-  } 
-
-})
 
 // Efectueaza crearea lunii
 addButtonMonth.addEventListener("click", function () {
+
+    // Extragem informatia despre luna si anul selectat
+    let addYear = inputAddYear.value
+    let addMonth = inputAddMonth.value
+    let addYearMonth = `${addYear}-${addMonth}-01`
+    
+    const months = 3 + 1;
+  
+      itemExtraction (addYearMonth, 1, `incomes`, firstThreeIncomes)
+      itemExtraction (addYearMonth, 2, `incomes`, secondThreeIncomes)
+      itemExtraction (addYearMonth, 1, `expenses`, firstThreeExpenses)
+      itemExtraction (addYearMonth, 2, `expenses`, secondThreeExpenses)
+  
+  
+    for (let i = 1; i < months; i++) {
+  
+      const formattedDateD = navigateByMonthExtract (addYearMonth, i)
+      const monthInDBGroups = ref(database, `allMonthsSecond/${formattedDateD}/groups`)
+  
+      onValue(monthInDBGroups, function(snapshot) {
+        const itemsArray = Object.entries(snapshot.val())
+        itemsArray.forEach((item) => {
+          allthreeGroup.push(item)
+        }) 
+      })
+    } 
+  
 
     // Extragem informatia despre luna si anul selectat
     let addYearT = inputAddYear.value
