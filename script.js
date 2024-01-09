@@ -679,12 +679,12 @@ addButtonMonth.addEventListener("click", function () {
 
 })
 
-  let addGroupsValue = {
-    titlu: `test`,
-    suma: `456`,
-  } 
+  // let addGroupsValue = {
+  //   titlu: `test`,
+  //   suma: `456`,
+  // } 
 
-  push(ref(database, `allMonthsSecond/2024-02-01/groups`), addGroupsValue)
+  // push(ref(database, `allMonthsSecond/2024-02-01/groups`), addGroupsValue)
 
 // Acest code deschide modalul pentru adaugarea lunii -------------------------------
 
