@@ -477,121 +477,214 @@ function itemExtraction (inputNewMonth, monthsAgo, typeItems, pushHere) {
     })
 }
 
-const firstThreeIncomes = [];
+/*const firstThreeIncomes = [];
 const secondThreeIncomes = [];
 const firstThreeExpenses = [];
 const secondThreeExpenses = [];
 const allthreeGroup = [];
 
 
+inputAddMonth.addEventListener('input', function () {
+  // Extragem informatia despre luna si anul selectat
+  let addYear = inputAddYear.value
+  let addMonth = inputAddMonth.value
+  let addYearMonth = `${addYear}-${addMonth}-01`
+  
+  const months = 3 + 1;
+
+    itemExtraction (addYearMonth, 1, `incomes`, firstThreeIncomes)
+    itemExtraction (addYearMonth, 2, `incomes`, secondThreeIncomes)
+    itemExtraction (addYearMonth, 1, `expenses`, firstThreeExpenses)
+    itemExtraction (addYearMonth, 2, `expenses`, secondThreeExpenses)
+
+
+  for (let i = 1; i < months; i++) {
+
+    const formattedDateD = navigateByMonthExtract (addYearMonth, i)
+    const monthInDBGroups = ref(database, `allMonthsSecond/${formattedDateD}/groups`)
+
+    onValue(monthInDBGroups, function(snapshot) {
+      const itemsArray = Object.entries(snapshot.val())
+      itemsArray.forEach((item) => {
+        allthreeGroup.push(item)
+      }) 
+    })
+  } 
+
+})*/
 
 // Efectueaza crearea lunii
 addButtonMonth.addEventListener("click", function () {
 
-    // Extragem informatia despre luna si anul selectat
-    let addYear = inputAddYear.value
-    let addMonth = inputAddMonth.value
-    let addYearMonth = `${addYear}-${addMonth}-01`
-    
-    const months = 3 + 1;
+  // ----------------- Extragem informatia despre luna si anul selectat -----------------
+
+  let addYear = inputAddYear.value
+  let addMonth = inputAddMonth.value
+  let addYearMonth = `${addYear}-${addMonth}-01`
+
+  // ================ Extragem veniturile ce se repeta in luna creata cu media din ultimile trei ================
+
+  const firstThreeIncomes = []
+  const secondThreeIncomes = []
+
+  function extractNecessaryIncomes() {
+    return new Promise((resolve, reject) => {
+      try {
+        let firstThree = itemExtraction (addYearMonth, 1, `incomes`, firstThreeIncomes)
+        let secondThree = itemExtraction (addYearMonth, 2, `incomes`, secondThreeIncomes)
+        resolve({firstThree, secondThree })
+      } catch (error) {
+        reject(error) 
+      }
+
+    })
+  }
+
+  // ================ Extragem cheltuielile create in ultimile trei luni ================
+
+  const firstThreeExpenses = []
+  const secondThreeExpenses = []
+
+  function extractNecessaryExpenses() {
+    return new Promise((resolve, reject) => {
+      try {
+        let firstThree = itemExtraction (addYearMonth, 1, `expenses`, firstThreeExpenses)
+        let secondThree = itemExtraction (addYearMonth, 2, `expenses`, secondThreeExpenses)
+        resolve({firstThree, secondThree })
+      } catch (error) {
+        reject(error) 
+      }
+
+    })
+  }
+
+  // ================ Extragem grupele create in ultimile trei luni ================
+
+  const months = 3 + 1 // Numarul de luni in urma
+  const allthreeGroup = [] // Le depozitam in acest array
+
+
+  function extractNecessaryGroup() {
+    return new Promise((resolve, reject) => {
+      for (let i = 1; i < months; i++) {
+        try {
+          const formattedDateD = navigateByMonthExtract(addYearMonth, i)
+          const monthInDBGroups = ref(database, `allMonthsSecond/${formattedDateD}/groups`)
   
-      itemExtraction (addYearMonth, 1, `incomes`, firstThreeIncomes)
-      itemExtraction (addYearMonth, 2, `incomes`, secondThreeIncomes)
-      itemExtraction (addYearMonth, 1, `expenses`, firstThreeExpenses)
-      itemExtraction (addYearMonth, 2, `expenses`, secondThreeExpenses)
+          onValue(monthInDBGroups, function(snapshot) {
+            const itemsArray = Object.entries(snapshot.val())
+            itemsArray.forEach((item) => {
+              allthreeGroup.push(item)
+            })
+            resolve() // Resolve after processing all items in the loop
+          })
+        } catch (error) {
+          reject(error) // Reject if an error occurs
+        }
+      }
+    })
+  }
+
+  // ---------------- Adauga veniturile ce se repeta in luna creata cu media din ultimile trei ----------------
+
+  extractNecessaryIncomes()
+  .then(extractNecessaryExpenses)
+  .then(extractNecessaryGroup)
+  .then(() => {
+    for (let i = 0; i < firstThreeIncomes.length; i++) {
+      const firstObject = firstThreeIncomes[i][1].titlu
+      const filteredData = secondThreeIncomes.filter((item) => item[1].titlu === firstObject);
   
+      const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${addYearMonth}/incomes`)
   
-    for (let i = 1; i < months; i++) {
+      if (filteredData.length > 0) {
   
-      const formattedDateD = navigateByMonthExtract (addYearMonth, i)
-      const monthInDBGroups = ref(database, `allMonthsSecond/${formattedDateD}/groups`)
+        let sumaDecimal = calculateSum(filteredData)/filteredData.length
+        let roundedNum = Math.round(sumaDecimal);
   
-      onValue(monthInDBGroups, function(snapshot) {
-        const itemsArray = Object.entries(snapshot.val())
-        itemsArray.forEach((item) => {
-          allthreeGroup.push(item)
-        }) 
-      })
-    } 
+        let addIncomeValue = {
+          titlu: `${firstObject}`,
+          suma: `${roundedNum}`,
+          data: `${addYearMonth}`,
+          state: "În așteptare",
+          user: "Toti"
+        } 
+        console.log(addIncomeValue)
+        push(allMonthsInDBIncomes, addIncomeValue)
+      }
   
-
-    // Extragem informatia despre luna si anul selectat
-    let addYearT = inputAddYear.value
-    let addMonthT = inputAddMonth.value
-    let addYearMonthT = `${addYearT}-${addMonthT}-01`
-
-  //Adauga veniturile ce se repeta in luna creata cu media din ultimile trei
-  for (let i = 0; i < firstThreeIncomes.length; i++) {
-
-    const firstObject = firstThreeIncomes[i][1].titlu
-    const filteredData = secondThreeIncomes.filter((item) => item[1].titlu === firstObject);
-
-    const allMonthsInDBIncomes = ref(database, `allMonthsSecond/${addYearMonthT}/incomes`)
-
-    if (filteredData.length > 0) {
-
-      let sumaDecimal = calculateSum(filteredData)/filteredData.length
-      let roundedNum = Math.round(sumaDecimal);
-
-      let addIncomeValue = {
-        titlu: `${firstObject}`,
-        suma: `${roundedNum}`,
-        data: `${addYearMonthT}`,
-        state: "În așteptare",
-        user: "Toti"
-      } 
-      push(allMonthsInDBIncomes, addIncomeValue)
     }
 
-  }
+  })
+  .catch((error) => {
+    console.error('Promise rejected:', error);
+  })
+  .then(() => {
+    for (let i = 0; i < firstThreeExpenses.length; i++) {
 
-  //Adauga cheltuielile ce se repeta in luna creata cu media din ultimile trei
-  for (let i = 0; i < firstThreeExpenses.length; i++) {
+      const firstObject = firstThreeExpenses[i][1].titlu
+      const filteredData = secondThreeExpenses.filter((item) => item[1].titlu === firstObject);
 
-    const firstObject = firstThreeExpenses[i][1].titlu
-    const filteredData = secondThreeExpenses.filter((item) => item[1].titlu === firstObject);
+      const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${addYearMonth}/expenses`)
 
-    const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${addYearMonthT}/expenses`)
+      if (filteredData.length > 0) {
 
-    if (filteredData.length > 0) {
+        let sumaDecimal = calculateSum(filteredData)/filteredData.length
+        let roundedNum = Math.round(sumaDecimal);
 
-      let sumaDecimal = calculateSum(filteredData)/filteredData.length
-      let roundedNum = Math.round(sumaDecimal);
+        let addExpensesValue = {
+          grupa: `${filteredData[0][1].grupa}`,
+          titlu: `${firstObject}`,
+          suma: `${roundedNum}`,
+          data: `${addYearMonth}`,
+          state: "În așteptare",
+          level: "Low",
+          user: "Toti"
+        } 
+        console.log(addExpensesValue)
+        push(allMonthsInDBExpenses, addExpensesValue) 
+      }
 
-      let addExpensesValue = {
-        grupa: `${filteredData[0][1].grupa}`,
-        titlu: `${firstObject}`,
-        suma: `${roundedNum}`,
-        data: `${addYearMonthT}`,
-        state: "În așteptare",
-        level: "Low",
-        user: "Toti"
-      } 
-      push(allMonthsInDBExpenses, addExpensesValue) 
     }
 
-  }
-
-  //Adauga grupele in luna creata cu media din ultimile trei
-  for (let i = 0; i < allGroupType.length; i++) {
+  })
+  .catch((error) => {
+    console.error('Promise rejected:', error);
+  })
+  .then(() => {
+    for (let i = 0; i < allGroupType.length; i++) {
   
-    const filteredData = allthreeGroup.filter((item) => {
-      return item[1].titlu === `${allGroupType[i].titlu}`;
-    });
-    
-    let sumItemTitle = (calculateSum(filteredData)/3).toFixed(0);
-    const allMonthsInDBGroups = ref(database, `allMonthsSecond/${addYearMonthT}/groups`)
+      const filteredData = allthreeGroup.filter((item) => {
+        return item[1].titlu === `${allGroupType[i].titlu}`;
+      });
+      
+      let sumItemTitle = (calculateSum(filteredData)/3).toFixed(0);
+      const allMonthsInDBGroups = ref(database, `allMonthsSecond/${addYearMonth}/groups`)
 
-    let addGroupsValue = {
-      titlu: `${allGroupType[i].titlu}`,
-      suma: `${sumItemTitle}`,
-    } 
-    push(allMonthsInDBGroups, addGroupsValue)
-  }
+      let addGroupsValue = {
+        titlu: `${allGroupType[i].titlu}`,
+        suma: `${sumItemTitle}`,
+      } 
+      console.log(addGroupsValue)
+      push(allMonthsInDBGroups, addGroupsValue)
+    }
+  })
+  .catch((error) => {
+    console.error('Promise rejected:', error);
+  })
 
   modulAddMonth.close()
 
+  location.reload()
+
 })
+
+  let addGroupsValue = {
+    titlu: `test`,
+    suma: `456`,
+  } 
+
+  push(ref(database, `allMonthsSecond/2024-02-01/groups`), addGroupsValue)
 
 // Acest code deschide modalul pentru adaugarea lunii -------------------------------
 
