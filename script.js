@@ -79,8 +79,9 @@ const closeModulAddMonth = document.getElementById('js-close-month-modul')
 const inputTitleTypesGroup = document.getElementById('js-new-title-types-group')
 const addButtonTitleTypesGroup = document.getElementById('js-add-new-title-types-group')
 
-// De aici se incepe --------------------------------------------------
-// Navigarea prin aplicatie noua
+// ================ De aici se incepe ================
+
+// ---------------- Navigarea prin aplicatie noua
 let clicks = 0;
 readingNewMonths (navigateByMonth (clicks))
 changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
@@ -97,7 +98,7 @@ navButtonMonthRight.addEventListener("click", function del () {
   changeTitleMonth (convertMonthsString (navigateByMonth (clicks)), drawYear (navigateByMonth (clicks)))
 })
 
-// Adaugarea mecanismului de filtrare a cheltuielilor----------------------------
+// ---------------- Adaugarea mecanismului de filtrare a cheltuielilor ----------------
 
 const listOfFilterGroups = document.getElementById('js-list-of-filter')
 
@@ -120,10 +121,32 @@ onValue(typesOfGroupsInDB, function(snapshot) {
   ${optionsHTML}`
 })
 
+// ================ Experiment promis ================
 
-// Adaugare a itemilor -----------------------------------
+let monthsDateSec
 
-// Adaugarea veniturilor in lista -------------------------------------
+function maker () {
+  return new Promise ( function (resolve, reject) {
+    onValue(typesOfGroupsInDB, function(snapshot) {
+      resolve ( monthsDateSec = Object.values(snapshot.val()))
+    })
+  })
+}
+
+// maker ().then(function(data) {
+//   console.log(data)
+// })
+
+async function test() {
+  const allData = await maker()
+  console.log(allData)
+}
+
+test()
+
+// ================ Adaugare a itemilor ================
+
+// ---------------- Adaugarea veniturilor in lista -----------------
 
 addButtonIncome.addEventListener("click", function () {
 
@@ -140,7 +163,7 @@ addButtonIncome.addEventListener("click", function () {
 })
 
 
-//Reinoieste un venit din lista --------------------------------
+// ---------------- Reinoieste un venit din lista ----------------
 
 window.addEventListener('click', function(event) {
 
@@ -168,7 +191,7 @@ window.addEventListener('click', function(event) {
 
 })
 
-// Stergerea unui venit din lista --------------------------------
+// ---------------- Stergerea unui venit din lista ----------------
 
 window.addEventListener('click', function(event) {
 
@@ -181,7 +204,7 @@ window.addEventListener('click', function(event) {
 
 })
 
-// Adaugare unei cheltuieli ------------------------
+// ---------------- Adaugare unei cheltuieli ----------------
 
 addButtonExpenses.addEventListener("click", function () {
   const allMonthsInDBExpenses = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/expenses`)
@@ -198,7 +221,7 @@ addButtonExpenses.addEventListener("click", function () {
   push(allMonthsInDBExpenses, addExpensesValue) 
 })
 
-//Reinoieste o cheltuiala din lista --------------------------------
+// ---------------- Reinoieste o cheltuiala din lista ----------------
 
 window.addEventListener('click', function(event) {
 
@@ -242,7 +265,7 @@ window.addEventListener('click', function(event) {
 
 })
 
-//Adaugarea unei grupe ---------------------------------------
+//---------------- Adaugarea unei grupe ----------------
 
 addButtonGroup.addEventListener("click", function () {
   const allMonthsInDBGroups = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/groups`)
@@ -254,7 +277,7 @@ addButtonGroup.addEventListener("click", function () {
   push(allMonthsInDBGroups, addGroupsValue)
 })
 
-//Reinoieste o grupa ----------------------------------------
+// ---------------- Reinoieste o grupa ----------------
 
 window.addEventListener('click', function(event) {
 
@@ -279,7 +302,7 @@ window.addEventListener('click', function(event) {
 
 })
 
-//Stergerea unei grupe
+// ---------------- Stergerea unei grupe ----------------
 
 window.addEventListener('click', function(event) {
 
@@ -291,7 +314,7 @@ window.addEventListener('click', function(event) {
 })
 
 
-// Genereaza luna in dependenta de numarul de clicuri
+// ---------------- Genereaza luna in dependenta de numarul de clicuri ----------------
 function navigateByMonth (clicks) {
   const date = new Date();
   date.setDate(1);
@@ -302,7 +325,7 @@ function navigateByMonth (clicks) {
   return formattedDate
 }
 
-// Genereaza luna in dependenta de numarul de clicuri cu adaugarea corectiei
+// ---------------- Genereaza luna in dependenta de numarul de clicuri cu adaugarea corectiei ----------------
 function navigateByMonthExtract (inputNewMonth, monthsAgo) {
   const date = new Date(inputNewMonth);
   date.setDate(1);
@@ -313,7 +336,7 @@ function navigateByMonthExtract (inputNewMonth, monthsAgo) {
   return formattedDate
 }
 
-//Genereaza titlu Html a lunii selectate
+// ---------------- Genereaza titlu Html a lunii selectate ----------------
 function convertMonthsString (curentSelectMonth) {
   let months = parseInt(curentSelectMonth.slice(5, 7))
   let year = parseInt(curentSelectMonth.slice(0, 4))
@@ -322,18 +345,18 @@ function convertMonthsString (curentSelectMonth) {
   return curentTitleMonth
 }
 
-//Genereaza titlu Html a anului selectat
+// ---------------- Genereaza titlu Html a anului selectat ----------------
 function drawYear (curentSelectMonth) {
   let year = parseInt(curentSelectMonth.slice(0, 4))
   return year
 }
 
-//Adauga in Html denumirea luni si a anului
+// ---------------- Adauga in Html denumirea luni si a anului ----------------
 function changeTitleMonth (curentTitleMonth, curentSelectYear) {
   navMonthTitle.innerHTML =`${curentTitleMonth} ${curentSelectYear}` // I se atribuie denumirea lunii si anul lunii selectate.
 }
 
-//Citirea din informatiei din luna selectat
+// ---------------- Citirea din informatiei din luna selectat
 function readingNewMonths(curentSelectMonth) {
 
   const currentMonthsInDB = ref(database, `allMonthsSecond/${curentSelectMonth}`);
@@ -381,7 +404,7 @@ function readingNewMonths(curentSelectMonth) {
   });
 }
 
-// Aici sunt conectate toate functiile care au nevoie sa primeasc info despre luna selectata
+// ================ Aici sunt conectate toate functiile care au nevoie sa primeasc info despre luna selectata ================
 function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectMonth) {
 
   let availableIncomes = fiterItem (monthsIncomes, "state", "Venit")
@@ -394,7 +417,7 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
 
   newDateOneArc ('c0', calculateSum(monthsIncomes), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)')
 
-  // Mecanismul de filtrare -----------------------------
+  // ---------------- Mecanismul de filtrare ----------------
 
   if(listOfFilterGroups.value === `💎 Toate`){
     readExpenses(monthsExpenses, curentSelectMonth)
@@ -512,6 +535,36 @@ inputAddMonth.addEventListener('input', function () {
   } 
 
 })*/
+
+// ================ Adaugarea anilor in drop down ================
+
+const currentDateList = new Date()
+const currentYearList = currentDateList.getFullYear()
+
+// ---------------- Cream o lista, adaugind la anum curent, valoare 6 in jos si in sus
+
+let listOfYear = []
+
+for (let i = 0; i < 6; i++) {
+  listOfYear.push(currentYearList - (10-i))
+}
+
+for (let i = 0; i < 6; i++) {
+  listOfYear.push(currentYearList + i)
+}
+
+listOfYear.reverse()
+
+// ---------------- Adauga in Html lista
+
+for (let i = 0; i < listOfYear.length; i++) {
+  if(listOfYear[i] === currentYearList){
+    inputAddYear.innerHTML += `<option value="${listOfYear[i]}" selected >${listOfYear[i]}</option>`        
+  } else {
+    inputAddYear.innerHTML += `<option value="${listOfYear[i]}">${listOfYear[i]}</option>`        
+  }
+}
+
 
 // Efectueaza crearea lunii
 addButtonMonth.addEventListener("click", function () {
@@ -1092,6 +1145,14 @@ function availableIncomesHtmlDate (value) {
 
 function expensesHtmlDate (value) {
   let valueHTML = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  const test = new Intl.NumberFormat( 'md', {
+    notation: 'compact',
+    style: 'currency',
+    currency: 'MDL',
+    //minimumIntegerDigits: 2
+  }
+  ).format(value)
+  console.log(test)
   expenHtmlValue.innerHTML =`<p>${valueHTML} <span class="styled-lei">lei</span></p>`
 }
 
