@@ -1,0 +1,42 @@
+:root
+{
+    --color-backgrounds-primary: #FFFFFF;
+    --color-backgrounds-secondary: #F9F9F9;
+    --color-backgrounds-tertiary: #F3F3F7;
+    --color-backgrounds-quaternary: #EDEDF1;
+
+    --color-labels-primary: #000000;
+    --color-labels-secondary: rgba(60, 60, 67, 0.72);
+    --color-labels-tertiary: rgba(60, 60, 67, 0.56);
+    --color-labels-quarternary: rgba(60, 60, 67, 0.24);
+
+    --color-functional-green-primary: #00BE76;
+    --color-functional-green-secondary: rgba(0, 190, 118, 0.80);
+    --color-functional-green-tertiary: rgba(0, 190, 118, 0.60);
+    --color-functional-green-quarternary: rgba(0, 190, 118, 0.40);
+    --color-functional-green-quinary: rgba(0, 190, 118, 0.20);
+
+    --color-functional-neo_fuchsia-primary: #FF4F72;
+    --color-functional-neo-fuchsia-secondary: rgba(255, 79, 114, 0.80);
+    --color-functional-neo-fuchsia-tertiary: rgba(255, 79, 114, 0.60);
+    --color-functional-neo_fuchsia-quarternary: rgba(255, 79, 114, 0.40);
+    --color-functional-neo-fuchsia-quinary: rgba(255, 79, 114, 0.20);
+
+    --color-brand-yello-primary: #FB1;
+    --color-brand-yello-secondary: rgba(255, 187, 17, 0.80);
+    --color-brand-yello-tertiary: rgba(255, 187, 17, 0.40);
+    --color-brand-yello-quaternary: rgba(255, 187, 17, 0.20);
+
+    --color-functional-orange-primary:#FF6F30;
+    --color-functional-orange-secondary: rgba(255, 111, 48, 0.80);
+    --color-functional-orange-tertiary: rgba(255, 111, 48, 0.60);
+    --color-functional-orange-quarternary: rgba(234, 84, 0, 0.40);
+    --color-functional-orange-quinary: rgba(255, 111, 48, 0.20);
+
+    --color-others-blue-primary: #598CFF;
+    --color-others-blue-secondary: rgba(89, 140, 255, 0.80);
+    --color-others-blue-tertiary: rgba(89, 140, 255, 0.40);
+    --color-others-blue-quaternary: rgba(89, 140, 255, 0.20);
+
+}
+

@@ -79,6 +79,12 @@ const closeModulAddMonth = document.getElementById('js-close-month-modul')
 const inputTitleTypesGroup = document.getElementById('js-new-title-types-group')
 const addButtonTitleTypesGroup = document.getElementById('js-add-new-title-types-group')
 
+
+const root = document.documentElement
+let buttontheme = document.getElementById('change_theme')
+let theme = document.getElementById('theme')
+
+
 // ================ De aici se incepe ================
 
 // ---------------- Navigarea prin aplicatie noua
@@ -142,7 +148,7 @@ async function test() {
   console.log(allData)
 }
 
-test()
+// test()
 
 // ================ Adaugare a itemilor ================
 
@@ -415,7 +421,8 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
   incomesHtmlDate(calculateSum(monthsIncomes))
   availableIncomesHtmlDate (calculateSum(availableIncomes))
 
-  newDateOneArc ('c0', calculateSum(monthsIncomes), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)')
+  newDateOneArc ('c0', calculateSum(monthsIncomes), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)', 'rgb(39, 40, 42)')
+
 
   // ---------------- Mecanismul de filtrare ----------------
 
@@ -444,7 +451,7 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
   incurredExpensesHtmlDate (calculateSum(pendingExpenses))
 
   groupVisuallisation (monthsExpenses)
-  newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), 'rgba(254, 152, 112, 1)', calculateSum(monthsIncomes), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)' )
+  newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), 'rgba(254, 152, 112, 1)', calculateSum(monthsIncomes), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)', 'rgb(39, 40, 42)' )
 
 
   //Groups -----------------------------------------------------
@@ -453,9 +460,29 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
   allocatedMoneyHtmlDate (calculateSum(monthsGroups))
   moneyAvailableHtmlDate (moneyAvailable)
 
-  newDateArc ('c2', calculateSum(monthsIncomes), calculateSum(monthsGroups), 'rgba(37, 116, 255, 1)', calculateSum(availableIncomes), moneyAvailable, 'rgba(235, 235, 245, 0.60)' )
+  newDateArc ('c2', calculateSum(monthsIncomes), calculateSum(monthsGroups), 'rgba(37, 116, 255, 1)', calculateSum(availableIncomes), moneyAvailable, 'rgba(235, 235, 245, 0.60)', 'rgb(39, 40, 42)' )
 
   levelExpensese(monthsIncomes, monthsExpenses, curentSelectMonth)
+
+  // ============ Logica de schimbare a temei ============
+
+  buttontheme.addEventListener("click", function () {
+
+    if (theme.getAttribute('href') === 'color.css') {
+        theme.setAttribute('href', 'color_light.css')
+        buttontheme.innerHTML='🌙'
+        newDateOneArc ('c0', calculateSum(monthsIncomes), calculateSum(availableIncomes), '#00BE76', '#EDEDF1')
+        newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), '#FF6F30', calculateSum(monthsIncomes), calculateSum(pendingExpenses), '#FF4F72', '#EDEDF1' )
+        newDateArc ('c2', calculateSum(monthsIncomes), calculateSum(monthsGroups), '#598CFF', calculateSum(availableIncomes), moneyAvailable, 'rgba(60, 60, 67, 0.64)', '#EDEDF1' )
+
+      } else {
+        theme.setAttribute('href', 'color.css')
+        buttontheme.innerHTML='☀️'
+        newDateOneArc ('c0', calculateSum(monthsIncomes), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)', 'rgb(39, 40, 42)')
+        newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), 'rgba(254, 152, 112, 1)', calculateSum(monthsIncomes), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)', 'rgb(39, 40, 42)' )
+          newDateArc ('c2', calculateSum(monthsIncomes), calculateSum(monthsGroups), 'rgba(37, 116, 255, 1)', calculateSum(availableIncomes), moneyAvailable, 'rgba(235, 235, 245, 0.60)', 'rgb(39, 40, 42)' )
+      }
+  })
 
 }
 
@@ -1152,7 +1179,6 @@ function expensesHtmlDate (value) {
     //minimumIntegerDigits: 2
   }
   ).format(value)
-  console.log(test)
   expenHtmlValue.innerHTML =`<p>${valueHTML} <span class="styled-lei">lei</span></p>`
 }
 
@@ -1207,10 +1233,9 @@ function curataCimpurile() {
 } // Aceasta functie este necesara pentru a curtati valorile care au fost adaugate 
 
 
-function newDateOneArc (canvasId, minuedFirst, subtrahendFirst, colorFirst ) {
+function newDateOneArc (canvasId, minuedFirst, subtrahendFirst, colorFirst, colorBack ) {
 
   const procenteItemFirst = diference(minuedFirst, subtrahendFirst).toFixed(0);
-
 
   let canvas = document.getElementById(canvasId)
   let ctx = canvas.getContext('2d')
@@ -1230,7 +1255,7 @@ function newDateOneArc (canvasId, minuedFirst, subtrahendFirst, colorFirst ) {
 
   ctx.beginPath()
   ctx.lineWidth = 12;
-  ctx.strokeStyle = '#27282A'
+  ctx.strokeStyle = colorBack
   ctx.arc(174, 174, 168, 0, 2*pi, false)
   ctx.stroke()
 
@@ -1248,7 +1273,7 @@ function newDateOneArc (canvasId, minuedFirst, subtrahendFirst, colorFirst ) {
 }
 
 
-function newDateArc (canvasId, minuedFirst, subtrahendFirst, colorFirst, minuedSecond, subtrahendSecond, colorSecond ) {
+function newDateArc (canvasId, minuedFirst, subtrahendFirst, colorFirst, minuedSecond, subtrahendSecond, colorSecond, colorBack ) {
 
   const procenteItemFirst = diference(minuedFirst, subtrahendFirst).toFixed(0);
   const procenteItemSecond = diference(minuedSecond, subtrahendSecond).toFixed(0);
@@ -1272,7 +1297,7 @@ function newDateArc (canvasId, minuedFirst, subtrahendFirst, colorFirst, minuedS
 
   ctx.beginPath()
   ctx.lineWidth = 12;
-  ctx.strokeStyle = '#27282A'
+  ctx.strokeStyle = colorBack
   ctx.arc(174, 174, 168, 0, 2*pi, false)
   ctx.stroke()
 
@@ -1289,7 +1314,7 @@ function newDateArc (canvasId, minuedFirst, subtrahendFirst, colorFirst, minuedS
 
   ctx.beginPath()
   ctx.lineWidth = 12;
-  ctx.strokeStyle = '#27282A'
+  ctx.strokeStyle = colorBack
   ctx.arc(174, 174, 138, 0, 2*pi, false)
   ctx.stroke()
 
@@ -1353,7 +1378,7 @@ function groupVisuallisation (monthsExpenses) {
 
     //Acestea sunt culorile utilizate pentru vizualizarea graficului circular --------
 
-    let colorGroup = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#9D2035']
+    let colorGroup = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#A2005D', '#9D2035','#92041C']
 
     // Acest loop calculeaza procentele pentru luna curenta ------------------------
 
@@ -1738,12 +1763,13 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
 
       //Acestea sunt culorile utilizate pentru vizualizarea graficului circular --------
 
-      let colorGroupR = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#9D2035']
+      let colorGroupR = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#A2005D', '#9D2035','#92041C']
 
       // Acest loop calculeaza procentele pentru grupe in raport cu toata perioada ------------------------
       // Aceasta matrice este utilizata pentru pastrea grupelelor si procentele lor
 
       let allGroupsPercentages = []
+
 
       for (let i = 0; i < monthstypesOfGroups.length; i++) {
 
@@ -1772,6 +1798,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
         // Acesta cod aranjeaza in ordine crescatoare matricea cu grupe si procente --------------
 
         allGroupsPercentages.sort((a, b) => b.percentage - a.percentage)
+
 
         // Aflu indexul grupe selectate pentru a selecta culoarea corecta
         const index = allGroupsPercentages.findIndex(item => item.grupa === filterTerm);
@@ -1938,7 +1965,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
 
       //Declaram grupa de culori
   
-      let colorGroup = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#9D2035']
+      let colorGroup = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#A2005D', '#9D2035','#92041C']
 
       // Creem primul canvas
 

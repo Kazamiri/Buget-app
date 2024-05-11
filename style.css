@@ -1,5 +1,5 @@
 @import url(text.css);
-@import url(color.css);
+/* @import url(color_light.css); */
 @import url(corner_radius.css);
 @import url(space_distance.css);
 
@@ -53,16 +53,16 @@ table {
 
 ::-webkit-scrollbar-thumb {
 border-radius: var(--corner-radius-xxl, 32px);
-background: var(--color-backgrounds-tertiary, #202123);
+background: var(--color-backgrounds-tertiary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-background: var(--color-backgrounds-quaternary, #27282A);
+background: var(--color-backgrounds-quaternary);
 }
 
 ::-webkit-scrollbar-track {
 border-radius: var(--corner-radius-xxl, 32px);
-border: 1px solid var(--color-backgrounds-tertiary, #202123);
+border: 1px solid var(--color-backgrounds-tertiary, );
 background: rgba(26, 27, 29, 0.50);
 }
 
@@ -174,7 +174,7 @@ main {
     border-radius: var(--corner-radius-m);
     background: var(--color-functional-green-secondary);
 
-    color: var(--color-backgrounds-primary, #131416);
+    color: var(--color-backgrounds-primary);
 
     font-family: var(--font-default);
     font-weight: var(--font-weight-medium);
@@ -379,7 +379,7 @@ main {
     grid-column-end: 9;
     padding: 0px var(--space-distance-xxxl);
     border-radius: var(--corner-radius-xxl);
-    border: 1px solid var(--color-backgrounds-tertiary, #202123);
+    border: 1px solid var(--color-backgrounds-tertiary);
     background: var(--color-backgrounds-secondary);
   }
   .level{
@@ -390,7 +390,7 @@ main {
     flex: 1;
     padding: 0px var(--space-distance-xxxl, 40px);
     border-radius: var(--corner-radius-xxl);
-    border: 1px solid var(--color-backgrounds-tertiary, #202123);
+    border: 1px solid var(--color-backgrounds-tertiary);
     background: var(--color-backgrounds-secondary);
     align-items: center;
     justify-content: space-between;
@@ -448,7 +448,6 @@ main {
 .tab {
   margin-top: 2.5rem;
   overflow: hidden;
-  background-color: var(--color-backgrounds-primary);
   display: flex;
   justify-content: center;
 }
@@ -1104,16 +1103,16 @@ main {
 
           .scrollable-list::-webkit-scrollbar-thumb {
             border-radius: var(--corner-radius-xxl, 32px);
-            background: var(--color-backgrounds-tertiary, #202123);
+            background: var(--color-backgrounds-tertiary);
           }
 
           .scrollable-list::-webkit-scrollbar-thumb:hover {
-            background: var(--color-backgrounds-quaternary, #27282A);
+            background: var(--color-backgrounds-quaternary);
           }
 
           .scrollable-list::-webkit-scrollbar-track {
             border-radius: var(--corner-radius-xxl, 32px);
-            border: 1px solid var(--color-backgrounds-tertiary, #202123);
+            border: 1px solid var(--color-backgrounds-tertiary);
             background: rgba(26, 27, 29, 0.50);
           }
 
@@ -1202,7 +1201,7 @@ main {
     border-radius: var(--corner-radius-s);
     background: var(--color-functional-green-secondary);
 
-    color: var(--color-backgrounds-primary, #131416);
+    color: var(--color-backgrounds-primary);
 
     font-family: var(--font-default);
     font-weight: var(--font-weight-medium);

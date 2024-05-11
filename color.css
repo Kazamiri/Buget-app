@@ -3,7 +3,7 @@
     --color-backgrounds-primary: #131416;
     --color-backgrounds-secondary: #1A1B1D;
     --color-backgrounds-tertiary: #202123;
-    --color-backgrounds-quaternary: #27282A;
+    --color-backgrounds-quaternary: rgb(39, 40, 42);
 
     --color-labels-primary: #FFF;
     --color-labels-secondary: rgba(235, 235, 245, 0.60);
