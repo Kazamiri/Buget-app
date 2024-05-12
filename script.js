@@ -1563,13 +1563,13 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
     let day = String(i).padStart(2, '0')
 
     ctx.beginPath()
-    ctx.fillStyle = "rgba(255, 255, 255, 0.03)"
+    ctx.fillStyle = "rgba(128, 130, 136, 0.06)"//"rgba(255, 255, 255, 0.03)"
     ctx.fillRect(((widthDivideDays * 2) * j), heightCanvas, widthDivideDays, -(heightCanvas))
 
     // Adaugarea zilei lunii --------------------------------
     ctx.font = "30px sans-serif";
     ctx.fontWeight = "lighter"
-    ctx.fillStyle = "rgba(235, 235, 245, 0.18)";
+    ctx.fillStyle = "rgba(128, 130, 136, 0.4)"//"rgba(235, 235, 245, 0.18)";
     ctx.fillText(day, (widthDivideDays * j)+(widthDivideDays / 5), (heightCanvas - 14));
   }
 
@@ -1577,7 +1577,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
   for (let i = 1; i < 10; i++) {
 
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.03)"
+    ctx.strokeStyle = "rgba(128, 130, 136, 0.1)"//"rgba(255, 255, 255, 0.03)"
     ctx.lineWidth = 6
     ctx.beginPath()
     ctx.moveTo(widthDivideDays, heightDivideProcent * i)
@@ -1591,7 +1591,7 @@ function levelExpensese (monthsIncomes, monthsExpenses, curentSelectMonth) {
 
     ctx.font = "30px sans-serif";
     ctx.fontWeight = "lighter"
-    ctx.fillStyle = "rgba(235, 235, 245, 0.18)";
+    ctx.fillStyle = "rgba(128, 130, 136, 0.4)"//"rgba(235, 235, 245, 0.18)";
     ctx.fillText(100 - (10 * i), 0, (heightDivideProcent * i)+(heightDivideProcent / 5))
 
   }
@@ -1763,7 +1763,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
 
       //Acestea sunt culorile utilizate pentru vizualizarea graficului circular --------
 
-      let colorGroupR = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#A2005D', '#9D2035','#92041C']
+      // let colorGroupR = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#A2005D', '#9D2035','#92041C']
 
       // Acest loop calculeaza procentele pentru grupe in raport cu toata perioada ------------------------
       // Aceasta matrice este utilizata pentru pastrea grupelelor si procentele lor
@@ -1820,14 +1820,12 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
       if (switchingGroups != "💎 Toate") {
         let sumGroupsChartString = sumGroupsSelected.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
         sumGroupChart.innerHTML = `Grupa ${sumGroupsChartString} lei`
-        sumGroupChart.style.color = colorGroupR[index]
+        sumGroupChart.style.color = generateColours(monthstypesOfGroups.length,index)//colorGroupR[index]
       } else {
         sumGroupChart.innerHTML = ``
   
       }
 
-
-  
       // Initiem canvas pentru graficul circular ----------------------------------------------------
   
       let canvasR = document.getElementById('c9')
@@ -1862,11 +1860,11 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
     
           let perceString = parseFloat(allGroupsPercentages[i].percentage)
           let perceRounded = perceString.toFixed(1)
-          clusterGroupAll.innerHTML += `<div class="clusterGroup"><div class="perceRounded" style="background-color:${colorGroupR[i]};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
+          clusterGroupAll.innerHTML += `<div class="clusterGroup"><div class="perceRounded" style="background-color:${generateColours(monthstypesOfGroups.length,i)};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
     
           ctxR.beginPath()
           ctxR.lineWidth = lineWidth;
-          ctxR.strokeStyle = `${colorGroupR[i]}`
+          ctxR.strokeStyle = generateColours(monthstypesOfGroups.length,i)
           ctxR.arc(56, 56, arcRadius, startRadian, startRadian + radianCalc (allGroupsPercentages[i].percentage), false)
           ctxR.stroke()
     
@@ -1929,8 +1927,8 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
           ctxR.lineWidth = lineWidth;
           
           if (switchingGroups != "💎 Toate" && filterTerm === allGroupsPercentages[i].grupa) {
-            clusterGroupAll.innerHTML += `<div class="clusterGroup" style="opacity: 1" id="active_month"><div class="perceRounded" style="background-color:${colorGroupR[i]};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
-            ctxR.strokeStyle = `${colorGroupR[i]}`
+            clusterGroupAll.innerHTML += `<div class="clusterGroup" style="opacity: 1" id="active_month"><div class="perceRounded" style="background-color:${generateColours(monthstypesOfGroups.length,i)};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
+            ctxR.strokeStyle = generateColours(monthstypesOfGroups.length,i)
             ctxR.globalAlpha = 1
 
             //Asigura navigarea pina la luna activa
@@ -1941,8 +1939,8 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
             });
 
           } else {
-            clusterGroupAll.innerHTML += `<div class="clusterGroup" style="opacity: 0.2"><div class="perceRounded" style="background-color:${colorGroupR[i]};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
-            ctxR.strokeStyle = `${colorGroupR[i]}`
+            clusterGroupAll.innerHTML += `<div class="clusterGroup" style="opacity: 0.2"><div class="perceRounded" style="background-color:${generateColours(monthstypesOfGroups.length,i)};">${perceRounded}%</div> ${allGroupsPercentages[i].grupa}</div>`
+            ctxR.strokeStyle = generateColours(monthstypesOfGroups.length,i)
             ctxR.globalAlpha = 0.2
           }
           ctxR.arc(56, 56, arcRadius, startRadian, startRadian + radianCalc (allGroupsPercentages[i].percentage), false)
@@ -1965,7 +1963,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
 
       //Declaram grupa de culori
   
-      let colorGroup = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#A2005D', '#9D2035','#92041C']
+      // let colorGroup = ['#EF4444', '#F97316', '#F6A723', '#F7BF12', '#84CC16', '#22BF5B', '#11AC78', '#0893AB', '#0E80B4', '#1162E9', '#3C3FE7', '#6E36EC', '#8F2DEB', '#BC21D4', '#B6256D', '#A2005D', '#9D2035','#92041C']
 
       // Creem primul canvas
 
@@ -1984,7 +1982,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
       // Desenam fundalul pentru denumirea lunii
   
       ctx.beginPath()
-      ctx.fillStyle = "rgba(26, 27, 29, 1)"
+      ctx.fillStyle = "rgba(128, 130, 136, 0.06)"
       ctx.fillRect(0, heightCanvas, wideCanvas, -nameMonth)
 
       // Desenam liniile orizontale pentru fundal
@@ -1999,7 +1997,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
   
         if(switchA === true){
           ctx.beginPath()
-          ctx.fillStyle = "rgba(26, 27, 29, 1)"
+          ctx.fillStyle = "rgba(128, 130, 136, 0.08)"
           ctx.fillRect(0, (chartHeight/roundedUp)*i, wideCanvas, chartHeight/roundedUp)
           switchA = false
         } else if (switchA === false){
@@ -2032,7 +2030,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
           let sumhighGroups = ((chartHeight)/100)*(allGroupsExpensesMonths[iteraGroup].suma/procentUnit)
 
           //Vizualizarea pe toata in fundal a lunii
-          roundedRect(ctx, wideOrder, chartHeight, columWide, -sumhighGroups, 24, "rgba(39, 40, 42, 0.6)" )
+          roundedRect(ctx, wideOrder, chartHeight, columWide, -sumhighGroups, 24, "rgba(128, 130, 136, 0.2)" )
 
           /*ctx.beginPath()
           ctx.fillStyle = "rgba(39, 40, 42, 1)"
@@ -2062,7 +2060,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
 
               let highGroup = ((chartHeight)/100)*(num/procentUnit)
               ctx.beginPath()
-              ctx.fillStyle = colorGroup[indexAll]
+              ctx.fillStyle = generateColours(monthstypesOfGroups.length,indexAll)//colorGroup[indexAll]
               ctx.fillRect(wideOrder, startGraphSecond, columWide, -highGroup)
     
               startGraph += highGroup
@@ -2075,7 +2073,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
             let highGroup = ((chartHeight)/100)*(selectedGroup[iteraGroup].suma/procentUnit)
   
             // Vizualizarea sumei pe grupa ----------------------------------------------
-            ctx.fillStyle = colorGroup[index]
+            ctx.fillStyle = generateColours(monthstypesOfGroups.length,index)//colorGroup[index]
             ctx.font = " 30px 'Jost'";
             ctx.textAlign = "center"
             ctx.fillText(`${selectedGroup[iteraGroup].suma}`, wideOrder+(columWide/2), (chartHeight-highGroup)-20)
@@ -2083,7 +2081,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
   
             // Vizualizam grupa ----------------------------
             ctx.beginPath()
-            ctx.fillStyle = colorGroup[index]
+            ctx.fillStyle = generateColours(monthstypesOfGroups.length,index)//colorGroup[index]
             ctx.fillRect(wideOrder, chartHeight, columWide, -highGroup)
           }
 
@@ -2094,7 +2092,7 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
 
           const titleMonths = ['Ian', 'Feb', 'Mart', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
-          ctx.fillStyle = "rgba(235, 235, 245, 0.3)"
+          ctx.fillStyle = "rgba(128, 130, 136, 0.5)"
           ctx.font = " 28px 'Jost'";
           ctx.textAlign = "center"
           ctx.fillText(`${titleMonths[actualMonthNum-1]}`, wideOrder+(columWide/2), heightCanvas - 10 )
@@ -2137,6 +2135,39 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
 
   })
 
+}
+
+// ================ Generatorul de culori pentru chart ================
+
+function generateColours(numberOfGroups, whichGroup) {
+  let hue = 360/numberOfGroups
+  let which = hue * whichGroup
+
+  let saturation 
+  let lightness
+
+  if (which < 20) {
+    saturation = 84
+    lightness = 60
+    } else if (which >= 20 && which <= 120){
+    saturation = 93
+    lightness = 52
+  } else if (which > 120 && which < 200){
+    saturation = 72
+    lightness = 40
+  } 
+  else if (which > 90 && which < 200){
+    saturation = 80
+    lightness = 56
+  }else{
+    saturation = 64
+    lightness = 48
+  }
+
+
+  let color = `hsl(${which}, ${saturation}%, ${lightness}%)`
+
+  return color
 }
 
 // Mecanismul de ascultare a cimplului cu grupe pentru chart ------------------------
@@ -2248,7 +2279,7 @@ onValue(allMonthsInDB, function(snapshot) {
       let monthAbbreviation = filteredDates[i].toLocaleString('default', { month: 'short' })
       let formattedDate = filteredDates[i].toISOString().split('T')[0];
 
-      ///console.log(lastMonthID === i)
+      //console.log(lastMonthID === i)
 
   
       if (lastMonthID === i) {
