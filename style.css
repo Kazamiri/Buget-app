@@ -440,6 +440,7 @@ main {
   grid-column-start: 1;
   grid-column-end: 9;
   padding: 0px var(--space-distance-xxxl);
+  padding-bottom: 16px;
 
 }
 
@@ -683,7 +684,6 @@ main {
         align-items: center;
         gap: 12px;
         padding-left: 12px;
-        padding-bottom: 12px;
       }
        .filter_icon_style{
         color: var(--color-labels-tertiary)
@@ -1619,6 +1619,8 @@ main {
         flex-wrap: wrap;
         align-content: center;
         justify-content: space-evenly;
+
+        padding-bottom: 16px;
       
       }
 

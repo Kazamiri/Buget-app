@@ -2139,36 +2139,128 @@ function filteringPeriods (groupChart, startMonth, endMonth) {
 
 // ================ Generatorul de culori pentru chart ================
 
-function generateColours(numberOfGroups, whichGroup) {
-  let hue = 360/numberOfGroups
-  let which = hue * whichGroup
+function hct(h, c, t) {
 
-  let saturation 
-  let lightness
+  // Constants
+  const REF_X = 95.047;  // Observer= 2°, Illuminant= D65
+  const REF_Y = 100.000;
+  const REF_Z = 108.883;
 
-  if (which < 20) {
-    saturation = 84
-    lightness = 60
-    } else if (which >= 20 && which <= 120){
-    saturation = 93
-    lightness = 52
-  } else if (which > 120 && which < 200){
-    saturation = 72
-    lightness = 40
-  } 
-  else if (which > 90 && which < 200){
-    saturation = 80
-    lightness = 56
-  }else{
-    saturation = 64
-    lightness = 48
+  const XYZ_EPSILON = 0.008856;  // Intent is 216/24389
+  const XYZ_KAPPA = 903.3;       // Intent is 24389/27
+
+  //  Convert HCT to RGB
+  //  @param {number} hue - The hue angle (0 to 360).
+  //  @param {number} chroma - The chroma value.
+  //  @param {number} tone - The tone value.
+  //  @returns {object} RGB object with r, g, and b in the range [0, 255].
+
+  function hctToRgb(hue, chroma, tone) {
+      // Convert HCT to LAB
+      let lab = hctToLab(hue, chroma, tone);
+      // Convert LAB to XYZ
+      let xyz = labToXyz(lab.l, lab.a, lab.b);
+      // Convert XYZ to RGB
+      return xyzToRgb(xyz.x, xyz.y, xyz.z);
   }
 
+  // Convert HCT to LAB.
 
-  let color = `hsl(${which}, ${saturation}%, ${lightness}%)`
+  function hctToLab(hue, chroma, tone) {
+      // HCT to LAB conversion formula
+      const angleInRadians = (hue / 360) * 2 * Math.PI;
+      const a = chroma * Math.cos(angleInRadians);
+      const b = chroma * Math.sin(angleInRadians);
+      const l = tone;
 
-  return color
+      return { l: l, a: a, b: b };
+  }
+
+  // Convert LAB to XYZ.
+
+  function labToXyz(l, a, b) {
+      let y = (l + 16) / 116;
+      let x = a / 500 + y;
+      let z = y - b / 200;
+
+      if (Math.pow(y, 3) > XYZ_EPSILON) y = Math.pow(y, 3);
+      else y = (y - 16 / 116) / 7.787;
+
+      if (Math.pow(x, 3) > XYZ_EPSILON) x = Math.pow(x, 3);
+      else x = (x - 16 / 116) / 7.787;
+
+      if (Math.pow(z, 3) > XYZ_EPSILON) z = Math.pow(z, 3);
+      else z = (z - 16 / 116) / 7.787;
+
+      x *= REF_X;
+      y *= REF_Y;
+      z *= REF_Z;
+
+      return { x: x, y: y, z: z };
+  }
+
+  // Convert XYZ to RGB.
+  function xyzToRgb(x, y, z) {
+      // Normalize the values
+      x = x / 100;
+      y = y / 100;
+      z = z / 100;
+
+      // Convert to RGB
+      let r = x * 3.2406 + y * -1.5372 + z * -0.4986;
+      let g = x * -0.9689 + y * 1.8758 + z * 0.0415;
+      let b = x * 0.0557 + y * -0.2040 + z * 1.0570;
+
+      // Apply gamma correction
+      r = r > 0.0031308 ? 1.055 * Math.pow(r, 1 / 2.4) - 0.055 : 12.92 * r;
+      g = g > 0.0031308 ? 1.055 * Math.pow(g, 1 / 2.4) - 0.055 : 12.92 * g;
+      b = b > 0.0031308 ? 1.055 * Math.pow(b, 1 / 2.4) - 0.055 : 12.92 * b;
+
+      // Clamp and convert to 0-255 range
+      r = Math.min(Math.max(0, r), 1) * 255;
+      g = Math.min(Math.max(0, g), 1) * 255;
+      b = Math.min(Math.max(0, b), 1) * 255;
+
+      return { r: Math.round(r), g: Math.round(g), b: Math.round(b) };
+  }
+
+  // Example usage
+  let rgbColor = hctToRgb(h, c, t);
+  // console.log(rgbColor); // {r: 101, g: 169, b: 186}
+
+  return `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b})`
 }
+
+function generateColours(numberOfGroups, whichGroup) {
+
+    let hue = 24+((360/numberOfGroups) * whichGroup)
+  
+    let chroma 
+    let tone 
+    
+    if (hue < 60) {
+        chroma = 80
+        tone = 56+((80/numberOfGroups) * whichGroup)
+      } else if (hue >= 60 && hue <= 120){
+        chroma = 120
+        tone = 84-((40/numberOfGroups) * whichGroup)
+    } else if (hue >= 120 && hue <= 160){
+        chroma = 100
+        tone = 80-((40/numberOfGroups) * whichGroup)
+    } 
+    else if (hue >= 160 && hue <= 280){
+        chroma = 80
+        tone = 80-((48/numberOfGroups) * whichGroup)
+    }else{
+      chroma = 80
+      tone = 60-((24/numberOfGroups) * whichGroup)
+    }
+  
+    let color = hct(hue, chroma, tone)
+  
+    return color
+  }
+
 
 // Mecanismul de ascultare a cimplului cu grupe pentru chart ------------------------
 
