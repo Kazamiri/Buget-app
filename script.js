@@ -470,14 +470,12 @@ function changeMonth (monthsIncomes, monthsExpenses, monthsGroups, curentSelectM
 
     if (theme.getAttribute('href') === 'color.css') {
         theme.setAttribute('href', 'color_light.css')
-        buttontheme.innerHTML='🌙'
         newDateOneArc ('c0', calculateSum(monthsIncomes), calculateSum(availableIncomes), '#00BE76', '#EDEDF1')
         newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), '#FF6F30', calculateSum(monthsIncomes), calculateSum(pendingExpenses), '#FF4F72', '#EDEDF1' )
         newDateArc ('c2', calculateSum(monthsIncomes), calculateSum(monthsGroups), '#598CFF', calculateSum(availableIncomes), moneyAvailable, 'rgba(60, 60, 67, 0.64)', '#EDEDF1' )
 
       } else {
         theme.setAttribute('href', 'color.css')
-        buttontheme.innerHTML='☀️'
         newDateOneArc ('c0', calculateSum(monthsIncomes), calculateSum(availableIncomes), 'rgba(14, 173, 105, 1)', 'rgb(39, 40, 42)')
         newDateArc ('c1', calculateSum(monthsIncomes), calculateSum(monthsExpenses), 'rgba(254, 152, 112, 1)', calculateSum(monthsIncomes), calculateSum(pendingExpenses), 'rgba(250, 65, 105, 1)', 'rgb(39, 40, 42)' )
           newDateArc ('c2', calculateSum(monthsIncomes), calculateSum(monthsGroups), 'rgba(37, 116, 255, 1)', calculateSum(availableIncomes), moneyAvailable, 'rgba(235, 235, 245, 0.60)', 'rgb(39, 40, 42)' )

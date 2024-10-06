@@ -70,6 +70,20 @@ html{
   scroll-behavior: smooth;
 }
 
+header{
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+  margin-bottom: -16px;
+}
+
+.mainlogo{
+  background-color: rgba(26, 27, 29, 0);
+  border: none;
+  cursor: pointer;
+}
+
+
 body{
   background-color: var(--color-backgrounds-primary);
   color: var(--color-labels-primary);
@@ -1618,9 +1632,11 @@ main {
 
         flex-wrap: wrap;
         align-content: center;
-        justify-content: space-evenly;
+        justify-content: space-around;
 
-        padding-bottom: 16px;
+        padding-bottom: 8px;
+        
+        gap: 16px;
       
       }
 
