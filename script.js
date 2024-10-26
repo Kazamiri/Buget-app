@@ -171,31 +171,63 @@ addButtonIncome.addEventListener("click", function () {
 
 // ---------------- Reinoieste un venit din lista ----------------
 
-window.addEventListener('click', function(event) {
+// window.addEventListener('click', function(event) {
 
-  if (event.target.dataset.type === 'updatinco') {
-    const inputTitleItems = document.querySelector(`#js-venit-titlu-${event.target.dataset.id}`)
-    const inputSumaItems = document.querySelector(`#js-venit-suma-${event.target.dataset.id}`)
-    const inputDataItems = document.querySelector(`#js-venit-data-${event.target.dataset.id}`)
-    const inputStateItems = document.querySelector(`#js-venit-state-${event.target.dataset.id}`)
-    const inputUserItems = document.querySelector(`#js-venit-user-${event.target.dataset.id}`)
+//   if (event.target.dataset.type === 'updatinco') {
+//     const inputTitleItems = document.querySelector(`#js-venit-titlu-${event.target.dataset.id}`)
+//     const inputSumaItems = document.querySelector(`#js-venit-suma-${event.target.dataset.id}`)
+//     const inputDataItems = document.querySelector(`#js-venit-data-${event.target.dataset.id}`)
+//     const inputStateItems = document.querySelector(`#js-venit-state-${event.target.dataset.id}`)
+//     const inputUserItems = document.querySelector(`#js-venit-user-${event.target.dataset.id}`)
 
-    let itemOneLineSelect = document.querySelector(`#js-button-update-income[data-id="${event.target.dataset.id}"]`)
-    itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+//     let itemOneLineSelect = document.querySelector(`#js-button-update-income[data-id="${event.target.dataset.id}"]`)
+//     itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+
+//     event.stopPropagation()
+
+//     let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/incomes/${event.target.dataset.id}`)
+
+//     update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
+//     update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
+//     update(exactLocationOfItemInDB, {data:inputDataItems.value})
+//     update(exactLocationOfItemInDB, {state:`${inputStateItems.value}`})
+//     update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
+    
+//   }
+
+// })
+
+// ---------------- Testarea functiei change ----------------
+
+window.addEventListener('change', function(event) {
+
+  const parentType = event.target.dataset.type
+
+  let str = event.target.id
+  let parentId = str.slice(-20)
+
+  if (parentType === 'infolineinco') {
+
+    const inputTitleItems = document.querySelector(`#js-venit-titlu-${parentId}`)
+    const inputSumaItems = document.querySelector(`#js-venit-suma-${parentId}`)
+    const inputDataItems = document.querySelector(`#js-venit-data-${parentId}`)
+    const inputStateItems = document.querySelector(`#js-venit-state-${parentId}`)
+    const inputUserItems = document.querySelector(`#js-venit-user-${parentId}`)
 
     event.stopPropagation()
 
-    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/incomes/${event.target.dataset.id}`)
+    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/incomes/${parentId}`)
 
     update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
     update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
     update(exactLocationOfItemInDB, {data:inputDataItems.value})
     update(exactLocationOfItemInDB, {state:`${inputStateItems.value}`})
     update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
-    
+
   }
 
 })
+
 
 // ---------------- Stergerea unui venit din lista ----------------
 
@@ -229,24 +261,64 @@ addButtonExpenses.addEventListener("click", function () {
 
 // ---------------- Reinoieste o cheltuiala din lista ----------------
 
-window.addEventListener('click', function(event) {
+// window.addEventListener('click', function(event) {
 
-  if (event.target.dataset.type === 'updatexp') {
+//   if (event.target.dataset.type === 'updatexp') {
 
-    const inputGroupsItems = document.querySelector(`#js-grupe-${event.target.dataset.id}`)
-    const inputTitleItems = document.querySelector(`#js-titlu-${event.target.dataset.id}`)
-    const inputSumaItems = document.querySelector(`#js-suma-${event.target.dataset.id}`)
-    const inputDataItems = document.querySelector(`#js-data-${event.target.dataset.id}`)
-    const inputStateItems = document.querySelector(`#js-state-${event.target.dataset.id}`)
-    const inputLevelItems = document.querySelector(`#js-level-${event.target.dataset.id}`)
-    const inputUserItems = document.querySelector(`#js-user-${event.target.dataset.id}`)
+//     const inputGroupsItems = document.querySelector(`#js-grupe-${event.target.dataset.id}`)
+//     const inputTitleItems = document.querySelector(`#js-titlu-${event.target.dataset.id}`)
+//     const inputSumaItems = document.querySelector(`#js-suma-${event.target.dataset.id}`)
+//     const inputDataItems = document.querySelector(`#js-data-${event.target.dataset.id}`)
+//     const inputStateItems = document.querySelector(`#js-state-${event.target.dataset.id}`)
+//     const inputLevelItems = document.querySelector(`#js-level-${event.target.dataset.id}`)
+//     const inputUserItems = document.querySelector(`#js-user-${event.target.dataset.id}`)
 
-    let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${event.target.dataset.id}"]`)
-    itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+//     let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${event.target.dataset.id}"]`)
+//     itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+
+//     event.stopPropagation()
+
+//     let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/expenses/${event.target.dataset.id}`)
+
+//     update(exactLocationOfItemInDB, {grupa:`${inputGroupsItems.value}`})
+//     update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
+//     update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
+//     update(exactLocationOfItemInDB, {data:inputDataItems.value})
+//     update(exactLocationOfItemInDB, {state:`${inputStateItems.value}`})
+//     update(exactLocationOfItemInDB, {level:`${inputLevelItems.value}`})
+//     update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
+
+//   }
+
+// })
+
+// ---------------- Testarea functiei change ----------------
+
+window.addEventListener('change', function(event) {
+
+  const parentType = event.target.dataset.type
+
+  let str = event.target.id
+  let parentId = str.slice(-20)
+
+  if (parentType === 'infolineexp') {
+    
+    let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${parentId}"]`)
+
+    itemOneLineSelect.childNodes[1].textContent = 'cloud_upload'
+    itemOneLineSelect.style.color = 'var(--color-functional-green-primary)'
+    
+    const inputGroupsItems = document.querySelector(`#js-grupe-${parentId}`)
+    const inputTitleItems = document.querySelector(`#js-titlu-${parentId}`)
+    const inputSumaItems = document.querySelector(`#js-suma-${parentId}`)
+    const inputDataItems = document.querySelector(`#js-data-${parentId}`)
+    const inputStateItems = document.querySelector(`#js-state-${parentId}`)
+    const inputLevelItems = document.querySelector(`#js-level-${parentId}`)
+    const inputUserItems = document.querySelector(`#js-user-${parentId}`)
 
     event.stopPropagation()
 
-    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/expenses/${event.target.dataset.id}`)
+    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/expenses/${parentId}`)
 
     update(exactLocationOfItemInDB, {grupa:`${inputGroupsItems.value}`})
     update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
@@ -259,6 +331,8 @@ window.addEventListener('click', function(event) {
   }
 
 })
+
+//---------------- Stergerea unei cheltuieli ----------------
 
 window.addEventListener('click', function(event) {
 
@@ -285,25 +359,53 @@ addButtonGroup.addEventListener("click", function () {
 
 // ---------------- Reinoieste o grupa ----------------
 
-window.addEventListener('click', function(event) {
+// window.addEventListener('click', function(event) {
 
-  if (event.target.dataset.type === 'updategroup') {
+//   if (event.target.dataset.type === 'updategroup') {
 
-    const inputTitleItems = document.querySelector(`#js-grupe-titlu-${event.target.dataset.id}`)
+//     const inputTitleItems = document.querySelector(`#js-grupe-titlu-${event.target.dataset.id}`)
 
-    const inputSumaItems = document.querySelector(`#js-grupe-suma-${event.target.dataset.id}`)
+//     const inputSumaItems = document.querySelector(`#js-grupe-suma-${event.target.dataset.id}`)
 
-    let itemOneLineSelect = document.querySelector(`#js-button-update-group[data-id="${event.target.dataset.id}"]`)
-    itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+//     let itemOneLineSelect = document.querySelector(`#js-button-update-group[data-id="${event.target.dataset.id}"]`)
+//     itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
+
+//     event.stopPropagation()
+
+//     let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/groups/${event.target.dataset.id}`)
+
+//     update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
+//     update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
+
+    
+//   }
+
+// })
+
+// ---------------- Testarea functiei change ----------------
+
+window.addEventListener('change', function(event) {
+
+  const parentType = event.target.dataset.type
+
+  let str = event.target.id
+  let parentId = str.slice(-20)
+
+  if (parentType === 'infolinegroup') {
+
+    const inputTitleItems = document.querySelector(`#js-grupe-titlu-${parentId}`)
+    const inputSumaItems = document.querySelector(`#js-grupe-suma-${parentId}`)
 
     event.stopPropagation()
 
-    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/groups/${event.target.dataset.id}`)
+    let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/groups/${parentId}`)
+
+    console.log(inputTitleItems.value)
+    console.log(inputSumaItems.value)
 
     update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
     update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
 
-    
   }
 
 })
@@ -831,27 +933,27 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
       <div class="linie-tabel-chield-incomes-0">
         <div class="incomes_list_group">
           <p class="num_style">${i + 1}</p>
-          <input class="incomes_list_title" type="text" id="js-venit-titlu-${monthsIncomes[i][0]}" value="${monthsIncomes[i][1].titlu}">
+          <input class="incomes_list_title" type="text" id="js-venit-titlu-${monthsIncomes[i][0]}" data-type="infolineinco" value="${monthsIncomes[i][1].titlu}">
         </div>
         <div class="linie-tabel-lei-add">
-          <input class="expenses_list_suma" type="number" id="js-venit-suma-${monthsIncomes[i][0]}" value="${monthsIncomes[i][1].suma}">
+          <input class="expenses_list_suma" type="number" id="js-venit-suma-${monthsIncomes[i][0]}" data-type="infolineinco" value="${monthsIncomes[i][1].suma}">
           <p class="lei_style">lei</p>
         </div>
       </div>
 
       <div class="linie-tabel-chield-incomes-1">
         <p class="percent_all_group">${percentOfTotal}%</p>
-        <input class="incomes_list_data" type="date" id="js-venit-data-${monthsIncomes[i][0]}" value="${monthsIncomes[i][1].data}">
+        <input class="incomes_list_data" type="date" id="js-venit-data-${monthsIncomes[i][0]}" data-type="infolineinco" value="${monthsIncomes[i][1].data}">
       </div>
 
       <div class="linie-tabel-chield-incomes-2">
-        <select class="incomes_list_state" style="color: ${colorState(monthsIncomes[i][1].state)};" name="income-state" id="js-venit-state-${monthsIncomes[i][0]}">
+        <select class="incomes_list_state" style="color: ${colorState(monthsIncomes[i][1].state)};" name="income-state" id="js-venit-state-${monthsIncomes[i][0]}" data-type="infolineinco">
           <option value="${monthsIncomes[i][1].state}" selected disabled hidden>${monthsIncomes[i][1].state}</option>
           <option value="În așteptare">În așteptare</option>
           <option value="Venit">Venit</option>
         </select>
 
-        <select class="incomes_list_user" name="grupe-utilizatori" id="js-venit-user-${monthsIncomes[i][0]}">
+        <select class="incomes_list_user" name="grupe-utilizatori" id="js-venit-user-${monthsIncomes[i][0]}" data-type="infolineinco">
           <option value="${monthsIncomes[i][1].user}" selected disabled hidden>${monthsIncomes[i][1].user}</option>
           <option value="Toti">Toti</option>
           <option value="Eugen">Eugen</option>
@@ -868,7 +970,7 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
       <div class="linie-tabel-chield-incomes-3">
         <div class="expenses_list_both-buttons" >
           <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-income" data-id="${monthsIncomes[i][0]}"  data-type="updatinco">
-          <span class="material-symbols-outlined" data-id="${monthsIncomes[i][0]}" data-type="updatinco">autorenew</span></button>
+          <span class="material-symbols-outlined" data-id="${monthsIncomes[i][0]}" data-type="updatinco">cloud</span></button>
           <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-income" data-id="${monthsIncomes[i][0]}" data-type="delete_inco">
           <span class="material-symbols-outlined" data-id="${monthsIncomes[i][0]}" data-type="delete_inco">delete_forever</span>
           </button>
@@ -930,29 +1032,29 @@ function readExpenses(monthsExpenses, curentSelectMonth) {
         <div class="linie-tabel-chield-0">
           <div class="expenses_list_group">
             <p class="num_style">${i + 1}</p>
-            <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-${monthsExpenses[i][0]}">
+            <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-${monthsExpenses[i][0]}" data-type="infolineexp">
               <option value="${monthsExpenses[i][1].grupa}" selected disabled hidden>${monthsExpenses[i][1].grupa}</option>
               ${optionsHTML}
             </select>
           </div>
-          <input class="expenses_list_title" type="text" id="js-titlu-${monthsExpenses[i][0]}" value="${monthsExpenses[i][1].titlu}">
+          <input class="expenses_list_title" type="text" id="js-titlu-${monthsExpenses[i][0]}" data-type="infolineexp" value="${monthsExpenses[i][1].titlu}">
         </div>
 
         <div class="linie-tabel-chield-1">
             <div class="linie-tabel-lei-add">
-              <input class="expenses_list_suma" type="number" id="js-suma-${monthsExpenses[i][0]}" value="${monthsExpenses[i][1].suma}">
+              <input class="expenses_list_suma" type="number" id="js-suma-${monthsExpenses[i][0]}" data-type="infolineexp" value="${monthsExpenses[i][1].suma}">
               <p class="lei_style">lei</p>
             </div>
-            <input class="expenses_list_data" type="date" id="js-data-${monthsExpenses[i][0]}" value="${monthsExpenses[i][1].data}">
+            <input class="expenses_list_data" type="date" id="js-data-${monthsExpenses[i][0]}" data-type="infolineexp" value="${monthsExpenses[i][1].data}">
         </div>
 
         <div class="linie-tabel-chield-2">
-          <select class="expenses_list_state" style="color: ${colorState(monthsExpenses[i][1].state)};" name="grupe-cheltuieli" id="js-state-${monthsExpenses[i][0]}">
+          <select class="expenses_list_state" style="color: ${colorState(monthsExpenses[i][1].state)};" name="grupe-cheltuieli" id="js-state-${monthsExpenses[i][0]}" data-type="infolineexp">
             <option value="${monthsExpenses[i][1].state}" selected disabled hidden>${monthsExpenses[i][1].state}</option>
             <option value="În așteptare">În așteptare</option>
             <option value="Cheltuit">Cheltuit</option>
           </select>
-          <select class="expenses_list_level" style="color: ${colorLevel(monthsExpenses[i][1].level)};" name="grupe-level" id="js-level-${monthsExpenses[i][0]}">
+          <select class="expenses_list_level" style="color: ${colorLevel(monthsExpenses[i][1].level)};" name="grupe-level" id="js-level-${monthsExpenses[i][0]}" data-type="infolineexp">
             <option value="${monthsExpenses[i][1].level}" selected disabled hidden>${monthsExpenses[i][1].level}</option>
             <option value="High">High</option>
             <option value="Medium">Medium</option>
@@ -961,7 +1063,7 @@ function readExpenses(monthsExpenses, curentSelectMonth) {
         </div>
 
         <div class="linie-tabel-chield-3">
-          <select class="expenses_list_state" name="grupe-utilizatori" id="js-user-${monthsExpenses[i][0]}">
+          <select class="expenses_list_state" name="grupe-utilizatori" id="js-user-${monthsExpenses[i][0]}" data-type="infolineexp">
             <option value="${monthsExpenses[i][1].user}" selected disabled hidden>${monthsExpenses[i][1].user}</option>
             <option value="Toti">Toti</option>
             <option value="Eugen">Eugen</option>
@@ -974,7 +1076,7 @@ function readExpenses(monthsExpenses, curentSelectMonth) {
           </select>
           <div class="expenses_list_both-buttons" >
             <button class="expenses_list_button expenses_list_button_refresh" id="js-button-updata-expenses" data-id="${monthsExpenses[i][0]}" data-type="updatexp">
-              <span class="material-symbols-outlined" data-id="${monthsExpenses[i][0]}" data-type="updatexp">autorenew</span>
+              <span class="material-symbols-outlined" data-id="${monthsExpenses[i][0]}" data-type="updatexp">cloud</span>
             </button>
             <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-expenses" data-id="${monthsExpenses[i][0]}" data-type="delete_exp">
               <span class="material-symbols-outlined" data-id="${monthsExpenses[i][0]}" data-type="delete_exp">delete_forever</span>
@@ -1038,7 +1140,7 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
           <div class="linie-tabel-chield-group-0">
             <div class="expenses_list_group">
               <p class="num_style">${i + 1}</p>
-              <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-titlu-${monthsGroups[i][0]}">
+              <select class="expenses_list_group_icon" name="grupe-cheltuieli" id="js-grupe-titlu-${monthsGroups[i][0]}" data-type="infolinegroup">
                 <option value="${monthsGroups[i][1].titlu}" selected disabled hidden>${monthsGroups[i][1].titlu}</option>
                   ${optionsHTML}
               </select>
@@ -1046,7 +1148,7 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
 
             <div class="suma_percent_all_group">
               <div class="linie-tabel-lei-add">
-                <input class="expenses_list_suma" type="number" id="js-grupe-suma-${monthsGroups[i][0]}" value="${monthsGroups[i][1].suma}">
+                <input class="expenses_list_suma" type="number" id="js-grupe-suma-${monthsGroups[i][0]}" data-type="infolinegroup"  value="${monthsGroups[i][1].suma}">
                 <p class="lei_style">lei</p>
               </div>
             </div>
@@ -1063,7 +1165,7 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
               <div class="point_procente" style="left:${diferencePointHtml}%;" >
                 <div class="point_procente_inside"></div>
               </div>
-              <div id="js-${monthsGroups[i][1].titlu}" class="procente-second"> 
+              <div id="js-${monthsGroups[i][1].titlu}" data-type="infolinegroup" class="procente-second"> 
                 <div class="low" style="width:${diferenceLow}%;"></div>
                 <div class="medium" style="width:${diferenceMedium}%;"></div>
                 <div class="high" style="width:${diferenceHigh}%;"></div>
@@ -1071,8 +1173,8 @@ function readGroups(monthsExpenses, monthsGroups, sumMonthsIncomes, curentSelect
               <p id="loading-${monthsGroups[i][1].titlu}" class="procente-style-second">10%</p>
             </div>
             <div class="expenses_list_both-buttons" >
-              <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-group" data-id="${monthsGroups[i][0]}" data-type="updategroup">
-              <span class="material-symbols-outlined" data-id="${monthsGroups[i][0]}" data-type="updategroup">autorenew</span></button>
+              <button class="expenses_list_button expenses_list_button_refresh" id="js-button-update-group"  data-id="${monthsGroups[i][0]}" data-type="updategroup">
+              <span class="material-symbols-outlined" data-id="${monthsGroups[i][0]}" data-type="updategroup">cloud</span></button>
               <button class="expenses_list_button expenses_list_button_delete" id="js-button-delet-group" data-id="${monthsGroups[i][0]}" data-type="delete_group">
               <span class="material-symbols-outlined" data-id="${monthsGroups[i][0]}" data-type="delete_group">delete_forever</span>
               </button>
@@ -1111,20 +1213,20 @@ function newDateRefreshExpenses (typeSelector, buttonItem, listName) {
 
   tabel.addEventListener('click', function(event) {
 
-    let clickedElement = event.target
-    let targetParentId = typeSelector
+    // let clickedElement = event.target
+    // let targetParentId = typeSelector
   
-    while (clickedElement != null) {
+    // while (clickedElement != null) {
   
-      if (clickedElement.dataset.type === targetParentId) {
+    //   if (clickedElement.dataset.type === targetParentId) {
 
-        let itemOneLineSelect = document.querySelector(`#${buttonItem}[data-id="${clickedElement.dataset.id}"]`)
-        itemOneLineSelect.style.color = 'var(--color-functional-green-secondary)'
+    //     let itemOneLineSelect = document.querySelector(`#${buttonItem}[data-id="${clickedElement.dataset.id}"]`)
+    //     itemOneLineSelect.style.color = 'var(--color-functional-green-secondary)'
       
-        break
-      }
-        clickedElement = clickedElement.parentNode
-    }
+    //     break
+    //   }
+    //     clickedElement = clickedElement.parentNode
+    // }
 
   })
 

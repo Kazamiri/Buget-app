@@ -939,12 +939,12 @@ main {
             cursor: pointer;
           }
           .expenses_list_button_refresh{
-            color: var(--color-functional-green-quarternary);
+            color: var(--color-labels-tertiary);
           }
         
-          .expenses_list_button_refresh:hover{
+          /* .expenses_list_button_refresh:hover{
             color: var(--color-functional-green-primary);  
-          }
+          } */
         
           .expenses_list_button_delete{
             color: var(--color-functional-neo_fuchsia-quarternary);
