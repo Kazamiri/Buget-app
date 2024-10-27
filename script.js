@@ -935,6 +935,7 @@ function readIncomes(monthsIncomes, curentSelectMonth) {
           <option value="Bianca">Bianca</option>
           <option value="Evelina">Evelina</option>
           <option value="Simona">Simona</option>
+          <option value="Maman">Maman</option>
         </select>
 
       </div>
@@ -1045,6 +1046,7 @@ function readExpenses(monthsExpenses, curentSelectMonth) {
             <option value="Bianca">Bianca</option>
             <option value="Evelina">Evelina</option>
             <option value="Simona">Simona</option>
+            <option value="Maman">Maman</option>
           </select>
           <div class="expenses_list_both-buttons" >
             <button class="expenses_list_button expenses_list_button_refresh" id="js-button-updata-expenses" data-id="${monthsExpenses[i][0]}" data-type="updatexp">
