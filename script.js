@@ -171,34 +171,6 @@ addButtonIncome.addEventListener("click", function () {
 
 // ---------------- Reinoieste un venit din lista ----------------
 
-// window.addEventListener('click', function(event) {
-
-//   if (event.target.dataset.type === 'updatinco') {
-//     const inputTitleItems = document.querySelector(`#js-venit-titlu-${event.target.dataset.id}`)
-//     const inputSumaItems = document.querySelector(`#js-venit-suma-${event.target.dataset.id}`)
-//     const inputDataItems = document.querySelector(`#js-venit-data-${event.target.dataset.id}`)
-//     const inputStateItems = document.querySelector(`#js-venit-state-${event.target.dataset.id}`)
-//     const inputUserItems = document.querySelector(`#js-venit-user-${event.target.dataset.id}`)
-
-//     let itemOneLineSelect = document.querySelector(`#js-button-update-income[data-id="${event.target.dataset.id}"]`)
-//     itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
-
-//     event.stopPropagation()
-
-//     let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/incomes/${event.target.dataset.id}`)
-
-//     update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
-//     update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
-//     update(exactLocationOfItemInDB, {data:inputDataItems.value})
-//     update(exactLocationOfItemInDB, {state:`${inputStateItems.value}`})
-//     update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
-    
-//   }
-
-// })
-
-// ---------------- Testarea functiei change ----------------
-
 window.addEventListener('change', function(event) {
 
   const parentType = event.target.dataset.type
@@ -224,6 +196,26 @@ window.addEventListener('change', function(event) {
     update(exactLocationOfItemInDB, {state:`${inputStateItems.value}`})
     update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
 
+  }
+
+})
+
+// ---------------- Lumineaza pictograma cloud ----------------
+
+window.addEventListener('input', function(event) {
+
+  const parentType = event.target.dataset.type
+
+  let str = event.target.id
+  let parentId = str.slice(-20)
+
+  if (parentType === 'infolineinco') {
+    
+    let itemOneLineSelect = document.querySelector(`#js-button-update-income[data-id="${parentId}"]`)
+
+    itemOneLineSelect.childNodes[1].textContent = 'cloud_upload'
+    itemOneLineSelect.style.color = 'var(--color-functional-green-primary)'
+    
   }
 
 })
@@ -260,39 +252,6 @@ addButtonExpenses.addEventListener("click", function () {
 })
 
 // ---------------- Reinoieste o cheltuiala din lista ----------------
-
-// window.addEventListener('click', function(event) {
-
-//   if (event.target.dataset.type === 'updatexp') {
-
-//     const inputGroupsItems = document.querySelector(`#js-grupe-${event.target.dataset.id}`)
-//     const inputTitleItems = document.querySelector(`#js-titlu-${event.target.dataset.id}`)
-//     const inputSumaItems = document.querySelector(`#js-suma-${event.target.dataset.id}`)
-//     const inputDataItems = document.querySelector(`#js-data-${event.target.dataset.id}`)
-//     const inputStateItems = document.querySelector(`#js-state-${event.target.dataset.id}`)
-//     const inputLevelItems = document.querySelector(`#js-level-${event.target.dataset.id}`)
-//     const inputUserItems = document.querySelector(`#js-user-${event.target.dataset.id}`)
-
-//     let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${event.target.dataset.id}"]`)
-//     itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
-
-//     event.stopPropagation()
-
-//     let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/expenses/${event.target.dataset.id}`)
-
-//     update(exactLocationOfItemInDB, {grupa:`${inputGroupsItems.value}`})
-//     update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
-//     update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
-//     update(exactLocationOfItemInDB, {data:inputDataItems.value})
-//     update(exactLocationOfItemInDB, {state:`${inputStateItems.value}`})
-//     update(exactLocationOfItemInDB, {level:`${inputLevelItems.value}`})
-//     update(exactLocationOfItemInDB, {user:`${inputUserItems.value}`})
-
-//   }
-
-// })
-
-// ---------------- Testarea functiei change ----------------
 
 window.addEventListener('change', function(event) {
 
@@ -332,6 +291,26 @@ window.addEventListener('change', function(event) {
 
 })
 
+// ---------------- Lumineaza pictograma cloud ----------------
+
+window.addEventListener('input', function(event) {
+
+  const parentType = event.target.dataset.type
+
+  let str = event.target.id
+  let parentId = str.slice(-20)
+
+  if (parentType === 'infolineexp') {
+    
+    let itemOneLineSelect = document.querySelector(`#js-button-updata-expenses[data-id="${parentId}"]`)
+
+    itemOneLineSelect.childNodes[1].textContent = 'cloud_upload'
+    itemOneLineSelect.style.color = 'var(--color-functional-green-primary)'
+    
+  }
+
+})
+
 //---------------- Stergerea unei cheltuieli ----------------
 
 window.addEventListener('click', function(event) {
@@ -359,29 +338,6 @@ addButtonGroup.addEventListener("click", function () {
 
 // ---------------- Reinoieste o grupa ----------------
 
-// window.addEventListener('click', function(event) {
-
-//   if (event.target.dataset.type === 'updategroup') {
-
-//     const inputTitleItems = document.querySelector(`#js-grupe-titlu-${event.target.dataset.id}`)
-
-//     const inputSumaItems = document.querySelector(`#js-grupe-suma-${event.target.dataset.id}`)
-
-//     let itemOneLineSelect = document.querySelector(`#js-button-update-group[data-id="${event.target.dataset.id}"]`)
-//     itemOneLineSelect.style.color = 'var(--color-functional-green-quarternary)'
-
-//     event.stopPropagation()
-
-//     let exactLocationOfItemInDB = ref(database, `allMonthsSecond/${navigateByMonth (clicks)}/groups/${event.target.dataset.id}`)
-
-//     update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
-//     update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
-
-    
-//   }
-
-// })
-
 // ---------------- Testarea functiei change ----------------
 
 window.addEventListener('change', function(event) {
@@ -405,9 +361,25 @@ window.addEventListener('change', function(event) {
 
     update(exactLocationOfItemInDB, {titlu:`${inputTitleItems.value}`})
     update(exactLocationOfItemInDB, {suma:inputSumaItems.value})
-
   }
+})
 
+// ---------------- Lumineaza pictograma cloud ----------------
+
+window.addEventListener('input', function(event) {
+
+  const parentType = event.target.dataset.type
+
+  let str = event.target.id
+  let parentId = str.slice(-20)
+
+  if (parentType === 'infolinegroup') {
+    
+    let itemOneLineSelect = document.querySelector(`#js-button-update-group[data-id="${parentId}"]`)
+
+    itemOneLineSelect.childNodes[1].textContent = 'cloud_upload'
+    itemOneLineSelect.style.color = 'var(--color-functional-green-primary)'
+  }
 })
 
 // ---------------- Stergerea unei grupe ----------------
